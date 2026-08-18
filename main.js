@@ -338,11 +338,26 @@ window.addComment = function(articleId) {
 };
 
 // Global function to open full article in modal with Comment Section
-window.openArticleModal = function(id) {
-  const article = articlesData[id];
+window.openArticleModal = async function(id) {
+  let article = articlesData[id];
+  if (!article) {
+    try {
+      const res = await fetch(`/api/posts.php?slug=${encodeURIComponent(id)}`);
+      const data = await res.json();
+      if (data.success && data.data) {
+        article = {
+          title: data.data.title,
+          category: data.data.category,
+          date: data.data.date,
+          readTime: data.data.readTime || '3 min de lectura',
+          image: data.data.coverImage || (data.data.images && data.data.images[0]),
+          content: data.data.content
+        };
+        articlesData[id] = article;
+      }
+    } catch(e) {}
+  }
   if (!article) return;
-
-  const commentsCount = getComments(id).length;
 
   const html = `
     <div>
@@ -376,12 +391,12 @@ window.openArticleModal = function(id) {
       <!-- Comment Section -->
       <div class="comments-section" style="margin-top:2rem; padding-top:1.5rem; border-top:2px solid #111111;">
         <h3 style="font-family:var(--font-sans); font-size:1.1rem; font-weight:900; color:#111111; margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
-          <span>💬 Comentarios de la Comunidad (<span id="commentCount-${id}">${commentsCount}</span>)</span>
+          <span>💬 Comentarios de la Comunidad (<span id="commentCount-${id}">0</span>)</span>
           <span style="font-size:0.75rem; color:#c91818; background:#fef2f2; padding:0.2rem 0.6rem; border-radius:2px; font-weight:800;">Sin necesidad de registro</span>
         </h3>
 
         <!-- Comment Input Form -->
-        <form onsubmit="event.preventDefault(); addComment('${id}')" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:4px; padding:1.25rem; margin-bottom:1.5rem;">
+        <form onsubmit="event.preventDefault(); (window.submitCommentApi ? window.submitCommentApi('${id}') : addComment('${id}'))" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:4px; padding:1.25rem; margin-bottom:1.5rem;">
           <div style="margin-bottom:0.85rem;">
             <label style="display:block; font-size:0.75rem; font-weight:800; color:#111111; text-transform:uppercase; margin-bottom:0.3rem;">Apodo / Nickname:</label>
             <input type="text" id="commentNickname-${id}" placeholder="Ej. Maria_NJ o Vecino_Bergen" required style="width:100%; padding:0.6rem 0.85rem; border-radius:2px; border:1px solid #cbd5e1; font-size:0.875rem; outline:none; font-family:var(--font-sans);">
@@ -400,13 +415,17 @@ window.openArticleModal = function(id) {
   `;
 
   openModal(article.category, html);
-  setTimeout(() => renderComments(id), 50);
+  if (window.fetchComments) {
+    window.fetchComments(id);
+  } else {
+    setTimeout(() => renderComments(id), 50);
+  }
 };
 
 // Handle Hash Navigation
 function handleHashNavigation() {
   const hash = window.location.hash.replace('#', '');
-  if (hash && articlesData[hash]) {
+  if (hash) {
     setTimeout(() => {
       const element = document.getElementById(hash);
       if (element) {

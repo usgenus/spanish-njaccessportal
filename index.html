@@ -57,6 +57,68 @@
 
   <div class="header-spacer"></div>
 
+  <!-- 100vw Panoramic Billboard Section on Top of Main Page -->
+  <section id="gallery-billboard-section">
+    <div id="gallery-billboard-container">
+      <div class="billboard-slider-box" onmouseenter="window.cmsPauseBillboard()" onmouseleave="window.cmsResumeBillboard()">
+        <a href="/medicare.html" class="billboard-slide-link" title="Centro de Orientación y Acceso a la Salud de Nueva Jersey">
+          <div class="billboard-media-wrap">
+            <img id="billboard-active-img" 
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=2000&q=85&auto=format" 
+              alt="Centro de Orientación y Acceso a la Salud de Nueva Jersey" 
+              class="billboard-media-img">
+            <div class="billboard-gradient-bottom"></div>
+            <div class="billboard-gradient-side"></div>
+          </div>
+
+          <div class="billboard-content-overlay">
+            <div class="billboard-inner-container">
+              <div class="billboard-text-col">
+                <div class="billboard-badges-row">
+                  <span class="billboard-badge-cat">
+                    CAMPAÑA ESPECIAL
+                  </span>
+                  <span class="billboard-badge-counter">
+                    1 / 3
+                  </span>
+                </div>
+                <h3 class="billboard-headline">
+                  Centro de Orientación y Acceso a la Salud de Nueva Jersey
+                </h3>
+                <p class="billboard-subtitle">
+                  Consultas gratuitas en español para Medicare, ACA Obamacare y navegación hospitalaria para la comunidad hispana de NJ.
+                </p>
+              </div>
+
+              <div class="billboard-btn-col">
+                <span class="billboard-cta-btn">
+                  <span>Ver Guía de Elegibilidad</span>
+                  <span>→</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <button onclick="event.stopPropagation(); event.preventDefault(); window.cmsPrevBillboard();" 
+          class="billboard-nav-arrow billboard-nav-prev" aria-label="Anterior">
+          ‹
+        </button>
+
+        <button onclick="event.stopPropagation(); event.preventDefault(); window.cmsNextBillboard();" 
+          class="billboard-nav-arrow billboard-nav-next" aria-label="Siguiente">
+          ›
+        </button>
+
+        <div class="billboard-dots-row">
+          <button onclick="event.stopPropagation(); event.preventDefault(); window.cmsGoBillboard(0);" class="billboard-dot-pill active"></button>
+          <button onclick="event.stopPropagation(); event.preventDefault(); window.cmsGoBillboard(1);" class="billboard-dot-pill"></button>
+          <button onclick="event.stopPropagation(); event.preventDefault(); window.cmsGoBillboard(2);" class="billboard-dot-pill"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Main News Layout Container -->
   <main class="news-layout-wrapper">
     
@@ -508,6 +570,7 @@
     </div>
   </div>
 
+  <script src="/js/cms-client.js"></script>
   <script type="module" src="/main.js"></script>
 </body>
 </html>

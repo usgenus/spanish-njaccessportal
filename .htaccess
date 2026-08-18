@@ -1,0 +1,31 @@
+DirectoryIndex index.php index.html
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</IfModule>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Admin clean URL
+RewriteRule ^admin/?$ admin/index.php [L]
+
+# Protect data folder
+RewriteRule ^data/.*$ - [F,L]
+
+# Clean URL rewrites for Spanish portal
+RewriteRule ^noticias/?$ noticias.php [L]
+RewriteRule ^medicare/?$ medicare.html [L]
+RewriteRule ^about/?$ about.html [L]
+RewriteRule ^servicio-premium/?$ servicio-premium-de-navegacion-y-acceso-a-la-salud.html [L]
+RewriteRule ^tool/?$ tool.html [L]
+
+# If requested file or directory exists, serve it
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+</IfModule>
