@@ -458,70 +458,85 @@ function initMobileMenu() {
 }
 
 // Video Player & Playlist Manager
-const videoData = [
+let videoData = [
   {
-    id: 1,
-    title: "Salud Cardiovascular: Consejos Médicos para Cuidar su Corazón y Arterias",
-    category: "Cardiovascular",
-    speaker: "Mayo Clinic en Español & Dr. Carlos Rodríguez",
-    center: "Centro de Educación Cardiovascular en Español",
-    views: "125,000 vistas",
-    duration: "12:15",
-    videoUrl: "https://www.youtube.com/embed/S41KqX2H_7g?autoplay=1",
-    thumbnail: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
-    desc: "Explicación clara en español sobre el cuidado de la salud vascular, control de la presión arterial y prevención de accidentes cardiovasculares."
+    id: "v_1",
+    title: "Conozca los principales cambios y aumentos en Medicare para 2026",
+    category: "Medicare",
+    speaker: "Noticias Telemundo & Asesores de Salud",
+    views: "145,000 vistas",
+    duration: "10:00",
+    youtubeId: "TsdumJbTpTY",
+    youtubeUrl: "https://www.youtube.com/watch?v=TsdumJbTpTY",
+    thumbnail: "https://i.ytimg.com/vi/TsdumJbTpTY/hqdefault.jpg",
+    desc: "Reportaje informativo sobre los ajustes en los costos de salud, hospitalizaciones, deducibles y cambios de cobertura para los beneficiarios de Medicare en 2026."
   },
   {
-    id: 2,
-    title: "Síntomas de Alarma de un Accidente Cerebrovascular (ACV) en Español",
+    id: "v_2",
+    title: "¿Cómo detectar si alguien está sufriendo un derrame cerebral (ACV)?",
     category: "Neurología",
-    speaker: "CDC en Español & Dra. Sofía Martínez",
-    center: "Red de Salud Cerebral en Español",
-    views: "98,000 vistas",
+    speaker: "Noticias Telemundo & Especialistas en Neurología",
+    views: "112,000 vistas",
     duration: "08:40",
-    videoUrl: "https://www.youtube.com/embed/3m4G_Y6tE1w?autoplay=1",
-    thumbnail: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1200&q=80",
-    desc: "Aprenda a detectar las señales tempranas de un derrame cerebral y cómo actuar durante la ventana crítica de atención médica inmediata."
+    youtubeId: "7J0FeALmzws",
+    youtubeUrl: "https://www.youtube.com/watch?v=7J0FeALmzws",
+    thumbnail: "https://i.ytimg.com/vi/7J0FeALmzws/hqdefault.jpg",
+    desc: "Aprenda a detectar las señales tempranas de un accidente cerebrovascular (ACV) y cómo actuar durante la ventana crítica de atención médica de urgencia."
   },
   {
-    id: 3,
-    title: "Cáncer de Tiroides y Nódulos: Diagnóstico, Tratamiento y Cuándo Consultar",
+    id: "v_3",
+    title: "La Enfermedad Cardíaca en la Mujer: Consejos Médicos de Prevención",
+    category: "Cardiovascular",
+    speaker: "Mayo Clinic en Español & Dra. Carmen Terzic",
+    views: "128,000 vistas",
+    duration: "12:15",
+    youtubeId: "YidRfID9rvc",
+    youtubeUrl: "https://www.youtube.com/watch?v=YidRfID9rvc",
+    thumbnail: "https://i.ytimg.com/vi/YidRfID9rvc/hqdefault.jpg",
+    desc: "Explicación médica clara en español sobre los factores de riesgo de la enfermedad cardiovascular, síntomas atípicos y prevención en la comunidad hispana."
+  },
+  {
+    id: "v_4",
+    title: "Cáncer de Mama: Diálogo, Diagnóstico Temprano y Prevención",
     category: "Prevención de Cáncer",
-    speaker: "Sociedad Médica Oncológica en Español",
-    center: "Englewood Health Oncology",
-    views: "84,000 vistas",
+    speaker: "Mayo Clinic en Español & Especialistas en Oncología",
+    views: "94,000 vistas",
     duration: "09:07",
-    videoUrl: "https://www.youtube.com/embed/t9x3xS7_85k?autoplay=1",
-    thumbnail: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
-    desc: "Guía médica completa en español sobre cómo detectar nódulos en el cuello, pruebas de ecografía y opciones de tratamiento actual."
+    youtubeId: "rlpN249ucDI",
+    youtubeUrl: "https://www.youtube.com/watch?v=rlpN249ucDI",
+    thumbnail: "https://i.ytimg.com/vi/rlpN249ucDI/hqdefault.jpg",
+    desc: "Conversación especializada sobre la importancia de las mamografías periódicas, detección oportuna y tratamientos avanzados para la salud femenina."
   },
   {
-    id: 4,
-    title: "Demencia y Enfermedad de Alzheimer: Señales Tempranas en la Familia",
-    category: "Neurología",
-    speaker: "Alzheimer's Association en Español",
-    center: "Centro de Salud de la Memoria",
-    views: "76,000 vistas",
-    duration: "14:20",
-    videoUrl: "https://www.youtube.com/embed/yQ0-7Ew8n-4?autoplay=1",
-    thumbnail: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80",
-    desc: "Conferencia médica hablada en español sobre la diferencia entre cambios normales por la edad y síntomas iniciales de Alzheimer."
-  },
-  {
-    id: 5,
-    title: "Control del Colesterol y Triglicéridos: Guía Médica de Alimentación y Medicamentos",
+    id: "v_5",
+    title: "Control de la Diabetes Tipo 2: Consejos de Ejercicio y Alimentación",
     category: "Enfermedades Crónicas",
-    speaker: "Fundación del Corazón & Dr. Carlos Rodríguez",
-    center: "Programa de Salud Metabólica",
-    views: "62,000 vistas",
-    duration: "11:15",
-    videoUrl: "https://www.youtube.com/embed/S41KqX2H_7g?autoplay=1",
-    thumbnail: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80",
-    desc: "Explicación en español sobre los valores de colesterol bueno (HDL) y malo (LDL) y recomendaciones para proteger sus arterias."
+    speaker: "Noticias Telemundo & Endocrinología",
+    views: "86,000 vistas",
+    duration: "07:30",
+    youtubeId: "oARWA-ebyhU",
+    youtubeUrl: "https://www.youtube.com/watch?v=oARWA-ebyhU",
+    thumbnail: "https://i.ytimg.com/vi/oARWA-ebyhU/hqdefault.jpg",
+    desc: "Recomendaciones prácticas sobre horarios óptimos de ejercicio, control de glucosa y hábitos para personas con diabetes tipo 2 e hipertensión."
   }
 ];
 
-function initVideoPlayer() {
+let activeVideoIndex = 0;
+
+function getEmbedUrl(item) {
+  if (!item) return '';
+  let ytId = item.youtubeId;
+  if (!ytId && item.youtubeUrl) {
+    const m = item.youtubeUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    if (m) ytId = m[1];
+  }
+  if (ytId) {
+    return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1`;
+  }
+  return item.videoUrl || item.videoFile || '';
+}
+
+async function initVideoPlayer() {
   const activeVideoTitle = document.getElementById('activeVideoTitle');
   const activeVideoDesc = document.getElementById('activeVideoDesc');
   const activeVideoSpeaker = document.getElementById('activeVideoSpeaker');
@@ -531,13 +546,59 @@ function initVideoPlayer() {
 
   if (!videoScreen) return;
 
+  // Try fetching latest videos from CMS API
+  try {
+    const res = await fetch(`/api/videos.php?active_only=1&_t=${Date.now()}`);
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+      videoData = data.data.map(v => ({
+        id: v.id,
+        title: v.title,
+        category: v.category,
+        speaker: v.doctor || v.speaker || 'Especialista Médico',
+        views: v.views || '100K vistas',
+        duration: v.duration || '10:00',
+        youtubeId: v.youtubeId || '',
+        youtubeUrl: v.youtubeUrl || '',
+        videoUrl: v.videoUrl || '',
+        videoFile: v.videoFile || '',
+        thumbnail: v.thumbnail || (v.youtubeId ? `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg` : ''),
+        desc: v.summary || v.description || ''
+      }));
+    }
+  } catch (e) {}
+
+  function playVideo(index) {
+    activeVideoIndex = index;
+    const cur = videoData[index] || videoData[0];
+    if (!cur) return;
+
+    if (activeVideoTitle) activeVideoTitle.textContent = cur.title;
+    if (activeVideoDesc) activeVideoDesc.textContent = cur.desc;
+    if (activeVideoSpeaker) activeVideoSpeaker.innerHTML = `${cur.speaker} · 👁️ ${cur.views}`;
+
+    const embedUrl = getEmbedUrl(cur);
+    if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be')) {
+      videoScreen.innerHTML = `
+        <div style="position:relative; width:100%; height:100%; background:#000;">
+          <iframe src="${embedUrl}" title="${escapeHtml(cur.title)}" 
+            style="width:100%; height:100%; border:none;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      `;
+    } else if (embedUrl) {
+      videoScreen.innerHTML = `
+        <div style="position:relative; width:100%; height:100%; background:#000;">
+          <video src="${embedUrl}" style="width:100%; height:100%; object-fit:cover;" controls autoplay playsinline></video>
+        </div>
+      `;
+    }
+  }
+
   videoScreen.addEventListener('click', () => {
-    const data = videoData[0];
-    videoScreen.innerHTML = `
-      <div style="position:relative; width:100%; height:100%; background:#000;">
-        <iframe src="${data.videoUrl}" title="${data.title}" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    `;
+    playVideo(activeVideoIndex);
   });
 
   catButtons.forEach(btn => {
@@ -546,9 +607,9 @@ function initVideoPlayer() {
       btn.style.background = 'var(--color-news-red)';
       const cat = btn.getAttribute('data-cat');
       
-      playlistCards.forEach(card => {
+      playlistCards.forEach((card, idx) => {
         const itemCat = card.getAttribute('data-cat');
-        if (cat === 'all' || itemCat === cat) {
+        if (cat === 'all' || cat === 'Todos' || itemCat === cat) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -561,19 +622,7 @@ function initVideoPlayer() {
     card.addEventListener('click', () => {
       playlistCards.forEach(c => c.classList.remove('active'));
       card.classList.add('active');
-
-      const data = videoData[index];
-      if (data) {
-        activeVideoTitle.textContent = data.title;
-        activeVideoDesc.textContent = data.desc;
-        activeVideoSpeaker.innerHTML = `${data.speaker} · 👁️ ${data.views}`;
-        
-        videoScreen.innerHTML = `
-          <div style="position:relative; width:100%; height:100%; background:#000;">
-            <iframe src="${data.videoUrl}" title="${data.title}" style="width:100%; height:100%; border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        `;
-      }
+      playVideo(index);
     });
   });
 }
