@@ -38,7 +38,7 @@ if ($method === 'GET') {
         if ($activeOnly && isset($item['active']) && ($item['active'] === false || $item['active'] === 0 || $item['active'] === '0' || $item['active'] === 'false')) {
             continue;
         }
-        if ($category && $category !== 'Todos' && $category !== '전체' && ($item['category'] ?? '') !== $category) {
+        if ($category && $category !== 'Todos' && ($item['category'] ?? '') !== $category) {
             continue;
         }
         $result[] = $item;

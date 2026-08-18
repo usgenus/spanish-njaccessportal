@@ -1,0 +1,6 @@
+# Allow media viewing, disable script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|cgi|pl)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+Options -Indexes

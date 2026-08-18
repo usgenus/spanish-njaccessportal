@@ -1,5 +1,6 @@
 /**
  * El Portal de Salud NJ - Admin CMS Client Script
+ * 100% Spanish Editorial Interface & Dynamic Content Management
  */
 
 let state = {
@@ -8,7 +9,11 @@ let state = {
   posts: [],
   media: [],
   comments: [],
-  categories: { news: [], videos: [], billboards: [] },
+  categories: {
+    news: ['Noticias de Salud', 'Retiro Voluntario FDA', 'Salud & Tecnología', 'Geriatría & Bienestar', 'Medicare & ACA', 'Neurología', 'Cardiovascular', 'Enfermedades Crónicas', 'Política Sanitaria'],
+    videos: ['Cardiovascular', 'Neurología', 'Prevención de Cáncer', 'Geriatría', 'Nutrición & Bienestar', 'Enfermedades Crónicas'],
+    billboards: ['CAMPAÑA ESPECIAL', 'ALERTA SANITARIA', 'ASISTENCIA AL PACIENTE', 'MEDICARE 2026', 'PREVENCIÓN']
+  },
   videoFilter: 'Todos',
   postFilter: 'Todos',
   postSearch: '',
@@ -37,6 +42,7 @@ function showToast(msg, isSuccess = true) {
   const toast = document.getElementById('toast');
   const toastMsg = document.getElementById('toast-msg');
   const toastIcon = document.getElementById('toast-icon');
+  if (!toast) return;
 
   toastMsg.textContent = msg;
   toastIcon.textContent = isSuccess ? '✅' : '⚠️';
@@ -70,36 +76,54 @@ function switchTab(tabName) {
   }
 }
 
-// Fetch all initial data
+// Fetch all initial data from server
 async function fetchAllData() {
   try {
     const t = Date.now();
     const [bRes, vRes, pRes] = await Promise.all([
-      fetch(`/api/billboards.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json()),
-      fetch(`/api/videos.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json()),
-      fetch(`/api/posts.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json())
+      fetch(`/api/billboards.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ success: false })),
+      fetch(`/api/videos.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ success: false })),
+      fetch(`/api/posts.php?_t=${t}`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({ success: false }))
     ]);
 
-    if (bRes.success) {
+    if (bRes && bRes.success) {
       state.billboards = bRes.data || [];
-      state.categories.billboards = bRes.categories || [];
+      if (Array.isArray(bRes.categories) && bRes.categories.length > 0) {
+        state.categories.billboards = Array.from(new Set([...state.categories.billboards, ...bRes.categories]));
+      }
       renderBillboards();
     }
-    if (vRes.success) {
+    if (vRes && vRes.success) {
       state.videos = vRes.data || [];
-      state.categories.videos = vRes.categories || [];
+      if (Array.isArray(vRes.categories) && vRes.categories.length > 0) {
+        state.categories.videos = Array.from(new Set([...state.categories.videos, ...vRes.categories]));
+      }
       renderVideos();
     }
-    if (pRes.success) {
+    if (pRes && pRes.success) {
       state.posts = pRes.data || [];
-      state.categories.news = pRes.categories || [];
+      if (Array.isArray(pRes.categories) && pRes.categories.length > 0) {
+        state.categories.news = Array.from(new Set([...state.categories.news, ...pRes.categories]));
+      }
       renderPosts();
     }
 
+    populateDatalists();
     updateDashboard();
   } catch (err) {
     console.error('Error fetching data:', err);
-    showToast('Error al cargar datos del servidor.', false);
+    showToast('Error al conectar con la base de datos del servidor.', false);
+  }
+}
+
+function populateDatalists() {
+  const postDatalist = document.getElementById('post-categories-datalist');
+  if (postDatalist) {
+    postDatalist.innerHTML = state.categories.news.map(cat => `<option value="${escapeHtml(cat)}"></option>`).join('');
+  }
+  const videoDatalist = document.getElementById('video-categories-datalist');
+  if (videoDatalist) {
+    videoDatalist.innerHTML = state.categories.videos.map(cat => `<option value="${escapeHtml(cat)}"></option>`).join('');
   }
 }
 
@@ -115,15 +139,20 @@ async function handleLogout() {
 }
 
 // =========================================================
-// DASHBOARD
+// 1. DASHBOARD
 // =========================================================
 function updateDashboard() {
-  document.getElementById('stat-billboards-count').textContent = state.billboards.length + ' activos';
-  document.getElementById('stat-videos-count').textContent = state.videos.length + ' videos';
-  document.getElementById('stat-posts-count').textContent = state.posts.length + ' noticias';
+  const bEl = document.getElementById('stat-billboards-count');
+  const vEl = document.getElementById('stat-videos-count');
+  const pEl = document.getElementById('stat-posts-count');
+
+  if (bEl) bEl.textContent = state.billboards.length + ' activos';
+  if (vEl) vEl.textContent = state.videos.length + ' videos';
+  if (pEl) pEl.textContent = state.posts.length + ' noticias';
   
-  // Recent activity list
   const container = document.getElementById('dash-recent-list');
+  if (!container) return;
+
   const recent = [
     ...state.billboards.map(b => ({ type: 'billboard', title: b.title, tag: 'Cartelera', date: b.createdAt || 'Reciente' })),
     ...state.videos.map(v => ({ type: 'video', title: v.title, tag: 'Video', date: v.date || 'Reciente' })),
@@ -150,7 +179,7 @@ function updateDashboard() {
 }
 
 // =========================================================
-// BILLBOARDS
+// 2. BILLBOARDS
 // =========================================================
 function renderBillboards() {
   const container = document.getElementById('billboards-grid');
@@ -172,7 +201,7 @@ function renderBillboards() {
   container.innerHTML = state.billboards.map(b => {
     const isVideo = b.mediaType === 'video' || (b.mediaUrl && (b.mediaUrl.endsWith('.mp4') || b.mediaUrl.endsWith('.webm')));
     return `
-      <div class="bg-slate-800/80 border ${b.active ? 'border-slate-700/80' : 'border-slate-800 opacity-60'} rounded-3xl overflow-hidden shadow-lg flex flex-col group">
+      <div class="bg-slate-800/80 border ${b.active !== false ? 'border-slate-700/80' : 'border-slate-800 opacity-60'} rounded-3xl overflow-hidden shadow-lg flex flex-col group">
         <div class="relative h-44 bg-slate-950 overflow-hidden">
           ${isVideo ? `
             <video src="${b.mediaUrl}" class="w-full h-full object-cover" muted></video>
@@ -193,8 +222,8 @@ function renderBillboards() {
                 Orden #${b.order || 1}
               </span>
             </div>
-            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${b.active ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-700 text-slate-400'}">
-              ${b.active ? 'Activo' : 'Pausado'}
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${b.active !== false ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-700 text-slate-400'}">
+              ${b.active !== false ? 'Activo' : 'Pausado'}
             </span>
           </div>
         </div>
@@ -228,6 +257,7 @@ function openBillboardModal(id = null) {
   const modal = document.getElementById('modal-billboard');
   const title = document.getElementById('modal-billboard-title');
   const form = document.getElementById('form-billboard');
+  if (!modal || !form) return;
   form.reset();
 
   if (id) {
@@ -264,7 +294,6 @@ function openBillboardModal(id = null) {
 
 async function handleSaveBillboard(e) {
   e.preventDefault();
-  const form = e.target;
   const id = document.getElementById('billboard-id').value;
   const isEdit = Boolean(id);
 
@@ -292,7 +321,7 @@ async function handleSaveBillboard(e) {
       closeModal('modal-billboard');
       await fetchAllData();
     } else {
-      showToast(data.error || 'Error al guardar.', false);
+      showToast(data.error || 'Error al guardar cartelera.', false);
     }
   } catch (err) {
     showToast('Error de conexión con el servidor.', false);
@@ -316,14 +345,13 @@ async function deleteBillboard(id) {
 }
 
 // =========================================================
-// VIDEOS
+// 3. VIDEOS
 // =========================================================
 function renderVideos() {
   const container = document.getElementById('videos-grid');
   const filterContainer = document.getElementById('video-category-filters');
   if (!container) return;
 
-  // Render Category Filter Chips
   const cats = ['Todos', ...(state.categories.videos || [])];
   const uniqueCats = Array.from(new Set(cats));
 
@@ -337,9 +365,8 @@ function renderVideos() {
     `).join('');
   }
 
-  // Filter videos
   const filtered = state.videos.filter(v => {
-    if (state.videoFilter === 'Todos' || state.videoFilter === '전체') return true;
+    if (state.videoFilter === 'Todos') return true;
     return v.category === state.videoFilter;
   });
 
@@ -410,6 +437,7 @@ function openVideoModal(id = null) {
   const modal = document.getElementById('modal-video');
   const title = document.getElementById('modal-video-title');
   const form = document.getElementById('form-video');
+  if (!modal || !form) return;
   form.reset();
 
   if (id) {
@@ -452,8 +480,10 @@ function autoFetchYtThumb(val) {
     const thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
     document.getElementById('video-thumbnail-input').value = thumbUrl;
     const preview = document.getElementById('video-thumb-preview');
-    preview.classList.remove('hidden');
-    preview.innerHTML = `<img src="${thumbUrl}" class="w-full h-full object-cover">`;
+    if (preview) {
+      preview.classList.remove('hidden');
+      preview.innerHTML = `<img src="${thumbUrl}" class="w-full h-full object-cover">`;
+    }
   }
 }
 
@@ -487,7 +517,7 @@ async function handleSaveVideo(e) {
       closeModal('modal-video');
       await fetchAllData();
     } else {
-      showToast(data.error || 'Error al guardar.', false);
+      showToast(data.error || 'Error al guardar video.', false);
     }
   } catch (err) {
     showToast('Error de conexión con el servidor.', false);
@@ -511,7 +541,7 @@ async function deleteVideo(id) {
 }
 
 // =========================================================
-// BLOG & NEWS POSTS
+// 4. BLOG & NEWS POSTS (Fixed & 100% Spanish)
 // =========================================================
 function renderPosts() {
   const container = document.getElementById('posts-grid');
@@ -533,7 +563,7 @@ function renderPosts() {
 
   const q = state.postSearch.toLowerCase();
   const filtered = state.posts.filter(p => {
-    const matchCat = (state.postFilter === 'Todos' || state.postFilter === '전체') || (p.category === state.postFilter);
+    const matchCat = (state.postFilter === 'Todos') || (p.category === state.postFilter);
     const matchQuery = !q || (p.title && p.title.toLowerCase().includes(q)) || (p.excerpt && p.excerpt.toLowerCase().includes(q));
     return matchCat && matchQuery;
   });
@@ -552,7 +582,7 @@ function renderPosts() {
   }
 
   container.innerHTML = filtered.map(p => {
-    const cover = p.coverImage || (!empty(p.images) ? p.images[0] : 'https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=800');
+    const cover = (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : (p.coverImage || 'https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=800');
     return `
       <div class="bg-slate-800/80 border ${p.isTopStory ? 'border-red-500/50 ring-1 ring-red-500/30' : 'border-slate-700/80'} rounded-3xl overflow-hidden shadow-lg flex flex-col group">
         <div class="relative h-48 bg-slate-950 overflow-hidden">
@@ -586,7 +616,7 @@ function renderPosts() {
               <i class="fa-solid fa-user-pen mr-1"></i> ${escapeHtml(p.author || 'Redacción')}
             </span>
             <div class="flex items-center gap-2">
-              <a href="/noticias.html#${p.slug || p.id}" target="_blank" class="bg-slate-700/60 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all" title="Ver en el sitio">
+              <a href="/noticias.html#${p.slug || p.id}" target="_blank" class="bg-slate-700/60 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all" title="Ver en el portal">
                 <i class="fa-solid fa-eye"></i>
               </a>
               <button onclick="openPostModal('${p.id}')" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
@@ -617,6 +647,7 @@ function openPostModal(id = null) {
   const modal = document.getElementById('modal-post');
   const title = document.getElementById('modal-post-title');
   const form = document.getElementById('form-post');
+  if (!modal || !form) return;
   form.reset();
   state.currentPostImages = [];
 
@@ -637,7 +668,7 @@ function openPostModal(id = null) {
       document.getElementById('post-topstory-input').checked = Boolean(p.isTopStory);
       document.getElementById('post-liveupdate-input').checked = Boolean(p.isLiveUpdate);
 
-      // Populate images
+      // Populate images array
       if (Array.isArray(p.images) && p.images.length > 0) {
         state.currentPostImages = [...p.images];
       } else if (p.coverImage) {
@@ -647,8 +678,11 @@ function openPostModal(id = null) {
   } else {
     title.innerHTML = '<i class="fa-solid fa-pen-nib text-emerald-400"></i> <span>Redactar Noticia de Salud</span>';
     document.getElementById('post-id').value = '';
+    document.getElementById('post-category-input').value = 'Noticias de Salud';
     document.getElementById('post-date-input').value = new Date().toISOString().split('T')[0];
     document.getElementById('post-author-input').value = 'Redacción Médica y Salud Pública';
+    document.getElementById('post-topstory-input').checked = false;
+    document.getElementById('post-liveupdate-input').checked = false;
   }
 
   renderPostImagesManager();
@@ -680,7 +714,7 @@ function renderPostImagesManager() {
           Hacer Portada
         </button>
       `}
-      <button type="button" onclick="removePostImage(${idx})" class="absolute top-1 right-1 bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow hover:scale-110 transition-transform">
+      <button type="button" onclick="removePostImage(${idx})" class="absolute top-1 right-1 bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow hover:scale-110 transition-transform" title="Eliminar foto">
         ✕
       </button>
     </div>
@@ -689,11 +723,13 @@ function renderPostImagesManager() {
 
 function addPostImageUrlManual() {
   const input = document.getElementById('post-add-image-url-input');
+  if (!input) return;
   const url = input.value.trim();
   if (url) {
     state.currentPostImages.push(url);
     input.value = '';
     renderPostImagesManager();
+    showToast('Imagen agregada.');
   }
 }
 
@@ -702,6 +738,7 @@ function setPostCoverImage(idx) {
     const item = state.currentPostImages.splice(idx, 1)[0];
     state.currentPostImages.unshift(item);
     renderPostImagesManager();
+    showToast('Portada actualizada.');
   }
 }
 
@@ -712,6 +749,9 @@ function removePostImage(idx) {
 
 async function uploadMultiplePostImages(input) {
   if (!input.files || input.files.length === 0) return;
+  showToast('Subiendo imágenes al servidor...');
+  let uploadedCount = 0;
+
   for (let i = 0; i < input.files.length; i++) {
     const file = input.files[i];
     const formData = new FormData();
@@ -721,13 +761,16 @@ async function uploadMultiplePostImages(input) {
       const data = await res.json();
       if (data.success && data.url) {
         state.currentPostImages.push(data.url);
+        uploadedCount++;
       }
     } catch (e) {
-      console.error(e);
+      console.error('Upload error:', e);
     }
   }
+
   input.value = '';
   renderPostImagesManager();
+  showToast(`Se subieron ${uploadedCount} imagen(es) correctamente.`);
 }
 
 async function handleSavePost(e) {
@@ -735,19 +778,45 @@ async function handleSavePost(e) {
   const id = document.getElementById('post-id').value;
   const isEdit = Boolean(id);
 
+  const title = document.getElementById('post-title-input').value.trim();
+  const category = document.getElementById('post-category-input').value.trim();
+  const excerpt = document.getElementById('post-excerpt-input').value.trim();
+  const content = document.getElementById('post-content-input').value.trim();
+
+  if (!title) {
+    showToast('Por favor ingrese el título de la noticia.', false);
+    return;
+  }
+  if (!category) {
+    showToast('Por favor seleccione o ingrese una categoría.', false);
+    return;
+  }
+  if (!excerpt) {
+    showToast('Por favor ingrese un resumen corto para la tarjeta.', false);
+    return;
+  }
+  if (!content) {
+    showToast('Por favor ingrese el contenido del artículo.', false);
+    return;
+  }
+
+  const defaultImage = 'https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=800';
+  const postImages = state.currentPostImages.length > 0 ? state.currentPostImages : [defaultImage];
+
   const payload = {
     id: id || undefined,
-    title: document.getElementById('post-title-input').value.trim(),
-    category: document.getElementById('post-category-input').value.trim(),
-    date: document.getElementById('post-date-input').value,
-    author: document.getElementById('post-author-input').value.trim(),
-    images: state.currentPostImages,
-    coverImage: state.currentPostImages[0] || '',
-    excerpt: document.getElementById('post-excerpt-input').value.trim(),
+    title: title,
+    category: category,
+    date: document.getElementById('post-date-input').value || new Date().toISOString().split('T')[0],
+    author: document.getElementById('post-author-input').value.trim() || 'Redacción Médica y Salud Pública',
+    images: postImages,
+    coverImage: postImages[0],
+    excerpt: excerpt,
     summaryPoints: document.getElementById('post-summarypoints-input').value.trim(),
-    content: document.getElementById('post-content-input').value.trim(),
+    content: content,
     isTopStory: document.getElementById('post-topstory-input').checked,
-    isLiveUpdate: document.getElementById('post-liveupdate-input').checked
+    isLiveUpdate: document.getElementById('post-liveupdate-input').checked,
+    status: 'published'
   };
 
   try {
@@ -758,14 +827,14 @@ async function handleSavePost(e) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(isEdit ? 'Noticia actualizada.' : 'Noticia publicada con éxito.');
+      showToast(isEdit ? 'Noticia actualizada con éxito.' : 'Noticia publicada con éxito.');
       closeModal('modal-post');
       await fetchAllData();
     } else {
-      showToast(data.error || 'Error al guardar.', false);
+      showToast(data.error || 'Error al guardar noticia.', false);
     }
   } catch (err) {
-    showToast('Error de conexión con el servidor.', false);
+    showToast('Error de conexión al guardar.', false);
   }
 }
 
@@ -775,7 +844,7 @@ async function deletePost(id) {
     const res = await fetch(`/api/posts.php?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.success) {
-      showToast('Noticia eliminada.');
+      showToast('Noticia eliminada correctamente.');
       await fetchAllData();
     } else {
       showToast(data.error || 'Error al eliminar.', false);
@@ -786,7 +855,7 @@ async function deletePost(id) {
 }
 
 // =========================================================
-// COMMENTS MODERATION
+// 5. COMMENTS MODERATION
 // =========================================================
 async function fetchAdminComments() {
   const container = document.getElementById('comments-admin-list');
@@ -855,7 +924,7 @@ async function deleteComment(id) {
 }
 
 // =========================================================
-// MEDIA LIBRARY
+// 6. MEDIA LIBRARY
 // =========================================================
 async function fetchMediaFiles() {
   const container = document.getElementById('media-grid');
@@ -866,7 +935,8 @@ async function fetchMediaFiles() {
     const data = await res.json();
     if (data.success) {
       state.media = data.files || [];
-      document.getElementById('stat-media-count').textContent = state.media.length + ' archivos';
+      const countEl = document.getElementById('stat-media-count');
+      if (countEl) countEl.textContent = state.media.length + ' archivos';
       renderMediaGrid();
     }
   } catch (err) {
@@ -903,7 +973,7 @@ function renderMediaGrid() {
           <button onclick="copyToClipboard('${m.url}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1 flex-1 justify-center">
             <i class="fa-solid fa-copy"></i> Copiar URL
           </button>
-          <button onclick="deleteMediaFile('${m.url}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-1 rounded-lg text-[10px] font-bold transition-all">
+          <button onclick="deleteMediaFile('${m.url}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-1 rounded-lg text-[10px] font-bold transition-all" title="Eliminar archivo">
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>
@@ -914,7 +984,7 @@ function renderMediaGrid() {
 
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
-    showToast('URL copiada al portapapeles: ' + text);
+    showToast('URL copiada al portapapeles.');
   }).catch(() => {
     showToast('Error al copiar URL.', false);
   });
@@ -969,6 +1039,7 @@ function setupDropzone() {
 async function handleDirectFileUpload(files) {
   if (!files || files.length === 0) return;
   let count = 0;
+  showToast('Subiendo archivo(s)...');
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const formData = new FormData();
@@ -990,6 +1061,7 @@ async function uploadFieldFile(input, targetInputId, previewId = null) {
   const file = input.files[0];
   const formData = new FormData();
   formData.append('file', file);
+  showToast('Subiendo archivo...');
 
   try {
     const res = await fetch('/api/upload.php', { method: 'POST', body: formData });
@@ -998,11 +1070,13 @@ async function uploadFieldFile(input, targetInputId, previewId = null) {
       document.getElementById(targetInputId).value = data.url;
       if (previewId) {
         const preview = document.getElementById(previewId);
-        preview.classList.remove('hidden');
-        if (data.type === 'videos') {
-          preview.innerHTML = `<video src="${data.url}" class="w-full h-full object-cover" controls></video>`;
-        } else {
-          preview.innerHTML = `<img src="${data.url}" class="w-full h-full object-cover">`;
+        if (preview) {
+          preview.classList.remove('hidden');
+          if (data.type === 'videos') {
+            preview.innerHTML = `<video src="${data.url}" class="w-full h-full object-cover" controls></video>`;
+          } else {
+            preview.innerHTML = `<img src="${data.url}" class="w-full h-full object-cover">`;
+          }
         }
       }
       showToast('Archivo subido con éxito.');
@@ -1010,12 +1084,13 @@ async function uploadFieldFile(input, targetInputId, previewId = null) {
       showToast(data.error || 'Error al subir archivo.', false);
     }
   } catch (err) {
-    showToast('Error de conexión.', false);
+    showToast('Error de conexión al subir.', false);
   }
 }
 
 // Modal helper
 function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.add('hidden');
 }
 window.closeModal = closeModal;

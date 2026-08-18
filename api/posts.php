@@ -46,7 +46,7 @@ if ($method === 'GET') {
         if ($status && ($item['status'] ?? 'published') !== $status) {
             continue;
         }
-        if ($category && $category !== 'Todos' && $category !== '전체' && ($item['category'] ?? '') !== $category) {
+        if ($category && $category !== 'Todos' && ($item['category'] ?? '') !== $category) {
             continue;
         }
         if ($q) {

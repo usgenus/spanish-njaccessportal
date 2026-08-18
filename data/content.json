@@ -129,12 +129,33 @@
   ],
   "posts": [
     {
+      "id": "p_1787096002_cc6e",
+      "slug": "test",
+      "title": "test",
+      "category": "한인 건강 특강",
+      "date": "2026-08-18",
+      "isTopStory": true,
+      "isLiveUpdate": true,
+      "excerpt": "estestest",
+      "coverImage": "",
+      "images": [],
+      "videoUrl": "",
+      "readTime": "3 min de lectura",
+      "author": "Redacción Médica y Salud Pública",
+      "content": "setsetse",
+      "summaryPoints": [
+        "tseest"
+      ],
+      "status": "published",
+      "createdAt": "2026-08-18 23:33:22"
+    },
+    {
       "id": "eye-drops",
       "slug": "eye-drops",
       "title": "Más de 2 millones de frascos de gotas oftálmicas retirados del mercado en EE. UU. por posible contaminación",
       "category": "Retiro Voluntario FDA",
       "date": "2026-08-04",
-      "isTopStory": true,
+      "isTopStory": false,
       "isLiveUpdate": true,
       "excerpt": "La farmacéutica Lupin Pharmaceuticals ha iniciado voluntariamente el retiro del mercado en todo el territorio de Estados Unidos de más de 2.5 millones de frascos de suspensión oftálmica de prednisolona al 1% debido al hallazgo de partículas extrañas insolubles.",
       "coverImage": "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format",
@@ -330,7 +351,8 @@
       "Medicare & ACA",
       "Neurología",
       "Enfermedades Crónicas",
-      "Política Sanitaria"
+      "Política Sanitaria",
+      "한인 건강 특강"
     ],
     "videos": [
       "Todos",
