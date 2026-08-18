@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre el Periódico | EL PORTAL DE SALUD DE NJ</title>
+  <meta name="description" content="Conozca la misión periodística y la labor comunitaria del Portal de Salud de Nueva Jersey (NJ Access Center) al servicio de la comunidad hispana.">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .about-card {
+      background: #ffffff;
+      border: 1px solid var(--color-news-border);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Marquee Flash Bar -->
+  <div class="top-marquee">
+    <div class="marquee-content">
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> MISIÓN PERIODÍSTICA Y ORIENTACIÓN MÉDICA A LA COMUNIDAD HISPANA DE NJ
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> MISIÓN PERIODÍSTICA Y ORIENTACIÓN MÉDICA A LA COMUNIDAD HISPANA DE NJ
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Header Container -->
+  <header class="news-header-sticky">
+    <div class="masthead-section">
+      <div class="masthead-container">
+        <a href="/index.html" class="masthead-logo">
+          <span class="masthead-title">EL PORTAL DE SALUD</span>
+          <span class="masthead-sub">SOBRE EL DIARIO & CONSEJO EDITORIAL</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="category-nav">
+      <div class="nav-container">
+        <ul class="nav-links-row">
+          <li><a href="/index.html" class="nav-item-link">Portada</a></li>
+          <li><a href="/noticias.html" class="nav-item-link">Noticias de Salud</a></li>
+          <li><a href="/medicare.html" class="nav-item-link">Medicare & ACA</a></li>
+          <li><a href="/servicio-premium-de-navegacion-y-acceso-a-la-salud.html" class="nav-item-link">Servicio Premium AI</a></li>
+          <li><a href="/about.html" class="nav-item-link active">Sobre Nosotros</a></li>
+        </ul>
+
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="header-spacer"></div>
+
+  <main class="news-layout-wrapper">
+    
+    <div style="background:var(--color-news-dark); color:#ffffff; padding:2rem; border-left:5px solid var(--color-news-red); margin-bottom:2rem; border-radius:4px;">
+      <span style="color:#fca5a5; font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em;">DECLARACIÓN EDITORIAL</span>
+      <h1 style="font-family:var(--font-serif); font-size:2.25rem; font-weight:900; color:#fff; margin-top:0.25rem;">
+        Facilitando el Acceso a la Salud para la Comunidad Hispana
+      </h1>
+      <p style="color:rgba(255,255,255,0.85); font-size:0.95rem; margin-top:0.5rem; max-width:800px;">
+        Eliminamos las barreras del idioma y la complejidad burocrática del sistema médico estadounidense para asegurar que cada familia reciba atención oportuna y de calidad.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h2 style="font-family:var(--font-serif); font-size:1.4rem; font-weight:900; margin-bottom:0.75rem;">
+        ¿Quiénes Somos?
+      </h2>
+      <p style="color:var(--color-news-gray); font-size:0.95rem; line-height:1.6;">
+        El <strong>Portal de Salud de Nueva Jersey (NJ Access Center)</strong> es una publicación digital independiente dedicada a la orientación médica, navegación de seguros de salud y divulgación de información sanitaria en español.
+      </p>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="about-card" id="boletin" style="background:#f9fafb; border-left:4px solid var(--color-news-red);">
+      <h2 style="font-family:var(--font-serif); font-size:1.4rem; font-weight:900; margin-bottom:0.5rem;">
+        📧 Suscríbase al Boletín Diario del Periódico
+      </h2>
+      <p style="color:var(--color-news-gray); font-size:0.9rem; margin-bottom:1.25rem;">
+        Reciba alertas urgentes de la FDA, novedades de Medicare y la edición digital matutina en su correo electrónico.
+      </p>
+
+      <form onsubmit="event.preventDefault(); alert('¡Suscripción completada con éxito! Bienvenido a nuestro diario digital.');" style="display:flex; gap:0.75rem; flex-wrap:wrap; max-width:500px;">
+        <input type="email" placeholder="Su correo electrónico..." required class="form-input" style="flex:1;">
+        <button type="submit" class="btn-news-red">Suscribirme</button>
+      </form>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="about-card" id="contacto">
+      <h2 style="font-family:var(--font-serif); font-size:1.4rem; font-weight:900; margin-bottom:0.5rem;">
+        💬 Formulario de Consulta a la Redacción
+      </h2>
+      <p style="color:var(--color-news-gray); font-size:0.9rem; margin-bottom:1.25rem;">
+        ¿Tiene dudas sobre Medicare, Medicaid o requiere orientación médica en su comunidad? Envíenos un mensaje.
+      </p>
+
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('¡Gracias! Su mensaje ha sido recibido por nuestra redacción. Le responderemos a la brevedad.');" style="display:flex; flex-direction:column; gap:1rem; max-width:600px;">
+        <div class="form-group">
+          <label class="form-label">Nombre Completo:</label>
+          <input type="text" required class="form-input" placeholder="Ej. María García">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Teléfono de Contacto:</label>
+          <input type="tel" required class="form-input" placeholder="Ej. (201) 555-0199">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Correo Electrónico:</label>
+          <input type="email" required class="form-input" placeholder="Ej. maria@ejemplo.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Su Consulta:</label>
+          <textarea rows="4" required class="form-input" placeholder="Escriba su pregunta sobre Medicare, salud o alertas médicas..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-news-red" style="width:200px;">Enviar Mensaje</button>
+      </form>
+    </div>
+
+  </main>
+
+  <footer class="commercial-footer">
+    <div class="footer-inner">
+      <div class="footer-legal">
+        <div>© 2026 El Portal de Salud de Nueva Jersey.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

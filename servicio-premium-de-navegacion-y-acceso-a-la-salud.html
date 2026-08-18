@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicio Premium AI | EL PORTAL DE SALUD DE NJ</title>
+  <meta name="description" content="Herramienta de Inteligencia Artificial para asistencia, orientación de beneficios médicos, navegación en el sistema de salud de Nueva Jersey e interpretación médica en español.">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .ai-tool-banner {
+      background: var(--color-news-dark);
+      color: #ffffff;
+      padding: 2.25rem 2rem;
+      margin-bottom: 1.75rem;
+      border-left: 5px solid var(--color-news-red);
+      border-radius: 4px;
+    }
+    .tool-frame-box {
+      width: 100%;
+      height: calc(100vh - 120px);
+      min-height: 900px;
+      background: #ffffff;
+      border: 1px solid var(--color-news-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      margin-bottom: 2.5rem;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .tool-frame-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Marquee Flash Bar -->
+  <div class="top-marquee">
+    <div class="marquee-content">
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> SERVICIO PREMIUM DE NAVEGACIÓN Y ACCESO A LA SALUD ASISTIDO POR IA EN ESPAÑOL
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> SERVICIO PREMIUM DE NAVEGACIÓN Y ACCESO A LA SALUD ASISTIDO POR IA EN ESPAÑOL
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Header Container -->
+  <header class="news-header-sticky">
+    <div class="masthead-section">
+      <div class="masthead-container">
+        <a href="/index.html" class="masthead-logo">
+          <span class="masthead-title">EL PORTAL DE SALUD</span>
+          <span class="masthead-sub">NUEVA JERSEY · HERRAMIENTA PREMIUM AI</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="category-nav">
+      <div class="nav-container">
+        <ul class="nav-links-row">
+          <li><a href="/index.html" class="nav-item-link">Portada</a></li>
+          <li><a href="/noticias.html" class="nav-item-link">Noticias de Salud</a></li>
+          <li><a href="/medicare.html" class="nav-item-link">Medicare & ACA</a></li>
+          <li><a href="/servicio-premium-de-navegacion-y-acceso-a-la-salud.html" class="nav-item-link active">Servicio Premium AI</a></li>
+          <li><a href="/about.html" class="nav-item-link">Sobre Nosotros</a></li>
+        </ul>
+
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="header-spacer"></div>
+
+  <main class="news-layout-wrapper">
+    
+    <div class="ai-tool-banner">
+      <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#fca5a5;">INTERACTIVO DE REDACCIÓN</span>
+      <h1 style="font-family:var(--font-serif); font-size:2rem; font-weight:900; color:#fff; margin-top:0.25rem;">
+        Servicio Premium de Navegación y Acceso a la Salud
+      </h1>
+      <p style="font-size:0.9rem; color:rgba(255,255,255,0.85); margin-top:0.5rem; max-width:850px;">
+        Obtenga asistencia en tiempo real, orientación sobre su plan de seguro médico (Medicare, Medicaid, ACA Obamacare), interpretación de términos clínicos y asistencia personalizada para residentes de Nueva Jersey.
+      </p>
+    </div>
+
+    <!-- Embedded AI Tool Container -->
+    <div class="tool-frame-box" id="toolFrameBox">
+      <iframe id="aiFrame" src="https://spanishhac.ai.studio" title="Asistente de Navegación y Acceso a la Salud AI" allow="clipboard-write; microphone" loading="lazy"></iframe>
+    </div>
+
+    <!-- Quick Auxiliary Tools -->
+    <h2 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:900; margin-bottom:1rem; border-bottom:2px solid var(--color-news-black); padding-bottom:0.4rem;">
+      HERRAMIENTAS AUXILIARES DEL DIARIO
+    </h2>
+
+    <div class="tools-row-grid" style="margin-bottom:2.5rem;">
+      <div class="tool-block-item" onclick="openInsuranceMatcher()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+        <div>
+          <div style="font-size:1.75rem;">🏥</div>
+          <h3 class="tool-block-title" style="color:var(--color-news-black);">Diagnosticador de Cobertura</h3>
+          <p class="tool-block-desc" style="color:var(--color-news-gray);">Evalúe elegibilidad para Medicare, Medicaid o ACA.</p>
+        </div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">Acceder →</div>
+      </div>
+
+      <div class="tool-block-item" onclick="openSubsidyCalculator()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+        <div>
+          <div style="font-size:1.75rem;">🧮</div>
+          <h3 class="tool-block-title" style="color:var(--color-news-black);">Calculadora de Subsidios ACA</h3>
+          <p class="tool-block-desc" style="color:var(--color-news-gray);">Estime el ahorro mensual en su seguro de salud.</p>
+        </div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">Calcular →</div>
+      </div>
+
+      <div class="tool-block-item" onclick="openMedicalDict()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+        <div>
+          <div style="font-size:1.75rem;">📖</div>
+          <h3 class="tool-block-title" style="color:var(--color-news-black);">Diccionario Médico</h3>
+          <p class="tool-block-desc" style="color:var(--color-news-gray);">Traducción e interpretación de términos clínicos.</p>
+        </div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">Consultar →</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Commercial Footer -->
+  <footer class="commercial-footer">
+    <div class="footer-inner">
+      <div class="footer-legal">
+        <div>© 2026 El Portal de Salud de Nueva Jersey — Servicio Premium AI.</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+      <h3 id="modalTitle" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-news-black); margin-bottom:1rem;"></h3>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+
+  <script>
+    // Listen for iframe dynamic height messages to expand container naturally with outer page scroll
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'resize' && event.data.height) {
+        const frameBox = document.getElementById('toolFrameBox');
+        if (frameBox) {
+          frameBox.style.height = (event.data.height + 40) + 'px';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

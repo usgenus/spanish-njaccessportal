@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticias & Alertas FDA | EL PORTAL DE SALUD DE NJ</title>
+  <meta name="description" content="Centro periodístico de noticias médicas, retiros de la FDA, política de salud de Medicare y bienestar comunitario en Nueva Jersey.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- Top Marquee Flash Bar -->
+  <div class="top-marquee">
+    <div class="marquee-content">
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> NOTICIAS MÉDICAS, ALERTAS SANITARIAS Y COBERTURA EDITORIAL EN ESPAÑOL
+      </div>
+      <div class="marquee-item">
+        <span class="marquee-badge">ÚLTIMA HORA</span> NOTICIAS MÉDICAS, ALERTAS SANITARIAS Y COBERTURA EDITORIAL EN ESPAÑOL
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Header Container -->
+  <header class="news-header-sticky">
+    <div class="masthead-section">
+      <div class="masthead-container">
+        <a href="/index.html" class="masthead-logo">
+          <span class="masthead-title">EL PORTAL DE SALUD</span>
+          <span class="masthead-sub">SECCIÓN DE NOTICIAS & REPORTAJES MÉDICOS</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="category-nav">
+      <div class="nav-container">
+        <ul class="nav-links-row">
+          <li><a href="/index.html" class="nav-item-link">Portada</a></li>
+          <li><a href="/noticias.html" class="nav-item-link active">Noticias de Salud</a></li>
+          <li><a href="/medicare.html" class="nav-item-link">Medicare & ACA</a></li>
+          <li><a href="/servicio-premium-de-navegacion-y-acceso-a-la-salud.html" class="nav-item-link">Servicio Premium AI</a></li>
+          <li><a href="/about.html" class="nav-item-link">Sobre Nosotros</a></li>
+        </ul>
+
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="header-spacer"></div>
+
+  <main class="news-layout-wrapper">
+    
+    <div style="background:var(--color-news-dark); color:#ffffff; padding:2rem; border-left:5px solid var(--color-news-red); margin-bottom:2rem; border-radius:4px;">
+      <span style="color:#fca5a5; font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em;">EDICIÓN DIGITAL 2026</span>
+      <h1 style="font-family:var(--font-serif); font-size:2rem; font-weight:900; color:#fff; margin-top:0.25rem;">
+        Centro de Noticias Médicas y Seguridad al Paciente
+      </h1>
+      <p style="color:rgba(255,255,255,0.85); font-size:0.9rem; margin-top:0.5rem; max-width:800px;">
+        Alertas de retiro de medicamentos de la FDA, descubrimientos en longevidad y noticias de política sanitaria en su idioma.
+      </p>
+
+      <div style="margin-top:1.25rem; max-width:600px;">
+        <input type="text" id="newsSearchInput" class="form-input" placeholder="Buscar noticia por palabra clave (ej. FDA, gotas, demencia, Medicare)..." style="background:#ffffff; color:var(--color-news-black); border:none; padding:0.75rem 1rem;">
+      </div>
+    </div>
+
+    <!-- Main Articles Grid -->
+    <div class="news-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));">
+      
+      <!-- Article 1 -->
+      <article class="news-card" id="eye-drops" onclick="openArticleModal('eye-drops')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format" alt="Gotas oftálmicas">
+          </div>
+          <div class="card-kicker">RETIRO VOLUNTARIO FDA</div>
+          <h2 class="card-head">Retiro Masivo de Gotas Oftálmicas de Prednisolona por Contaminación</h2>
+          <p class="card-body">
+            Más de 2.5 millones de frascos han sido retirados preventivamente. Sepa qué lotes revisar y cómo tramitar su reemplazo.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>4 de agosto de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article class="news-card" id="ai-health-assistant" onclick="openArticleModal('ai-health-assistant')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format" alt="Asistente AI">
+          </div>
+          <div class="card-kicker">TECNOLOGÍA EN SALUD</div>
+          <h2 class="card-head">El Asistente de Salud AI Apoya el Control de Medicamentos Complejos</h2>
+          <p class="card-body">
+            Nuevos sistemas basados en IA reducen errores de dosificación en adultos mayores con múltiples recetas.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>2 de agosto de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 3 -->
+      <article class="news-card" id="living-longer" onclick="openArticleModal('living-longer')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80&auto=format" alt="Longevidad">
+          </div>
+          <div class="card-kicker">BIENESTAR Y LONGEVIDAD</div>
+          <h2 class="card-head">De 'Vivir Más' a 'Vivir Mejor': El Enfoque en la Calidad de Vida</h2>
+          <p class="card-body">
+            Especialistas destacan nutrición y masa muscular como pilares para mantener agilidad mental.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>2 de agosto de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 4 -->
+      <article class="news-card" id="fda-corazon" onclick="openArticleModal('fda-corazon')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1200&q=80&auto=format" alt="Retiro FDA Corazón">
+          </div>
+          <div class="card-kicker">RETIRO VOLUNTARIO FDA</div>
+          <h2 class="card-head">Retiro de la FDA: Cerca de 1 Millón de Frascos de Medicamentos Cardíacos</h2>
+          <p class="card-body">
+            Alerta oficial sobre tabletas de presión arterial y protección renal por discrepancias de disolución activa.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>30 de julio de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 5 -->
+      <article class="news-card" id="glp1-medicare" onclick="openArticleModal('glp1-medicare')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1607874963930-2edecc67a25a?w=1200&q=80&auto=format" alt="Medicamentos GLP1">
+          </div>
+          <div class="card-kicker">COBERTURA MEDICARE</div>
+          <h2 class="card-head">Medicare Piloto: Cobertura de Tratamientos GLP-1 para la Obesidad</h2>
+          <p class="card-body">
+            Centros de Medicare aprueban tratamientos inyectables para pacientes con alto riesgo cardiovascular.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>30 de julio de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 6 -->
+      <article class="news-card" id="sueno-demencia" onclick="openArticleModal('sueno-demencia')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=1200&q=80&auto=format" alt="Sueño y cerebro">
+          </div>
+          <div class="card-kicker">NEUROLOGÍA</div>
+          <h2 class="card-head">Sueño Profundo y Limpieza de Residuos Cerebrales contra el Alzheimer</h2>
+          <p class="card-body">
+            El sistema glinfático drena toxinas metabólicas durante las fases de sueño profundo no-REM.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>29 de julio de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 7 -->
+      <article class="news-card" id="ejercicio-fuerza" onclick="openArticleModal('ejercicio-fuerza')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&auto=format" alt="Ejercicio fuerza">
+          </div>
+          <div class="card-kicker">EJERCICIO Y GERIATRÍA</div>
+          <h2 class="card-head">Fuerza Muscular a los 60+: Prevención Efectiva de Caídas</h2>
+          <p class="card-body">
+            Rutinas sencillas de resistencia ligera dos veces por semana reducen el riesgo de fractura de cadera.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>29 de julio de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+      <!-- Article 8 -->
+      <article class="news-card" id="tecnologia-homecare" onclick="openArticleModal('tecnologia-homecare')" style="cursor:pointer;">
+        <div>
+          <div class="card-img-box">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80&auto=format" alt="Tecnología atención médica domiciliaria">
+          </div>
+          <div class="card-kicker">MEDICARE & ACA</div>
+          <h2 class="card-head">Medicare Expande Cobertura de Tecnologías Domiciliarias</h2>
+          <p class="card-body">
+            Monitores de glucosa, tensiómetros conectados y telemetría médica aprobados para cuidados en el hogar.
+          </p>
+        </div>
+        <div class="card-foot">
+          <span>26 de julio de 2026</span>
+          <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <footer class="commercial-footer">
+    <div class="footer-inner">
+      <div class="footer-legal">
+        <div>© 2026 El Portal de Salud de Nueva Jersey — Archivo de Noticias.</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+      <h3 id="modalTitle" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-news-black); margin-bottom:1rem;"></h3>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
