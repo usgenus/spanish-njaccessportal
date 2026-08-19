@@ -1,8 +1,8 @@
 <?php
 /**
- * Healthcare Access Portal (Spanish Edition) - Unified Storage Layer
+ * Healthcare Access Portal (Spanish Edition) - Unified Storage & Backup Layer
  * Prioritizes Hostinger Persistent Host Space (outside public_html)
- * and syncs with Supabase Cloud & Local JSON Mirror.
+ * and performs automated timestamped backups, local sync, and Supabase sync.
  */
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/supabase.php';
@@ -13,6 +13,34 @@ function get_supabase() {
         $client = new SupabaseClient(SUPABASE_URL, SUPABASE_KEY);
     }
     return $client;
+}
+
+// Ensure media files from persistent storage are synced to local public_html/uploads
+function sync_persistent_media_to_local() {
+    $dirs = [
+        ['src' => PERSISTENT_IMAGES_DIR, 'dst' => LOCAL_IMAGES_DIR],
+        ['src' => PERSISTENT_VIDEOS_DIR, 'dst' => LOCAL_VIDEOS_DIR]
+    ];
+    foreach ($dirs as $pair) {
+        if (is_dir($pair['src'])) {
+            if (!is_dir($pair['dst'])) {
+                @mkdir($pair['dst'], 0777, true);
+                @chmod($pair['dst'], 0777);
+            }
+            $files = @scandir($pair['src']);
+            if (is_array($files)) {
+                foreach ($files as $f) {
+                    if ($f === '.' || $f === '..') continue;
+                    $srcPath = $pair['src'] . '/' . $f;
+                    $dstPath = $pair['dst'] . '/' . $f;
+                    if (is_file($srcPath) && !file_exists($dstPath)) {
+                        @copy($srcPath, $dstPath);
+                        @chmod($dstPath, 0666);
+                    }
+                }
+            }
+        }
+    }
 }
 
 function get_db_data($forceCloud = false) {
@@ -27,6 +55,9 @@ function get_db_data($forceCloud = false) {
         @copy(LOCAL_MEDIA_STORE, PERSISTENT_MEDIA_STORE);
         @chmod(PERSISTENT_MEDIA_STORE, 0666);
     }
+
+    // Sync media assets
+    sync_persistent_media_to_local();
 
     // 1. Priority #1: Read from Hostinger Persistent Storage (immune to zip deployments)
     if (!$forceCloud && file_exists(PERSISTENT_DATA_FILE)) {
@@ -67,9 +98,9 @@ function get_db_data($forceCloud = false) {
             $billboards = $supabase->selectAll('billboards_spanish', 'order.asc') ?: $supabase->selectAll('billboards', 'order.asc') ?: [];
             
             $categories = [
-                'news' => ['Todos', 'Retiro Voluntario FDA', 'Salud & Tecnología', 'Geriatría & Bienestar', 'Medicare & ACA', 'Neurología', 'Enfermedades Crónicas', 'Política Sanitaria'],
-                'videos' => ['Todos', 'Cardiovascular', 'Neurología', 'Prevención de Cáncer', 'Enfermedades Crónicas', 'Geriatría'],
-                'billboards' => ['CAMPAÑA ESPECIAL', 'ALERTA SANITARIA', 'ASISTENCIA AL PACIENTE', 'ACTUALIZACIÓN MEDICARE']
+                'news' => ['Todos', 'Retiro Voluntario FDA', 'Salud & Tecnología', 'Geriatría & Bienestar', 'Medicare & ACA', 'Neurología', 'Cardiovascular', 'Enfermedades Crónicas', 'Política Sanitaria'],
+                'videos' => ['Todos', 'Medicare', 'Cardiovascular', 'Neurología', 'Prevención de Cáncer', 'Enfermedades Crónicas', 'Geriatría'],
+                'billboards' => ['CAMPAÑA ESPECIAL', 'ALERTA SANITARIA', 'ASISTENCIA AL PACIENTE', 'MEDICARE 2026', 'PREVENCIÓN']
             ];
 
             if (!empty($posts) || !empty($videos) || !empty($billboards)) {
@@ -87,15 +118,15 @@ function get_db_data($forceCloud = false) {
         }
     }
 
-    // 4. Default Empty Structure
+    // 4. Default Structure
     return [
         'billboards' => [],
         'videos' => [],
         'posts' => [],
         'categories' => [
-            'news' => ['Todos', 'Retiro Voluntario FDA', 'Salud & Tecnología', 'Geriatría & Bienestar', 'Medicare & ACA', 'Neurología', 'Enfermedades Crónicas', 'Política Sanitaria'],
-            'videos' => ['Todos', 'Cardiovascular', 'Neurología', 'Prevención de Cáncer', 'Enfermedades Crónicas', 'Geriatría'],
-            'billboards' => ['CAMPAÑA ESPECIAL', 'ALERTA SANITARIA', 'ASISTENCIA AL PACIENTE', 'ACTUALIZACIÓN MEDICARE']
+            'news' => ['Todos', 'Retiro Voluntario FDA', 'Salud & Tecnología', 'Geriatría & Bienestar', 'Medicare & ACA', 'Neurología', 'Cardiovascular', 'Enfermedades Crónicas', 'Política Sanitaria'],
+            'videos' => ['Todos', 'Medicare', 'Cardiovascular', 'Neurología', 'Prevención de Cáncer', 'Enfermedades Crónicas', 'Geriatría'],
+            'billboards' => ['CAMPAÑA ESPECIAL', 'ALERTA SANITARIA', 'ASISTENCIA AL PACIENTE', 'MEDICARE 2026', 'PREVENCIÓN']
         ]
     ];
 }
@@ -117,7 +148,38 @@ function save_db_data($data) {
     @chmod(DATA_FILE, 0666);
     clearstatcache(true, DATA_FILE);
 
+    // 3. Automated Timestamped Snapshot Backup (Keep last 30 snapshots)
+    create_backup_snapshot($json);
+
     return $res;
+}
+
+function create_backup_snapshot($jsonContent = null) {
+    if ($jsonContent === null) {
+        $data = get_db_data();
+        $jsonContent = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+    $timestamp = date('Ymd_His');
+    $backupFile = PERSISTENT_BACKUPS_DIR . '/content_backup_' . $timestamp . '.json';
+    $localBackupFile = LOCAL_BACKUPS_DIR . '/content_backup_' . $timestamp . '.json';
+
+    if (!is_dir(PERSISTENT_BACKUPS_DIR)) { @mkdir(PERSISTENT_BACKUPS_DIR, 0777, true); }
+    if (!is_dir(LOCAL_BACKUPS_DIR)) { @mkdir(LOCAL_BACKUPS_DIR, 0777, true); }
+
+    @file_put_contents($backupFile, $jsonContent, LOCK_EX);
+    @chmod($backupFile, 0666);
+    @file_put_contents($localBackupFile, $jsonContent, LOCK_EX);
+    @chmod($localBackupFile, 0666);
+
+    // Prune old persistent backups keeping latest 30
+    $backups = glob(PERSISTENT_BACKUPS_DIR . '/content_backup_*.json');
+    if (is_array($backups) && count($backups) > 30) {
+        usort($backups, function($a, $b) { return filemtime($a) <=> filemtime($b); });
+        while (count($backups) > 30) {
+            $oldest = array_shift($backups);
+            @unlink($oldest);
+        }
+    }
 }
 
 function send_json($data, $statusCode = 200) {

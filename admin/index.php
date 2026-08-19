@@ -83,6 +83,10 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
           <i class="fa-solid fa-photo-film"></i>
           <span>Multimedia</span>
         </button>
+        <button onclick="switchTab('backups')" id="nav-backups" class="tab-btn px-3.5 py-2 rounded-xl transition-all flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+          <span>Respaldos & Sync</span>
+        </button>
       </nav>
 
       <!-- Right Action Tools -->
@@ -106,6 +110,7 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
       <button onclick="switchTab('posts')" id="nav-m-posts" class="mobile-tab-btn whitespace-nowrap px-3 py-1.5 rounded-lg">Noticias</button>
       <button onclick="switchTab('comments')" id="nav-m-comments" class="mobile-tab-btn whitespace-nowrap px-3 py-1.5 rounded-lg">Comentarios</button>
       <button onclick="switchTab('media')" id="nav-m-media" class="mobile-tab-btn whitespace-nowrap px-3 py-1.5 rounded-lg">Media</button>
+      <button onclick="switchTab('backups')" id="nav-m-backups" class="mobile-tab-btn whitespace-nowrap px-3 py-1.5 rounded-lg">Respaldos</button>
     </div>
   </header>
 
@@ -396,6 +401,84 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
       <!-- Media Grid -->
       <div id="media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 7: BACKUPS & CLOUD SYNC -->
+    <!-- ========================================================= -->
+    <section id="tab-backups" class="tab-pane hidden space-y-6">
+      <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-3xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700 pb-5">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="p-2 bg-emerald-500/10 text-emerald-400 rounded-xl text-lg"><i class="fa-solid fa-shield-halved"></i></span>
+              <h1 class="text-xl sm:text-2xl font-extrabold text-white">Respaldos de Seguridad &amp; Sincronización</h1>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+              Todos los cambios realizados en el CMS se respaldan automáticamente en el almacenamiento persistente de Hostinger.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="createManualBackup()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2">
+              <i class="fa-solid fa-plus-circle"></i>
+              <span>Crear Respaldo Ahora</span>
+            </button>
+            <a href="/api/backup.php?action=export" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2">
+              <i class="fa-solid fa-download"></i>
+              <span>Descargar Base de Datos (JSON)</span>
+            </a>
+            <button onclick="forceFullSync()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span>Forzar Sincronización</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sync Health Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-server"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-400 uppercase">Almacenamiento Persistente</div>
+              <div class="text-sm font-extrabold text-emerald-400" id="sync-status-persistent">Activo &amp; Protegido</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-cloud"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-400 uppercase">Espejo Local &amp; Media</div>
+              <div class="text-sm font-extrabold text-blue-400" id="sync-status-local">Sincronizado</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-400 uppercase">Total de Respaldos</div>
+              <div class="text-sm font-extrabold text-purple-400" id="sync-status-count">0 instantáneas</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backups List -->
+        <div class="space-y-3">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-slate-400"></i>
+            <span>Historial de Instantáneas de Respaldo</span>
+          </h2>
+          <div id="backups-admin-list" class="space-y-2">
+            <div class="text-center py-6 text-slate-500 text-xs">Cargando respaldos...</div>
+          </div>
+        </div>
       </div>
     </section>
 

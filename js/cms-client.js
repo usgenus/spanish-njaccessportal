@@ -1,18 +1,10 @@
 /**
  * El Portal de Salud NJ - Dynamic CMS Client Loader
- * Powers Panoramic Billboard Slider, Real-time Community Comments, and Live News Tickers
+ * Powers Panoramic Billboard Slider, Real-time Community Comments, and Video Player Engine
  */
 
 (function () {
   'use strict';
-
-  // ---------------------------------------------------------
-  // 1. BILLBOARD BANNER SLIDER
-  // ---------------------------------------------------------
-  let billboards = [];
-  let currentBillboardIndex = 0;
-  let billboardTimer = null;
-  let isPaused = false;
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -23,6 +15,15 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   }
+  window.escapeHtml = escapeHtml;
+
+  // ---------------------------------------------------------
+  // 1. BILLBOARD BANNER SLIDER
+  // ---------------------------------------------------------
+  let billboards = [];
+  let currentBillboardIndex = 0;
+  let billboardTimer = null;
+  let isPaused = false;
 
   async function initBillboards() {
     const container = document.getElementById('gallery-billboard-container');
@@ -234,9 +235,15 @@
     }
   };
 
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize on page load (robust ready check)
+  function initCmsClient() {
     initBillboards();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCmsClient);
+  } else {
+    initCmsClient();
+  }
 
 })();

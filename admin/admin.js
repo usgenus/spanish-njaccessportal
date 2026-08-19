@@ -73,6 +73,8 @@ function switchTab(tabName) {
     fetchMediaFiles();
   } else if (tabName === 'comments') {
     fetchAdminComments();
+  } else if (tabName === 'backups') {
+    fetchAdminBackups();
   }
 }
 
@@ -1094,3 +1096,125 @@ function closeModal(id) {
   if (modal) modal.classList.add('hidden');
 }
 window.closeModal = closeModal;
+
+// =========================================================
+// 7. BACKUPS & PERSISTENT SYNC SYSTEM
+// =========================================================
+async function fetchAdminBackups() {
+  const listEl = document.getElementById('backups-admin-list');
+  const countEl = document.getElementById('sync-status-count');
+  if (!listEl) return;
+
+  listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs">Cargando historial de respaldos...</div>';
+
+  try {
+    const res = await fetch('/api/backup.php?action=list&_t=' + Date.now());
+    const data = await res.json();
+    if (data.success && Array.isArray(data.backups)) {
+      if (countEl) countEl.textContent = `${data.count} instantáneas`;
+      renderAdminBackups(data.backups);
+    } else {
+      listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs">No se encontraron respaldos previos.</div>';
+    }
+  } catch (e) {
+    listEl.innerHTML = '<div class="text-center py-6 text-red-400 text-xs">Error al cargar historial de respaldos.</div>';
+  }
+}
+
+function renderAdminBackups(backups) {
+  const listEl = document.getElementById('backups-admin-list');
+  if (!listEl) return;
+
+  if (backups.length === 0) {
+    listEl.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs">No hay respaldos guardados. Haga clic en "Crear Respaldo Ahora".</div>';
+    return;
+  }
+
+  listEl.innerHTML = backups.map(b => `
+    <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm shrink-0">
+          <i class="fa-solid fa-file-code"></i>
+        </div>
+        <div class="min-w-0">
+          <h4 class="text-xs font-mono font-bold text-white truncate">${escapeHtml(b.filename)}</h4>
+          <span class="text-[11px] text-slate-400">📅 ${escapeHtml(b.createdAt)} · 📦 ${escapeHtml(b.formattedSize)}</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="/api/backup.php?action=download&file=${encodeURIComponent(b.filename)}" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1">
+          <i class="fa-solid fa-download text-[10px]"></i>
+          <span>Descargar</span>
+        </a>
+        <button onclick="restoreBackup('${b.filename}')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1">
+          <i class="fa-solid fa-rotate-left text-[10px]"></i>
+          <span>Restaurar</span>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function createManualBackup() {
+  showToast('Generando nuevo respaldo snapshot...');
+  try {
+    const res = await fetch('/api/backup.php?action=create', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Respaldo de seguridad creado exitosamente.');
+      fetchAdminBackups();
+    } else {
+      showToast(data.error || 'Error al crear respaldo.', false);
+    }
+  } catch (e) {
+    showToast('Error de conexión al crear respaldo.', false);
+  }
+}
+
+async function restoreBackup(filename) {
+  if (!confirm(`¿Está seguro de que desea restaurar la base de datos al estado del archivo "${filename}"? Los datos actuales serán reemplazados por los del respaldo.`)) {
+    return;
+  }
+  showToast('Restaurando base de datos desde respaldo...');
+  try {
+    const res = await fetch('/api/backup.php?action=restore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Base de datos restaurada con éxito.');
+      await fetchAllData();
+      fetchAdminBackups();
+    } else {
+      showToast(data.error || 'Error al restaurar.', false);
+    }
+  } catch (e) {
+    showToast('Error de conexión al restaurar.', false);
+  }
+}
+
+async function forceFullSync() {
+  showToast('Sincronizando almacenamiento persistente y archivos...');
+  try {
+    const res = await fetch('/api/backup.php?action=sync', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Sincronización completa finalizada.');
+      await fetchAllData();
+      fetchAdminBackups();
+    } else {
+      showToast(data.error || 'Error al sincronizar.', false);
+    }
+  } catch (e) {
+    showToast('Error al sincronizar.', false);
+  }
+}
+
+window.createManualBackup = createManualBackup;
+window.restoreBackup = restoreBackup;
+window.forceFullSync = forceFullSync;
+window.fetchAdminBackups = fetchAdminBackups;
+

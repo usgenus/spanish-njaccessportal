@@ -34,16 +34,20 @@ define('PERSISTENT_DATA_FILE', PERSISTENT_ROOT . '/content.json');
 define('PERSISTENT_MEDIA_STORE', PERSISTENT_ROOT . '/media_store.json');
 define('PERSISTENT_IMAGES_DIR', PERSISTENT_ROOT . '/uploads/images');
 define('PERSISTENT_VIDEOS_DIR', PERSISTENT_ROOT . '/uploads/videos');
+define('PERSISTENT_BACKUPS_DIR', PERSISTENT_ROOT . '/backups');
 
 // Ensure persistent folders exist
 if (!is_dir(PERSISTENT_IMAGES_DIR)) { @mkdir(PERSISTENT_IMAGES_DIR, 0777, true); @chmod(PERSISTENT_IMAGES_DIR, 0777); }
 if (!is_dir(PERSISTENT_VIDEOS_DIR)) { @mkdir(PERSISTENT_VIDEOS_DIR, 0777, true); @chmod(PERSISTENT_VIDEOS_DIR, 0777); }
+if (!is_dir(PERSISTENT_BACKUPS_DIR)) { @mkdir(PERSISTENT_BACKUPS_DIR, 0777, true); @chmod(PERSISTENT_BACKUPS_DIR, 0777); }
 
 // Local public_html mirrors
 define('DATA_FILE', __DIR__ . '/../data/content.json');
 define('LOCAL_MEDIA_STORE', __DIR__ . '/../data/media_store.json');
 define('LOCAL_IMAGES_DIR', __DIR__ . '/../uploads/images');
 define('LOCAL_VIDEOS_DIR', __DIR__ . '/../uploads/videos');
+define('LOCAL_BACKUPS_DIR', __DIR__ . '/../data/backups');
 
 if (!is_dir(LOCAL_IMAGES_DIR)) { @mkdir(LOCAL_IMAGES_DIR, 0777, true); @chmod(LOCAL_IMAGES_DIR, 0777); }
 if (!is_dir(LOCAL_VIDEOS_DIR)) { @mkdir(LOCAL_VIDEOS_DIR, 0777, true); @chmod(LOCAL_VIDEOS_DIR, 0777); }
+if (!is_dir(LOCAL_BACKUPS_DIR)) { @mkdir(LOCAL_BACKUPS_DIR, 0777, true); @chmod(LOCAL_BACKUPS_DIR, 0777); }

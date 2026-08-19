@@ -1,12 +1,29 @@
 // Interactive Portal Script
-document.addEventListener('DOMContentLoaded', () => {
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHtml = escapeHtml;
+
+function initPortalApp() {
   initMobileMenu();
   initVideoPlayer();
   initModals();
   initCalculators();
   initNewsFilter();
   handleHashNavigation();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortalApp);
+} else {
+  initPortalApp();
+}
 
 // Articles Database (Direct 1-to-1 Spanish Translations from kor2.njaccessportal.com)
 export const articlesData = {
@@ -531,15 +548,55 @@ function getEmbedUrl(item) {
     if (m) ytId = m[1];
   }
   if (ytId) {
-    return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1`;
+    return `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
   }
   return item.videoUrl || item.videoFile || '';
 }
 
-async function initVideoPlayer() {
+window.cmsPlayVideo = function (index) {
+  activeVideoIndex = (typeof index === 'number' && index >= 0) ? index : 0;
+  const cur = videoData[activeVideoIndex] || videoData[0];
+  if (!cur) return;
+
   const activeVideoTitle = document.getElementById('activeVideoTitle');
   const activeVideoDesc = document.getElementById('activeVideoDesc');
   const activeVideoSpeaker = document.getElementById('activeVideoSpeaker');
+  const videoScreen = document.getElementById('videoScreen');
+  const playlistCards = document.querySelectorAll('.playlist-card');
+
+  if (activeVideoTitle) activeVideoTitle.textContent = cur.title;
+  if (activeVideoDesc) activeVideoDesc.textContent = cur.desc;
+  if (activeVideoSpeaker) activeVideoSpeaker.innerHTML = `${escapeHtml(cur.speaker)} · 👁️ ${escapeHtml(cur.views)}`;
+
+  playlistCards.forEach((c, idx) => {
+    if (idx === activeVideoIndex) c.classList.add('active');
+    else c.classList.remove('active');
+  });
+
+  if (videoScreen) {
+    const embedUrl = getEmbedUrl(cur);
+    if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be') || embedUrl.includes('youtube-nocookie.com')) {
+      videoScreen.innerHTML = `
+        <div style="position:relative; width:100%; height:100%; min-height:320px; background:#000;">
+          <iframe src="${embedUrl}" title="${escapeHtml(cur.title)}" 
+            style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+      `;
+    } else if (embedUrl) {
+      videoScreen.innerHTML = `
+        <div style="position:relative; width:100%; height:100%; min-height:320px; background:#000;">
+          <video src="${embedUrl}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" controls autoplay playsinline></video>
+        </div>
+      `;
+    }
+  }
+};
+
+async function initVideoPlayer() {
   const videoScreen = document.getElementById('videoScreen');
   const catButtons = document.querySelectorAll('.video-cat-btn');
   const playlistCards = document.querySelectorAll('.playlist-card');
@@ -568,37 +625,8 @@ async function initVideoPlayer() {
     }
   } catch (e) {}
 
-  function playVideo(index) {
-    activeVideoIndex = index;
-    const cur = videoData[index] || videoData[0];
-    if (!cur) return;
-
-    if (activeVideoTitle) activeVideoTitle.textContent = cur.title;
-    if (activeVideoDesc) activeVideoDesc.textContent = cur.desc;
-    if (activeVideoSpeaker) activeVideoSpeaker.innerHTML = `${cur.speaker} · 👁️ ${cur.views}`;
-
-    const embedUrl = getEmbedUrl(cur);
-    if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be')) {
-      videoScreen.innerHTML = `
-        <div style="position:relative; width:100%; height:100%; background:#000;">
-          <iframe src="${embedUrl}" title="${escapeHtml(cur.title)}" 
-            style="width:100%; height:100%; border:none;" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowfullscreen>
-          </iframe>
-        </div>
-      `;
-    } else if (embedUrl) {
-      videoScreen.innerHTML = `
-        <div style="position:relative; width:100%; height:100%; background:#000;">
-          <video src="${embedUrl}" style="width:100%; height:100%; object-fit:cover;" controls autoplay playsinline></video>
-        </div>
-      `;
-    }
-  }
-
   videoScreen.addEventListener('click', () => {
-    playVideo(activeVideoIndex);
+    window.cmsPlayVideo(activeVideoIndex);
   });
 
   catButtons.forEach(btn => {
@@ -607,7 +635,7 @@ async function initVideoPlayer() {
       btn.style.background = 'var(--color-news-red)';
       const cat = btn.getAttribute('data-cat');
       
-      playlistCards.forEach((card, idx) => {
+      playlistCards.forEach((card) => {
         const itemCat = card.getAttribute('data-cat');
         if (cat === 'all' || cat === 'Todos' || itemCat === cat) {
           card.style.display = 'flex';
@@ -620,9 +648,7 @@ async function initVideoPlayer() {
 
   playlistCards.forEach((card, index) => {
     card.addEventListener('click', () => {
-      playlistCards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      playVideo(index);
+      window.cmsPlayVideo(index);
     });
   });
 }

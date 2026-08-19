@@ -405,7 +405,7 @@ $mainVideo = $activeVideos[0] ?? null;
 
       <div class="video-player-grid">
         <div class="player-wrapper">
-          <div class="video-screen-box" id="videoScreen">
+          <div class="video-screen-box" id="videoScreen" onclick="window.cmsPlayVideo(0)">
             <img src="<?= htmlspecialchars($mainVideo['thumbnail'] ?? 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200') ?>" alt="<?= htmlspecialchars($mainVideo['title'] ?? '') ?>">
             <div class="play-overlay-btn">
               <div class="play-circle-icon">▶</div>
@@ -414,27 +414,27 @@ $mainVideo = $activeVideos[0] ?? null;
 
           <div class="video-meta-box">
             <div style="font-size:0.75rem; color:#fca5a5; font-weight:800;" id="activeVideoSpeaker">
-              <?= htmlspecialchars($mainVideo['doctor'] ?? 'Especialista Médico') ?> · 👁️ <?= htmlspecialchars($mainVideo['views'] ?? '125,000 Vistas') ?>
+              <?= htmlspecialchars($mainVideo['doctor'] ?? ($mainVideo['speaker'] ?? 'Especialista Médico')) ?> · 👁️ <?= htmlspecialchars($mainVideo['views'] ?? '125,000 Vistas') ?>
             </div>
             <h3 style="font-family:var(--font-serif); font-size:1.2rem; color:#ffffff; margin:0.35rem 0;" id="activeVideoTitle">
               <?= htmlspecialchars($mainVideo['title'] ?? '') ?>
             </h3>
             <p style="font-size:0.825rem; color:rgba(255,255,255,0.7); line-height:1.45;" id="activeVideoDesc">
-              <?= htmlspecialchars($mainVideo['summary'] ?? '') ?>
+              <?= htmlspecialchars($mainVideo['summary'] ?? ($mainVideo['description'] ?? '')) ?>
             </p>
           </div>
         </div>
 
         <div class="playlist-column" id="videoPlaylist">
           <?php foreach ($activeVideos as $idx => $vid): ?>
-          <div class="playlist-card <?= $idx === 0 ? 'active' : '' ?>" data-cat="<?= htmlspecialchars($vid['category'] ?? 'all') ?>">
+          <div class="playlist-card <?= $idx === 0 ? 'active' : '' ?>" data-cat="<?= htmlspecialchars($vid['category'] ?? 'all') ?>" onclick="window.cmsPlayVideo(<?= (int)$idx ?>)">
             <div class="playlist-thumb">
               <img src="<?= htmlspecialchars($vid['thumbnail'] ?? '') ?>" alt="<?= htmlspecialchars($vid['title'] ?? '') ?>">
             </div>
             <div style="flex:1; min-width:0;">
               <span style="font-size:0.65rem; color:#fca5a5; font-weight:800; text-transform:uppercase;"><?= htmlspecialchars($vid['category'] ?? 'VIDEO') ?></span>
               <h4 style="font-size:0.8rem; font-weight:700; color:#fff; line-height:1.3; margin-top:2px;"><?= htmlspecialchars($vid['title'] ?? '') ?></h4>
-              <span style="font-size:0.7rem; color:rgba(255,255,255,0.5);"><?= htmlspecialchars($vid['doctor'] ?? '') ?> · <?= htmlspecialchars($vid['duration'] ?? '10:00') ?></span>
+              <span style="font-size:0.7rem; color:rgba(255,255,255,0.5);"><?= htmlspecialchars($vid['doctor'] ?? ($vid['speaker'] ?? '')) ?> · <?= htmlspecialchars($vid['duration'] ?? '10:00') ?></span>
             </div>
           </div>
           <?php endforeach; ?>
