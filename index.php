@@ -50,6 +50,9 @@ $activeVideos = array_values(array_filter($videos, function($v) {
 if (empty($activeVideos) && !empty($videos)) {
     $activeVideos = $videos;
 }
+usort($activeVideos, function($a, $b) {
+    return ((int)($a['order'] ?? 999)) <=> ((int)($b['order'] ?? 999));
+});
 $mainVideo = $activeVideos[0] ?? null;
 ?>
 <!DOCTYPE html>

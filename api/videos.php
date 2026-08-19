@@ -111,7 +111,10 @@ if ($method === 'POST') {
     ];
 
     $videos[] = $newItem;
-    $db['videos'] = $videos;
+    usort($videos, function($a, $b) {
+        return ((int)($a['order'] ?? 999)) <=> ((int)($b['order'] ?? 999));
+    });
+    $db['videos'] = array_values($videos);
 
     // Update categories
     if (!empty($newItem['category'])) {
@@ -172,7 +175,10 @@ if ($method === 'PUT') {
         send_json(['success' => false, 'error' => 'Video no encontrado.'], 404);
     }
 
-    $db['videos'] = $videos;
+    usort($videos, function($a, $b) {
+        return ((int)($a['order'] ?? 999)) <=> ((int)($b['order'] ?? 999));
+    });
+    $db['videos'] = array_values($videos);
     save_db_data($db);
     send_json(['success' => true, 'message' => 'Video actualizado con éxito.']);
 }

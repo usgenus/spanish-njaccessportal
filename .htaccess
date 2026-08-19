@@ -17,7 +17,7 @@ RewriteRule ^admin/?$ admin/index.php [L]
 RewriteRule ^data/.*$ - [F,L]
 
 # Clean URL rewrites for Spanish portal
-RewriteRule ^noticias/?$ noticias.php [L]
+RewriteRule ^noticias(\.html)?$ noticias.php [L]
 RewriteRule ^medicare/?$ medicare.html [L]
 RewriteRule ^about/?$ about.html [L]
 RewriteRule ^servicio-premium/?$ servicio-premium-de-navegacion-y-acceso-a-la-salud.html [L]

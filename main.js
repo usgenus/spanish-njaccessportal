@@ -16,6 +16,7 @@ function initPortalApp() {
   initModals();
   initCalculators();
   initNewsFilter();
+  initDynamicNewsGrid();
   handleHashNavigation();
 }
 
@@ -598,10 +599,28 @@ window.cmsPlayVideo = function (index) {
 
 async function initVideoPlayer() {
   const videoScreen = document.getElementById('videoScreen');
+  const playlistContainer = document.getElementById('videoPlaylist');
   const catButtons = document.querySelectorAll('.video-cat-btn');
-  const playlistCards = document.querySelectorAll('.playlist-card');
 
   if (!videoScreen) return;
+
+  function renderPlaylistDOM() {
+    if (!playlistContainer || !videoData.length) return;
+    playlistContainer.innerHTML = videoData.map((vid, idx) => `
+      <div class="playlist-card ${idx === activeVideoIndex ? 'active' : ''}" 
+           data-cat="${escapeHtml(vid.category || 'all')}" 
+           onclick="window.cmsPlayVideo(${idx})">
+        <div class="playlist-thumb">
+          <img src="${escapeHtml(vid.thumbnail || '')}" alt="${escapeHtml(vid.title || '')}">
+        </div>
+        <div style="flex:1; min-width:0;">
+          <span style="font-size:0.65rem; color:#fca5a5; font-weight:800; text-transform:uppercase;">${escapeHtml(vid.category || 'VIDEO')}</span>
+          <h4 style="font-size:0.8rem; font-weight:700; color:#fff; line-height:1.3; margin-top:2px;">${escapeHtml(vid.title || '')}</h4>
+          <span style="font-size:0.7rem; color:rgba(255,255,255,0.5);">${escapeHtml(vid.speaker || '')} · ${escapeHtml(vid.duration || '10:00')}</span>
+        </div>
+      </div>
+    `).join('');
+  }
 
   // Try fetching latest videos from CMS API
   try {
@@ -615,6 +634,7 @@ async function initVideoPlayer() {
         speaker: v.doctor || v.speaker || 'Especialista Médico',
         views: v.views || '100K vistas',
         duration: v.duration || '10:00',
+        order: typeof v.order === 'number' ? v.order : parseInt(v.order, 10) || 999,
         youtubeId: v.youtubeId || '',
         youtubeUrl: v.youtubeUrl || '',
         videoUrl: v.videoUrl || '',
@@ -622,6 +642,29 @@ async function initVideoPlayer() {
         thumbnail: v.thumbnail || (v.youtubeId ? `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg` : ''),
         desc: v.summary || v.description || ''
       }));
+
+      // Sort videoData by order ASC
+      videoData.sort((a, b) => (a.order || 999) - (b.order || 999));
+
+      // Re-render playlist DOM with accurate order
+      renderPlaylistDOM();
+
+      // Update initial preview screen for order-1 video
+      const first = videoData[0];
+      if (first) {
+        const activeVideoTitle = document.getElementById('activeVideoTitle');
+        const activeVideoDesc = document.getElementById('activeVideoDesc');
+        const activeVideoSpeaker = document.getElementById('activeVideoSpeaker');
+        if (activeVideoTitle) activeVideoTitle.textContent = first.title;
+        if (activeVideoDesc) activeVideoDesc.textContent = first.desc;
+        if (activeVideoSpeaker) activeVideoSpeaker.innerHTML = `${escapeHtml(first.speaker)} · 👁️ ${escapeHtml(first.views)}`;
+        
+        const previewImg = videoScreen.querySelector('img');
+        if (previewImg && first.thumbnail) {
+          previewImg.src = first.thumbnail;
+          previewImg.alt = first.title;
+        }
+      }
     }
   } catch (e) {}
 
@@ -635,7 +678,8 @@ async function initVideoPlayer() {
       btn.style.background = 'var(--color-news-red)';
       const cat = btn.getAttribute('data-cat');
       
-      playlistCards.forEach((card) => {
+      const cards = playlistContainer ? playlistContainer.querySelectorAll('.playlist-card') : document.querySelectorAll('.playlist-card');
+      cards.forEach((card) => {
         const itemCat = card.getAttribute('data-cat');
         if (cat === 'all' || cat === 'Todos' || itemCat === cat) {
           card.style.display = 'flex';
@@ -643,12 +687,6 @@ async function initVideoPlayer() {
           card.style.display = 'none';
         }
       });
-    });
-  });
-
-  playlistCards.forEach((card, index) => {
-    card.addEventListener('click', () => {
-      window.cmsPlayVideo(index);
     });
   });
 }
@@ -862,8 +900,8 @@ function initNewsFilter() {
     const term = newsInput.value.toLowerCase();
     const cards = document.querySelectorAll('.news-card');
     cards.forEach(card => {
-      const title = card.querySelector('.card-head').textContent.toLowerCase();
-      const desc = card.querySelector('.card-body').textContent.toLowerCase();
+      const title = (card.querySelector('.card-head')?.textContent || '').toLowerCase();
+      const desc = (card.querySelector('.card-body')?.textContent || '').toLowerCase();
       if (title.includes(term) || desc.includes(term)) {
         card.style.display = 'flex';
       } else {
@@ -872,3 +910,55 @@ function initNewsFilter() {
     });
   });
 }
+
+// Dynamic News Archive Grid Loader (Loads latest posts from CMS API)
+async function initDynamicNewsGrid() {
+  const grid = document.querySelector('.news-cards-grid');
+  if (!grid) return;
+
+  try {
+    const res = await fetch(`/api/posts.php?_t=${Date.now()}`);
+    const data = await res.json();
+    if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+      grid.innerHTML = data.data.map(p => {
+        const slug = p.slug || p.id;
+        const cover = p.coverImage || (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=800';
+        const date = p.date || p.createdAt || '';
+        const excerpt = p.excerpt || (p.content ? p.content.replace(/<[^>]*>/g, '').substring(0, 140) + '...' : '');
+        const category = p.category || 'Noticia';
+
+        // Register in articlesData for instant modal opening
+        articlesData[slug] = {
+          title: p.title,
+          category: p.category,
+          date: date,
+          readTime: p.readTime || '3 min de lectura',
+          image: cover,
+          content: p.content
+        };
+
+        return `
+          <article class="news-card" id="${escapeHtml(slug)}" onclick="openArticleModal('${escapeHtml(slug)}')" style="cursor:pointer;">
+            <div>
+              <div class="card-img-box">
+                <img src="${escapeHtml(cover)}" alt="${escapeHtml(p.title)}">
+              </div>
+              <div class="card-kicker">${escapeHtml(category.toUpperCase())}</div>
+              <h2 class="card-head">${escapeHtml(p.title)}</h2>
+              <p class="card-body">
+                ${escapeHtml(excerpt)}
+              </p>
+            </div>
+            <div class="card-foot">
+              <span>${escapeHtml(date)}</span>
+              <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  } catch (e) {
+    console.error('Error fetching dynamic news posts:', e);
+  }
+}
+
