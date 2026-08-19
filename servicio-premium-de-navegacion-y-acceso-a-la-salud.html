@@ -15,23 +15,64 @@
       border-left: 5px solid var(--color-news-red);
       border-radius: 4px;
     }
+    /* Tall iframe — outer page scrolls naturally, no inner scroll trap */
     .tool-frame-box {
       width: 100%;
-      height: calc(100vh - 120px);
-      min-height: 900px;
       background: #ffffff;
       border: 1px solid var(--color-news-border);
       box-shadow: 0 10px 30px rgba(0,0,0,0.06);
       margin-bottom: 2.5rem;
       border-radius: 4px;
-      overflow: hidden;
     }
     .tool-frame-box iframe {
       width: 100%;
-      height: 100%;
+      min-height: 1400px;
+      height: auto;
       border: none;
       display: block;
     }
+    /* Inline modal */
+    .tool-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .tool-modal-overlay.open { display: flex; }
+    .tool-modal-box {
+      background: #fff;
+      border-radius: 6px;
+      max-width: 580px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+    }
+    .tool-modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none;
+      font-size: 1.5rem; cursor: pointer; color: #64748b;
+    }
+    .tool-modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem; font-weight: 900;
+      color: var(--color-news-black);
+      margin-bottom: 1.25rem; padding-right: 2rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display:block; font-size:0.82rem; font-weight:700; margin-bottom:0.35rem; color:#334155; }
+    .form-select, .form-input {
+      width:100%; padding:0.6rem 0.75rem;
+      border:1px solid #cbd5e1; border-radius:4px;
+      font-size:0.875rem; background:#fff; color:#111;
+    }
+    .calc-result { display:none; margin-top:1rem; padding:1rem; background:#f9fafb; border:1px solid #cbd5e1; border-radius:4px; }
+    .dict-item { background:#fff; border:1px solid #e2e8f0; border-radius:4px; padding:0.75rem; margin-bottom:0.5rem; }
   </style>
 </head>
 <body>
@@ -48,28 +89,26 @@
     </div>
   </div>
 
-  <!-- Sticky Header Container -->
+  <!-- Sticky Header -->
   <header class="news-header-sticky">
     <div class="masthead-section">
       <div class="masthead-container">
-        <a href="/index.html" class="masthead-logo">
+        <a href="/" class="masthead-logo">
           <span class="masthead-title">EL PORTAL DE SALUD</span>
           <span class="masthead-sub">NUEVA JERSEY · HERRAMIENTA PREMIUM AI</span>
         </a>
       </div>
     </div>
-
     <nav class="category-nav">
       <div class="nav-container">
         <ul class="nav-links-row">
-          <li><a href="/index.html" class="nav-item-link">Portada</a></li>
+          <li><a href="/" class="nav-item-link">Portada</a></li>
           <li><a href="/noticias.html" class="nav-item-link">Noticias de Salud</a></li>
-          <li><a href="/medicare.html" class="nav-item-link">Medicare & ACA</a></li>
+          <li><a href="/medicare.html" class="nav-item-link">Medicare &amp; ACA</a></li>
           <li><a href="/servicio-premium-de-navegacion-y-acceso-a-la-salud.html" class="nav-item-link active">Servicio Premium AI</a></li>
           <li><a href="/about.html" class="nav-item-link">Sobre Nosotros</a></li>
         </ul>
-
-        <div style="display:flex; align-items:center; gap:1rem;">
+        <div style="display:flex;align-items:center;gap:1rem;">
           <button class="mobile-menu-btn" id="mobileMenuToggle">☰</button>
         </div>
       </div>
@@ -79,59 +118,65 @@
   <div class="header-spacer"></div>
 
   <main class="news-layout-wrapper">
-    
+
     <div class="ai-tool-banner">
-      <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#fca5a5;">INTERACTIVO DE REDACCIÓN</span>
-      <h1 style="font-family:var(--font-serif); font-size:2rem; font-weight:900; color:#fff; margin-top:0.25rem;">
+      <span style="font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#fca5a5;">INTERACTIVO DE REDACCIÓN</span>
+      <h1 style="font-family:var(--font-serif);font-size:2rem;font-weight:900;color:#fff;margin-top:0.25rem;">
         Servicio Premium de Navegación y Acceso a la Salud
       </h1>
-      <p style="font-size:0.9rem; color:rgba(255,255,255,0.85); margin-top:0.5rem; max-width:850px;">
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.85);margin-top:0.5rem;max-width:850px;">
         Obtenga asistencia en tiempo real, orientación sobre su plan de seguro médico (Medicare, Medicaid, ACA Obamacare), interpretación de términos clínicos y asistencia personalizada para residentes de Nueva Jersey.
       </p>
     </div>
 
-    <!-- Embedded AI Tool Container -->
+    <!-- AI Tool — tall, outer page scrolls -->
     <div class="tool-frame-box" id="toolFrameBox">
-      <iframe id="aiFrame" src="https://spanishhac.ai.studio" title="Asistente de Navegación y Acceso a la Salud AI" allow="clipboard-write; microphone" loading="lazy"></iframe>
+      <iframe id="aiFrame" src="https://spanishhac.ai.studio"
+        title="Asistente de Navegación y Acceso a la Salud AI"
+        allow="clipboard-write; microphone" loading="lazy"></iframe>
     </div>
 
-    <!-- Quick Auxiliary Tools -->
-    <h2 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:900; margin-bottom:1rem; border-bottom:2px solid var(--color-news-black); padding-bottom:0.4rem;">
+    <!-- Auxiliary Tools -->
+    <h2 style="font-family:var(--font-serif);font-size:1.25rem;font-weight:900;margin-bottom:1rem;border-bottom:2px solid var(--color-news-black);padding-bottom:0.4rem;">
       HERRAMIENTAS AUXILIARES DEL DIARIO
     </h2>
 
     <div class="tools-row-grid" style="margin-bottom:2.5rem;">
-      <div class="tool-block-item" onclick="openInsuranceMatcher()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+
+      <div class="tool-block-item" onclick="toolOpenInsuranceMatcher()"
+           style="background:#fff;color:var(--color-news-black);border-color:var(--color-news-border);cursor:pointer;">
         <div>
           <div style="font-size:1.75rem;">🏥</div>
           <h3 class="tool-block-title" style="color:var(--color-news-black);">Diagnosticador de Cobertura</h3>
           <p class="tool-block-desc" style="color:var(--color-news-gray);">Evalúe elegibilidad para Medicare, Medicaid o ACA.</p>
         </div>
-        <div class="tool-block-link" style="color:var(--color-news-red);">Acceder →</div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">ACCEDER →</div>
       </div>
 
-      <div class="tool-block-item" onclick="openSubsidyCalculator()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+      <div class="tool-block-item" onclick="toolOpenSubsidyCalculator()"
+           style="background:#fff;color:var(--color-news-black);border-color:var(--color-news-border);cursor:pointer;">
         <div>
           <div style="font-size:1.75rem;">🧮</div>
           <h3 class="tool-block-title" style="color:var(--color-news-black);">Calculadora de Subsidios ACA</h3>
           <p class="tool-block-desc" style="color:var(--color-news-gray);">Estime el ahorro mensual en su seguro de salud.</p>
         </div>
-        <div class="tool-block-link" style="color:var(--color-news-red);">Calcular →</div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">CALCULAR →</div>
       </div>
 
-      <div class="tool-block-item" onclick="openMedicalDict()" style="background:#fff; color:var(--color-news-black); border-color:var(--color-news-border);">
+      <div class="tool-block-item" onclick="toolOpenMedicalDict()"
+           style="background:#fff;color:var(--color-news-black);border-color:var(--color-news-border);cursor:pointer;">
         <div>
           <div style="font-size:1.75rem;">📖</div>
           <h3 class="tool-block-title" style="color:var(--color-news-black);">Diccionario Médico</h3>
           <p class="tool-block-desc" style="color:var(--color-news-gray);">Traducción e interpretación de términos clínicos.</p>
         </div>
-        <div class="tool-block-link" style="color:var(--color-news-red);">Consultar →</div>
+        <div class="tool-block-link" style="color:var(--color-news-red);">CONSULTAR →</div>
       </div>
-    </div>
 
+    </div>
   </main>
 
-  <!-- Commercial Footer -->
+  <!-- Footer -->
   <footer class="commercial-footer">
     <div class="footer-inner">
       <div class="footer-legal">
@@ -140,26 +185,122 @@
     </div>
   </footer>
 
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal-content">
-      <button class="modal-close" id="modalCloseBtn">&times;</button>
-      <h3 id="modalTitle" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-news-black); margin-bottom:1rem;"></h3>
-      <div id="modalBody"></div>
+  <!-- Tool Modal Overlay -->
+  <div class="tool-modal-overlay" id="toolModal">
+    <div class="tool-modal-box">
+      <button class="tool-modal-close" onclick="toolCloseModal()">×</button>
+      <div class="tool-modal-title" id="toolModalTitle"></div>
+      <div id="toolModalBody"></div>
     </div>
   </div>
 
-  <script type="module" src="/main.js"></script>
-
+  <!-- Self-contained tool scripts — NO ES module dependency -->
   <script>
-    // Listen for iframe dynamic height messages to expand container naturally with outer page scroll
-    window.addEventListener('message', (event) => {
+    function toolOpenModal(title, bodyHtml) {
+      document.getElementById('toolModalTitle').textContent = title;
+      document.getElementById('toolModalBody').innerHTML = bodyHtml;
+      document.getElementById('toolModal').classList.add('open');
+    }
+    function toolCloseModal() {
+      document.getElementById('toolModal').classList.remove('open');
+    }
+    document.getElementById('toolModal').addEventListener('click', function(e) {
+      if (e.target === this) toolCloseModal();
+    });
+
+    /* ── Insurance Matcher ── */
+    function toolOpenInsuranceMatcher() {
+      toolOpenModal('🏥 Diagnosticador de Cobertura de Salud',
+        '<p style="font-size:0.85rem;color:#475569;margin-bottom:1rem;">Responda 3 preguntas rápidas para determinar si califica para Medicare, Medicaid o ACA Obamacare en NJ.</p>' +
+        '<div class="form-group"><label class="form-label">1. Su edad actual:</label><select id="matchAge" class="form-select"><option value="under65">Menor de 65 años</option><option value="65over">65 años o más</option></select></div>' +
+        '<div class="form-group"><label class="form-label">2. Estatus de Residencia / Ciudadanía:</label><select id="matchStatus" class="form-select"><option value="citizen">Ciudadano / Residente Permanente (5+ años)</option><option value="new_resident">Residente Reciente / Visa de Trabajo</option><option value="other">Otros Estatus / Consulta Confidencial</option></select></div>' +
+        '<div class="form-group"><label class="form-label">3. Rango de Ingresos del Hogar:</label><select id="matchIncomeRange" class="form-select"><option value="low">Menos de $20,000 / año</option><option value="mid">$20,000 - $55,000 / año</option><option value="high">Más de $55,000 / año</option></select></div>' +
+        '<button onclick="toolRunInsuranceMatcher()" class="btn-news-red" style="width:100%;justify-content:center;margin-top:0.5rem;">Diagnosticar Cobertura Recomendada</button>' +
+        '<div id="matchOutput" class="calc-result"><div id="matchTitle" style="font-size:1.05rem;font-weight:800;color:#c91818;margin-bottom:0.25rem;"></div><div id="matchDesc" style="font-size:0.825rem;color:#334155;line-height:1.5;"></div></div>'
+      );
+    }
+    function toolRunInsuranceMatcher() {
+      var age = document.getElementById('matchAge').value;
+      var status = document.getElementById('matchStatus').value;
+      var income = document.getElementById('matchIncomeRange').value;
+      document.getElementById('matchOutput').style.display = 'block';
+      var t = document.getElementById('matchTitle'), d = document.getElementById('matchDesc');
+      if (age === '65over') {
+        t.textContent = '🎯 Cobertura Recomendada: Medicare Partes A, B y D / Medicare Advantage';
+        d.textContent = 'Es elegible para Medicare. Le recomendamos verificar si califica para los programas de ayuda adicional (Extra Help / MSP) para cubrir primas y medicamentos.';
+      } else if (income === 'low' && status === 'citizen') {
+        t.textContent = '🎯 Cobertura Recomendada: NJ FamilyCare (Medicaid de NJ)';
+        d.textContent = 'Tiene derecho a atención médica gratuita sin costo de prima a través de NJ FamilyCare. Incluye médicos, hospital y recetas.';
+      } else {
+        t.textContent = '🎯 Cobertura Recomendada: Plan de Salud ACA con Subsidio Estatal Get Covered NJ';
+        d.textContent = 'Califica para planes de salud privados con importantes subsidios gubernamentales que reducen su cuota mensual a precios muy accesibles.';
+      }
+    }
+
+    /* ── Subsidy Calculator ── */
+    function toolOpenSubsidyCalculator() {
+      toolOpenModal('🧮 Calculadora de Subsidios ACA GetCoveredNJ',
+        '<p style="font-size:0.85rem;color:#475569;margin-bottom:1rem;">Estime cuánto subsidio federal puede recibir para reducir el costo de su seguro médico familiar en NJ.</p>' +
+        '<div class="form-group"><label class="form-label">Tamaño del grupo familiar:</label><select id="calcFamily" class="form-select"><option value="1">1 persona</option><option value="2">2 personas</option><option value="3">3 personas</option><option value="4" selected>4 personas</option><option value="5">5+ personas</option></select></div>' +
+        '<div class="form-group"><label class="form-label">Ingreso anual del hogar (USD):</label><input type="number" id="calcIncome" class="form-input" placeholder="Ej: 45000" value="45000"></div>' +
+        '<button onclick="toolRunSubsidy()" class="btn-news-red" style="width:100%;justify-content:center;margin-top:0.5rem;">Calcular Subsidio Estimado</button>' +
+        '<div id="subsidyOutput" class="calc-result"><div id="subsidyAmount" style="font-size:1.4rem;font-weight:900;color:#c91818;"></div><div id="subsidyNote" style="font-size:0.8rem;color:#334155;margin-top:0.35rem;line-height:1.5;"></div></div>'
+      );
+    }
+    function toolRunSubsidy() {
+      var familySize = parseInt(document.getElementById('calcFamily').value) || 4;
+      var income = parseFloat(document.getElementById('calcIncome').value) || 45000;
+      var fplBases = [0, 15060, 20440, 25820, 31200, 36580];
+      var fplBase = fplBases[Math.min(familySize, 5)] || 31200;
+      var fpl = (income / fplBase) * 100;
+      document.getElementById('subsidyOutput').style.display = 'block';
+      var a = document.getElementById('subsidyAmount'), n = document.getElementById('subsidyNote');
+      if (fpl <= 138) {
+        a.textContent = 'Cobertura Gratuita (NJ FamilyCare)';
+        n.textContent = 'Su ingreso califica para Medicaid de NJ sin costo de prima.';
+      } else if (fpl <= 400) {
+        var est = Math.max(150, Math.round((400 - fpl) * 2.2 + familySize * 65));
+        a.textContent = '$' + est + ' / mes';
+        n.textContent = 'Califica para el Crédito Fiscal NJ HealthLink. Su costo de prima mensual será significativamente reducido.';
+      } else {
+        a.textContent = 'Coordinación Especial';
+        n.textContent = 'Puede calificar para planes plata con reducción de costos compartidos o deducciones fiscales.';
+      }
+    }
+
+    /* ── Medical Dictionary ── */
+    function toolOpenMedicalDict() {
+      toolOpenModal('📖 Diccionario de Términos Médicos Inglés-Español',
+        '<p style="font-size:0.85rem;color:#475569;margin-bottom:0.75rem;">Busque términos médicos comunes en inglés con su traducción exacta y explicación en español.</p>' +
+        '<input type="text" id="dictSearch" oninput="toolFilterDict()" class="form-input" placeholder="Buscar término (ej. Deductible, Copay, Referral)..." style="margin-bottom:1rem;">' +
+        '<div id="dictList">' +
+        '<div class="dict-item"><strong style="color:#c91818;">Deductible (Deducible)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Monto anual que debe pagar de su bolsillo antes de que el seguro comience a cubrir sus gastos médicos.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">Copayment / Copay (Copago)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Tarifa fija que usted paga en el momento de recibir un servicio médico o comprar un medicamento (ej. $15 por consulta).</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">Out-of-Pocket Maximum (Límite Máximo de Bolsillo)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Lo máximo que pagará en un año por servicios cubiertos. Después de alcanzar esta cifra, el seguro paga el 100%.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">Referral (Referencia / Volante Médico)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Autorización de su médico primario para acudir a un especialista o realizarse un estudio avanzado.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">In-Network Provider (Proveedor de la Red)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Médicos u hospitales que tienen contrato con su plan de seguro para ofrecer tarifas con descuento.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">Premium (Prima Mensual)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Pago mensual obligatorio para mantener activa su cobertura de seguro médico.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">Prior Authorization (Autorización Previa)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Aprobación requerida por el seguro antes de recibir ciertos tratamientos, medicamentos o procedimientos.</p></div>' +
+        '<div class="dict-item"><strong style="color:#c91818;">EOB - Explanation of Benefits (Explicación de Beneficios)</strong><p style="font-size:0.8rem;color:#475569;margin-top:2px;">Documento del seguro que detalla qué fue cubierto, qué pagó el plan y qué debe pagar usted.</p></div>' +
+        '</div>'
+      );
+    }
+    function toolFilterDict() {
+      var q = document.getElementById('dictSearch').value.toLowerCase();
+      document.querySelectorAll('#dictList .dict-item').forEach(function(item) {
+        item.style.display = item.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+      });
+    }
+
+    // Listen for iframe dynamic height messages
+    window.addEventListener('message', function(event) {
       if (event.data && event.data.type === 'resize' && event.data.height) {
-        const frameBox = document.getElementById('toolFrameBox');
-        if (frameBox) {
-          frameBox.style.height = (event.data.height + 40) + 'px';
-        }
+        var frame = document.getElementById('aiFrame');
+        if (frame) frame.style.minHeight = (event.data.height + 40) + 'px';
       }
     });
   </script>
+
+  <script type="module" src="/main.js"></script>
 </body>
 </html>
