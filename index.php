@@ -462,16 +462,6 @@ $mainVideo = $activeVideos[0] ?? null;
     </section>
     <?php endif; ?>
 
-    <!-- Callout Hotline Footer Banner -->
-    <div class="hotline-banner">
-      <div>
-        <div style="font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#fca5a5; margin-bottom:0.25rem;">LÍNEA DIRECTA DE ATENCIÓN SANITARIA EN NJ</div>
-        <div class="hotline-title">Orientación Médica Gratuita en Español 24 Horas</div>
-        <p style="font-size:0.85rem; color:rgba(255,255,255,0.85); margin-top:0.25rem;">Consulte dudas sobre solicitudes de Medicare, deudas hospitalarias y cobertura médica sin costo.</p>
-      </div>
-      <a href="tel:+18009997200" class="btn-news-red">📞 1-800-999-7200</a>
-    </div>
-
   </main>
 
   <!-- Commercial News Footer -->

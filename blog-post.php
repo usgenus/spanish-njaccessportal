@@ -268,15 +268,6 @@ foreach ($posts as $p) {
       </div>
       <?php endif; ?>
 
-      <!-- Patient Callout Hotline Banner -->
-      <div class="hotline-banner" style="margin-top: 3rem; margin-bottom: 2.5rem; border-radius: 4px;">
-        <div>
-          <div style="font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:#fca5a5; margin-bottom:0.25rem;">¿TIENE DUDAS MÉDICAS O DE SEGURO?</div>
-          <div class="hotline-title">Orientación Médica Gratuita en Español</div>
-          <p style="font-size:0.85rem; color:rgba(255,255,255,0.8); margin-top:0.25rem;">Navegadores bilingües listos para orientarle en Medicare, Medicaid y trámites hospitalarios en NJ.</p>
-        </div>
-        <a href="tel:+18009997200" class="btn-news-red">📞 1-800-999-7200</a>
-      </div>
 
       <!-- Next & Previous Post Navigation -->
       <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:3rem; padding-top:1.5rem; border-top:1px solid #e2e8f0;">

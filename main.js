@@ -560,22 +560,21 @@ window.cmsPlayVideo = function (index) {
 
   if (videoScreen) {
     const embedUrl = getEmbedUrl(cur);
+    // Remove click handler on the screen to avoid double-click issues
+    videoScreen.onclick = null;
+    videoScreen.style.cursor = 'default';
     if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be') || embedUrl.includes('youtube-nocookie.com')) {
       videoScreen.innerHTML = `
-        <div style="position:relative; width:100%; height:100%; min-height:320px; background:#000;">
-          <iframe src="${embedUrl}" title="${escapeHtml(cur.title)}" 
-            style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-          </iframe>
-        </div>
+        <iframe src="${embedUrl}" title="${escapeHtml(cur.title)}" 
+          style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
       `;
     } else if (embedUrl) {
       videoScreen.innerHTML = `
-        <div style="position:relative; width:100%; height:100%; min-height:320px; background:#000;">
-          <video src="${embedUrl}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" controls autoplay playsinline></video>
-        </div>
+        <video src="${embedUrl}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" controls autoplay playsinline></video>
       `;
     }
   }
