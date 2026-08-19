@@ -90,7 +90,7 @@ usort($posts, function($a, $b) {
         $slug = $item['slug'] ?: $item['id'];
         $cover = $item['coverImage'] ?: (!empty($item['images'][0]) ? $item['images'][0] : 'https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=800');
       ?>
-      <article class="news-card" id="<?= htmlspecialchars($slug) ?>" onclick="openArticleModal('<?= htmlspecialchars($slug) ?>')" style="cursor:pointer;">
+      <a href="/blog-post.php?slug=<?= urlencode($slug) ?>" class="news-card" id="<?= htmlspecialchars($slug) ?>" style="cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;">
         <div>
           <div class="card-img-box">
             <img src="<?= htmlspecialchars($cover) ?>" alt="<?= htmlspecialchars($item['title'] ?? '') ?>">
@@ -105,7 +105,7 @@ usort($posts, function($a, $b) {
           <span><?= htmlspecialchars($item['date'] ?? '') ?></span>
           <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
         </div>
-      </article>
+      </a>
       <?php endforeach; ?>
     </div>
 

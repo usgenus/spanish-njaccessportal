@@ -23,9 +23,19 @@ RewriteRule ^about/?$ about.html [L]
 RewriteRule ^servicio-premium/?$ servicio-premium-de-navegacion-y-acceso-a-la-salud.html [L]
 RewriteRule ^tool/?$ tool.html [L]
 
+# Article Clean URLs
+RewriteRule ^noticias/([^/]+)/?$ blog-post.php?slug=$1 [L]
+RewriteRule ^blog/([^/]+)/?$ blog-post.php?slug=$1 [L]
+RewriteRule ^articulo/([^/]+)/?$ blog-post.php?slug=$1 [L]
+
 # If requested file or directory exists, serve it
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
+
+# Dynamic fallback for article slugs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^noticia/([^/]+)/?$ blog-post.php?slug=$1 [L]
 
 </IfModule>

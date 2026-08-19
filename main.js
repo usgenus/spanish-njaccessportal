@@ -355,27 +355,11 @@ window.addComment = function(articleId) {
   renderComments(articleId);
 };
 
-// Global function to open full article in modal with Comment Section
-window.openArticleModal = async function(id) {
-  let article = articlesData[id];
-  if (!article) {
-    try {
-      const res = await fetch(`/api/posts.php?slug=${encodeURIComponent(id)}`);
-      const data = await res.json();
-      if (data.success && data.data) {
-        article = {
-          title: data.data.title,
-          category: data.data.category,
-          date: data.data.date,
-          readTime: data.data.readTime || '3 min de lectura',
-          image: data.data.coverImage || (data.data.images && data.data.images[0]),
-          content: data.data.content
-        };
-        articlesData[id] = article;
-      }
-    } catch(e) {}
-  }
-  if (!article) return;
+// Global function to open full article in full screen page
+window.openArticleModal = function(id) {
+  if (!id) return;
+  window.location.href = '/blog-post.php?slug=' + encodeURIComponent(id);
+};
 
   const html = `
     <div>
@@ -938,7 +922,7 @@ async function initDynamicNewsGrid() {
         };
 
         return `
-          <article class="news-card" id="${escapeHtml(slug)}" onclick="openArticleModal('${escapeHtml(slug)}')" style="cursor:pointer;">
+          <a href="/blog-post.php?slug=${encodeURIComponent(slug)}" class="news-card" id="${escapeHtml(slug)}" style="cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <div class="card-img-box">
                 <img src="${escapeHtml(cover)}" alt="${escapeHtml(p.title)}">
@@ -953,7 +937,7 @@ async function initDynamicNewsGrid() {
               <span>${escapeHtml(date)}</span>
               <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
             </div>
-          </article>
+          </a>
         `;
       }).join('');
     }

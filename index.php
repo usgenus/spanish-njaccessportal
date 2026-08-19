@@ -35,10 +35,22 @@ $otherPosts = array_values(array_filter($posts, function($p) use ($topStory) {
 }));
 
 $secondaryStories = array_slice($otherPosts, 0, 4);
-$policyReports = array_slice($otherPosts, 4, 3);
-if (empty($policyReports) && count($otherPosts) > 0) {
-    $policyReports = array_slice($otherPosts, 0, 3);
+
+// Filter specifically for 4 postings categorized as Medicare & ACA
+$medicareAcaPosts = array_values(array_filter($posts, function($p) {
+    $cat = mb_strtolower(trim($p['category'] ?? ''));
+    return str_contains($cat, 'medicare') || str_contains($cat, 'aca') || str_contains($cat, 'política') || str_contains($cat, 'politica') || str_contains($cat, 'cobertura');
+}));
+
+if (count($medicareAcaPosts) < 4) {
+    foreach ($posts as $p) {
+        if (!in_array($p['id'], array_column($medicareAcaPosts, 'id'))) {
+            $medicareAcaPosts[] = $p;
+            if (count($medicareAcaPosts) === 4) break;
+        }
+    }
 }
+$medicareAcaPosts = array_slice($medicareAcaPosts, 0, 4);
 
 // Live update headline
 $liveHeadline = !empty($posts[0]['title']) ? $posts[0]['title'] : 'Guía de elegibilidad para Medicare y ACA Obamacare 2026 en Nueva Jersey disponible para residentes hispanos';
@@ -224,14 +236,16 @@ $mainVideo = $activeVideos[0] ?? null;
             <span style="color:var(--color-news-muted); font-weight:400;">· <?= htmlspecialchars($topStory['date'] ?? '') ?></span>
           </div>
 
-          <a href="/noticias.html#<?= htmlspecialchars($topSlug) ?>">
+          <a href="/blog-post.php?slug=<?= urlencode($topSlug) ?>">
             <h1 class="lead-headline">
               <?= htmlspecialchars($topStory['title'] ?? '') ?>
             </h1>
           </a>
 
           <div class="lead-image-box">
-            <img src="<?= htmlspecialchars($topCover) ?>" alt="<?= htmlspecialchars($topStory['title'] ?? '') ?>">
+            <a href="/blog-post.php?slug=<?= urlencode($topSlug) ?>">
+              <img src="<?= htmlspecialchars($topCover) ?>" alt="<?= htmlspecialchars($topStory['title'] ?? '') ?>">
+            </a>
           </div>
 
           <div class="lead-caption">
@@ -247,7 +261,7 @@ $mainVideo = $activeVideos[0] ?? null;
           <div>
             <strong>POR <?= htmlspecialchars(mb_strtoupper($topStory['author'] ?? 'REDACCIÓN MÉDICA')) ?></strong> · ⏱ <?= htmlspecialchars($topStory['readTime'] ?? '2 MIN DE LECTURA') ?>
           </div>
-          <span style="color:var(--color-news-red); font-weight:800; text-transform:uppercase;">COBERTURA PRINCIPAL</span>
+          <a href="/blog-post.php?slug=<?= urlencode($topSlug) ?>" style="color:var(--color-news-red); font-weight:800; text-transform:uppercase;">LEER COMPLETO →</a>
         </div>
       </article>
       <?php endif; ?>
@@ -266,13 +280,15 @@ $mainVideo = $activeVideos[0] ?? null;
           <span class="kicker-tag"><?= htmlspecialchars($item['category'] ?? 'SALUD') ?></span>
           <div class="story-thumb-row">
             <div style="flex:1;">
-              <a href="/noticias.html#<?= htmlspecialchars($sSlug) ?>">
+              <a href="/blog-post.php?slug=<?= urlencode($sSlug) ?>">
                 <h3 class="story-headline-sm"><?= htmlspecialchars($item['title'] ?? '') ?></h3>
               </a>
               <span style="font-size:0.75rem; color:var(--color-news-muted); margin-top:0.25rem; display:block;"><?= htmlspecialchars($item['date'] ?? '') ?></span>
             </div>
             <div class="story-thumb-box">
-              <img src="<?= htmlspecialchars($sImg) ?>" alt="<?= htmlspecialchars($item['title'] ?? '') ?>">
+              <a href="/blog-post.php?slug=<?= urlencode($sSlug) ?>">
+                <img src="<?= htmlspecialchars($sImg) ?>" alt="<?= htmlspecialchars($item['title'] ?? '') ?>">
+              </a>
             </div>
           </div>
         </article>
@@ -292,7 +308,7 @@ $mainVideo = $activeVideos[0] ?? null;
           foreach ($rankPosts as $idx => $rItem): 
             $rSlug = $rItem['slug'] ?: $rItem['id'];
           ?>
-          <a href="/noticias.html#<?= htmlspecialchars($rSlug) ?>" class="rank-item">
+          <a href="/blog-post.php?slug=<?= urlencode($rSlug) ?>" class="rank-item">
             <span class="rank-num"><?= $idx + 1 ?></span>
             <div class="rank-content">
               <span style="font-size:0.65rem; font-weight:800; color:var(--color-news-red); text-transform:uppercase;"><?= htmlspecialchars($rItem['category'] ?? 'SALUD') ?></span>
@@ -315,32 +331,32 @@ $mainVideo = $activeVideos[0] ?? null;
       <a href="tel:+18009997200" class="btn-news-red">Llamar Ahora</a>
     </div>
 
-    <!-- Health Policy & Reports Section -->
+    <!-- Health Policy & Medicare Section (4 Postings) -->
     <section style="margin-bottom: 2.5rem;">
       <div class="news-section-header">
         <h2 class="news-section-title">INFORMES DE POLÍTICA SANITARIA Y MEDICARE</h2>
         <a href="/noticias.html" class="news-section-more">Ver Sección Completa →</a>
       </div>
 
-      <div class="news-cards-grid">
-        <?php foreach ($policyReports as $pItem): 
+      <div class="news-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <?php foreach ($medicareAcaPosts as $pItem): 
           $pSlug = $pItem['slug'] ?: $pItem['id'];
           $pImg = $pItem['coverImage'] ?: (!empty($pItem['images'][0]) ? $pItem['images'][0] : 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800');
         ?>
-        <article class="news-card" onclick="location.href='/noticias.html#<?= htmlspecialchars($pSlug) ?>'" style="cursor:pointer;">
+        <a href="/blog-post.php?slug=<?= urlencode($pSlug) ?>" class="news-card" style="cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div class="card-img-box">
               <img src="<?= htmlspecialchars($pImg) ?>" alt="<?= htmlspecialchars($pItem['title'] ?? '') ?>">
             </div>
-            <div class="card-kicker"><?= htmlspecialchars($pItem['category'] ?? 'MEDICARE & ACA') ?></div>
+            <div class="card-kicker"><?= htmlspecialchars(mb_strtoupper($pItem['category'] ?? 'MEDICARE & ACA')) ?></div>
             <h3 class="card-head"><?= htmlspecialchars($pItem['title'] ?? '') ?></h3>
             <p class="card-body"><?= htmlspecialchars($pItem['excerpt'] ?? '') ?></p>
           </div>
           <div class="card-foot">
             <span><?= htmlspecialchars($pItem['date'] ?? '') ?></span>
-            <span style="color:var(--color-news-red); font-weight:700;">Leer Reporte →</span>
+            <span style="color:var(--color-news-red); font-weight:700;">Leer artículo →</span>
           </div>
-        </article>
+        </a>
         <?php endforeach; ?>
       </div>
     </section>
