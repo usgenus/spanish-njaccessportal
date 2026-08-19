@@ -442,16 +442,16 @@
       <div class="video-player-grid">
         
         <div class="player-wrapper">
-          <div class="video-screen-box" id="videoScreen" onclick="window.cmsPlayVideo(0)">
-            <img src="https://i.ytimg.com/vi/TsdumJbTpTY/hqdefault.jpg" alt="Video Conferencia Médica">
-            <div class="play-overlay-btn">
+          <div class="video-screen-box" id="videoScreen" style="cursor:pointer;">
+            <img id="videoPreviewImg" src="https://i.ytimg.com/vi/TsdumJbTpTY/hqdefault.jpg" alt="Video Conferencia Médica">
+            <div class="play-overlay-btn" id="videoPlayOverlay">
               <div class="play-circle-icon">▶</div>
             </div>
           </div>
 
           <div class="video-meta-box">
             <div style="font-size:0.75rem; color:#fca5a5; font-weight:800;" id="activeVideoSpeaker">
-              Noticias Telemundo & Asesores de Salud · 👁️ 145,000 Vistas
+              Noticias Telemundo &amp; Asesores de Salud · 👁️ 145,000 Vistas
             </div>
             <h3 style="font-family:var(--font-serif); font-size:1.2rem; color:#ffffff; margin:0.35rem 0;" id="activeVideoTitle">
               Conozca los principales cambios y aumentos en Medicare para 2026
@@ -463,7 +463,13 @@
         </div>
 
         <div class="playlist-column" id="videoPlaylist">
-          <div class="playlist-card active" data-cat="Medicare" onclick="window.cmsPlayVideo(0)">
+          <div class="playlist-card active" data-cat="Medicare" data-idx="0"
+               data-ytid="TsdumJbTpTY"
+               data-title="Cambios y Aumentos en Medicare 2026"
+               data-speaker="Noticias Telemundo &amp; Asesores de Salud"
+               data-views="145,000 vistas"
+               data-desc="Reportaje informativo sobre los ajustes en los costos de salud, hospitalizaciones, deducibles y cambios de cobertura para los beneficiarios de Medicare en 2026."
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="https://i.ytimg.com/vi/TsdumJbTpTY/hqdefault.jpg" alt="Video 1">
             </div>
@@ -474,7 +480,13 @@
             </div>
           </div>
 
-          <div class="playlist-card" data-cat="Neurología" onclick="window.cmsPlayVideo(1)">
+          <div class="playlist-card" data-cat="Neurología" data-idx="1"
+               data-ytid="7J0FeALmzws"
+               data-title="¿Cómo detectar si alguien sufre un ACV?"
+               data-speaker="Noticias Telemundo &amp; Especialistas en Neurología"
+               data-views="112,000 vistas"
+               data-desc="Aprenda a detectar las señales tempranas de un accidente cerebrovascular (ACV) y cómo actuar durante la ventana crítica de atención médica de urgencia."
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="https://i.ytimg.com/vi/7J0FeALmzws/hqdefault.jpg" alt="Video 2">
             </div>
@@ -485,7 +497,13 @@
             </div>
           </div>
 
-          <div class="playlist-card" data-cat="Cardiovascular" onclick="window.cmsPlayVideo(2)">
+          <div class="playlist-card" data-cat="Cardiovascular" data-idx="2"
+               data-ytid="YidRfID9rvc"
+               data-title="Enfermedad Cardíaca en la Mujer"
+               data-speaker="Mayo Clinic en Español &amp; Dra. Carmen Terzic"
+               data-views="128,000 vistas"
+               data-desc="Explicación médica clara sobre los factores de riesgo de la enfermedad cardiovascular, síntomas atípicos y prevención en la comunidad hispana."
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="https://i.ytimg.com/vi/YidRfID9rvc/hqdefault.jpg" alt="Video 3">
             </div>
@@ -496,7 +514,13 @@
             </div>
           </div>
 
-          <div class="playlist-card" data-cat="Prevención de Cáncer" onclick="window.cmsPlayVideo(3)">
+          <div class="playlist-card" data-cat="Prevención de Cáncer" data-idx="3"
+               data-ytid="rlpN249ucDI"
+               data-title="Cáncer de Mama: Detección y Prevención"
+               data-speaker="Mayo Clinic en Español &amp; Especialistas en Oncología"
+               data-views="94,000 vistas"
+               data-desc="Conversación especializada sobre la importancia de las mamografías periódicas, detección oportuna y tratamientos avanzados para la salud femenina."
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="https://i.ytimg.com/vi/rlpN249ucDI/hqdefault.jpg" alt="Video 4">
             </div>
@@ -507,7 +531,13 @@
             </div>
           </div>
 
-          <div class="playlist-card" data-cat="Enfermedades Crónicas" onclick="window.cmsPlayVideo(4)">
+          <div class="playlist-card" data-cat="Enfermedades Crónicas" data-idx="4"
+               data-ytid="oARWA-ebyhU"
+               data-title="Control de Diabetes Tipo 2: Ejercicio"
+               data-speaker="Noticias Telemundo &amp; Endocrinología"
+               data-views="86,000 vistas"
+               data-desc="Recomendaciones prácticas sobre horarios óptimos de ejercicio, control de glucosa y hábitos para personas con diabetes tipo 2 e hipertensión."
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="https://i.ytimg.com/vi/oARWA-ebyhU/hqdefault.jpg" alt="Video 5">
             </div>
@@ -519,6 +549,71 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Inline Video Player Script (runs synchronously, no module dependency) -->
+    <script>
+    (function() {
+      function playYouTube(ytId, title) {
+        var screen = document.getElementById('videoScreen');
+        if (!screen || !ytId) return;
+        var embedUrl = 'https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&rel=0&modestbranding=1';
+        screen.innerHTML = '<iframe src="' + embedUrl + '" title="' + (title||'').replace(/"/g,'&quot;') + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        screen.style.cursor = 'default';
+      }
+
+      function setActiveCard(activeIdx) {
+        document.querySelectorAll('.playlist-card').forEach(function(c) {
+          c.classList.toggle('active', parseInt(c.getAttribute('data-idx')) === activeIdx);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var screen = document.getElementById('videoScreen');
+        if (screen) {
+          screen.addEventListener('click', function() {
+            var active = document.querySelector('.playlist-card.active') || document.querySelector('.playlist-card');
+            if (active) playYouTube(active.getAttribute('data-ytid'), active.getAttribute('data-title'));
+          });
+        }
+
+        document.querySelectorAll('.playlist-card').forEach(function(card) {
+          card.addEventListener('click', function() {
+            var ytId = card.getAttribute('data-ytid');
+            var title = card.getAttribute('data-title');
+            var speaker = card.getAttribute('data-speaker');
+            var views = card.getAttribute('data-views');
+            var desc = card.getAttribute('data-desc');
+            var idx = parseInt(card.getAttribute('data-idx'));
+            var titleEl = document.getElementById('activeVideoTitle');
+            var descEl = document.getElementById('activeVideoDesc');
+            var speakerEl = document.getElementById('activeVideoSpeaker');
+            if (titleEl) titleEl.textContent = title || '';
+            if (descEl) descEl.textContent = desc || '';
+            if (speakerEl) speakerEl.textContent = (speaker||'') + ' · 👁️ ' + (views||'');
+            setActiveCard(idx);
+            playYouTube(ytId, title);
+          });
+        });
+
+        document.querySelectorAll('.video-cat-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            document.querySelectorAll('.video-cat-btn').forEach(function(b) { b.style.background='rgba(255,255,255,0.1)'; });
+            btn.style.background = 'var(--color-news-red)';
+            var cat = btn.getAttribute('data-cat');
+            document.querySelectorAll('.playlist-card').forEach(function(card) {
+              card.style.display = (cat==='all'||cat==='Todos'||card.getAttribute('data-cat')===cat) ? 'flex' : 'none';
+            });
+          });
+        });
+
+        window.cmsPlayVideo = function(idx) {
+          var card = document.querySelector('.playlist-card[data-idx="'+idx+'"]');
+          if (card) card.click();
+        };
+      });
+    })();
+    </script>
     </section>
 
   </main>

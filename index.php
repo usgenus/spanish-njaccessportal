@@ -424,9 +424,9 @@ $mainVideo = $activeVideos[0] ?? null;
 
       <div class="video-player-grid">
         <div class="player-wrapper">
-          <div class="video-screen-box" id="videoScreen" onclick="window.cmsPlayVideo(0)">
-            <img src="<?= htmlspecialchars($mainVideo['thumbnail'] ?? 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200') ?>" alt="<?= htmlspecialchars($mainVideo['title'] ?? '') ?>">
-            <div class="play-overlay-btn">
+          <div class="video-screen-box" id="videoScreen" style="cursor:pointer;">
+            <img id="videoPreviewImg" src="<?= htmlspecialchars($mainVideo['thumbnail'] ?? 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200') ?>" alt="<?= htmlspecialchars($mainVideo['title'] ?? '') ?>">
+            <div class="play-overlay-btn" id="videoPlayOverlay">
               <div class="play-circle-icon">▶</div>
             </div>
           </div>
@@ -445,8 +445,22 @@ $mainVideo = $activeVideos[0] ?? null;
         </div>
 
         <div class="playlist-column" id="videoPlaylist">
-          <?php foreach ($activeVideos as $idx => $vid): ?>
-          <div class="playlist-card <?= $idx === 0 ? 'active' : '' ?>" data-cat="<?= htmlspecialchars($vid['category'] ?? 'all') ?>" onclick="window.cmsPlayVideo(<?= (int)$idx ?>)">
+          <?php foreach ($activeVideos as $idx => $vid): 
+            $ytId = $vid['youtubeId'] ?? '';
+            if (!$ytId && !empty($vid['youtubeUrl'])) {
+                preg_match('/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{11})/', $vid['youtubeUrl'], $m);
+                $ytId = $m[1] ?? '';
+            }
+          ?>
+          <div class="playlist-card <?= $idx === 0 ? 'active' : '' ?>"
+               data-cat="<?= htmlspecialchars($vid['category'] ?? 'all') ?>"
+               data-idx="<?= (int)$idx ?>"
+               data-ytid="<?= htmlspecialchars($ytId) ?>"
+               data-title="<?= htmlspecialchars($vid['title'] ?? '') ?>"
+               data-speaker="<?= htmlspecialchars($vid['doctor'] ?? ($vid['speaker'] ?? 'Especialista Médico')) ?>"
+               data-views="<?= htmlspecialchars($vid['views'] ?? '') ?>"
+               data-desc="<?= htmlspecialchars($vid['summary'] ?? ($vid['description'] ?? '')) ?>"
+               style="cursor:pointer;">
             <div class="playlist-thumb">
               <img src="<?= htmlspecialchars($vid['thumbnail'] ?? '') ?>" alt="<?= htmlspecialchars($vid['title'] ?? '') ?>">
             </div>
@@ -460,6 +474,84 @@ $mainVideo = $activeVideos[0] ?? null;
         </div>
       </div>
     </section>
+
+    <!-- Inline Video Player Script (non-module, runs immediately) -->
+    <script>
+    (function() {
+      function playYouTube(ytId, title) {
+        var screen = document.getElementById('videoScreen');
+        if (!screen || !ytId) return;
+        var embedUrl = 'https://www.youtube-nocookie.com/embed/' + ytId + '?autoplay=1&rel=0&modestbranding=1';
+        screen.innerHTML = '<iframe src="' + embedUrl + '" title="' + (title || '').replace(/"/g, '&quot;') + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        screen.style.cursor = 'default';
+      }
+
+      function setActiveCard(activeIdx) {
+        document.querySelectorAll('.playlist-card').forEach(function(c) {
+          c.classList.toggle('active', parseInt(c.getAttribute('data-idx')) === activeIdx);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Main screen click
+        var screen = document.getElementById('videoScreen');
+        if (screen) {
+          screen.addEventListener('click', function() {
+            var firstCard = document.querySelector('.playlist-card.active') || document.querySelector('.playlist-card');
+            if (firstCard) {
+              var ytId = firstCard.getAttribute('data-ytid');
+              var title = firstCard.getAttribute('data-title');
+              playYouTube(ytId, title);
+            }
+          });
+        }
+
+        // Playlist card clicks
+        document.querySelectorAll('.playlist-card').forEach(function(card) {
+          card.addEventListener('click', function() {
+            var ytId = card.getAttribute('data-ytid');
+            var title = card.getAttribute('data-title');
+            var speaker = card.getAttribute('data-speaker');
+            var views = card.getAttribute('data-views');
+            var desc = card.getAttribute('data-desc');
+            var idx = parseInt(card.getAttribute('data-idx'));
+
+            // Update meta
+            var titleEl = document.getElementById('activeVideoTitle');
+            var descEl = document.getElementById('activeVideoDesc');
+            var speakerEl = document.getElementById('activeVideoSpeaker');
+            if (titleEl) titleEl.textContent = title || '';
+            if (descEl) descEl.textContent = desc || '';
+            if (speakerEl) speakerEl.textContent = (speaker || '') + ' · 👁️ ' + (views || '');
+
+            setActiveCard(idx);
+            playYouTube(ytId, title);
+          });
+        });
+
+        // Category filter buttons
+        document.querySelectorAll('.video-cat-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            document.querySelectorAll('.video-cat-btn').forEach(function(b) {
+              b.style.background = 'rgba(255,255,255,0.1)';
+            });
+            btn.style.background = 'var(--color-news-red)';
+            var cat = btn.getAttribute('data-cat');
+            document.querySelectorAll('.playlist-card').forEach(function(card) {
+              var itemCat = card.getAttribute('data-cat');
+              card.style.display = (cat === 'all' || cat === 'Todos' || itemCat === cat) ? 'flex' : 'none';
+            });
+          });
+        });
+
+        // Also expose for ES module compat
+        window.cmsPlayVideo = function(idx) {
+          var card = document.querySelector('.playlist-card[data-idx="' + idx + '"]');
+          if (card) card.click();
+        };
+      });
+    })();
+    </script>
     <?php endif; ?>
 
   </main>
