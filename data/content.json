@@ -144,13 +144,38 @@
   ],
   "posts": [
     {
+      "id": "p_1787097342_feac",
+      "slug": "test2",
+      "title": "test2",
+      "category": "medicare",
+      "date": "2026-08-18",
+      "isTopStory": false,
+      "isLiveUpdate": false,
+      "excerpt": "seminar",
+      "coverImage": "/uploads/images/images_20260818_235531_9792c4.jpg",
+      "images": [
+        "/uploads/images/images_20260818_235531_9792c4.jpg"
+      ],
+      "videoUrl": "",
+      "readTime": "3 min de lectura",
+      "author": "Redacción Médica y Salud Pública",
+      "content": "kl",
+      "summaryPoints": [
+        "kl"
+      ],
+      "status": "published",
+      "createdAt": "2026-08-18 23:55:42",
+      "isDoctorColumn": false,
+      "updatedAt": "2026-08-20 19:57:04"
+    },
+    {
       "id": "p_1787096364_392e",
       "slug": "test",
       "title": "test",
       "category": "Noticias de Salud",
       "date": "2026-08-18",
       "isTopStory": true,
-      "isLiveUpdate": true,
+      "isLiveUpdate": false,
       "excerpt": "esrsrse",
       "coverImage": "/uploads/images/images_20260818_234901_8dbe83.png",
       "images": [
@@ -164,8 +189,8 @@
       "summaryPoints": [],
       "status": "published",
       "createdAt": "2026-08-18 23:39:24",
-      "updatedAt": "2026-08-20 19:53:44",
-      "isDoctorColumn": true
+      "updatedAt": "2026-08-20 19:57:00",
+      "isDoctorColumn": false
     },
     {
       "id": "living-longer",
@@ -191,29 +216,6 @@
       ],
       "status": "published",
       "updatedAt": "2026-08-19 01:14:39"
-    },
-    {
-      "id": "p_1787097342_feac",
-      "slug": "test2",
-      "title": "test2",
-      "category": "medicare",
-      "date": "2026-08-18",
-      "isTopStory": false,
-      "isLiveUpdate": true,
-      "excerpt": "seminar",
-      "coverImage": "/uploads/images/images_20260818_235531_9792c4.jpg",
-      "images": [
-        "/uploads/images/images_20260818_235531_9792c4.jpg"
-      ],
-      "videoUrl": "",
-      "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "kl",
-      "summaryPoints": [
-        "kl"
-      ],
-      "status": "published",
-      "createdAt": "2026-08-18 23:55:42"
     },
     {
       "id": "eye-drops",

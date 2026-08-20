@@ -323,26 +323,7 @@ $mainVideo = $activeVideos[0] ?? null;
         </div>
 
         <div class="rank-list">
-          <?php 
-          // Prioritize up to 5 posts marked for LO MÁS LEÍDO (isDoctorColumn)
-          $featuredTrending = [];
-          foreach ($posts as $p) {
-              if (!empty($p['isDoctorColumn'])) {
-                  $featuredTrending[] = $p;
-                  if (count($featuredTrending) === 5) break;
-              }
-          }
-          if (count($featuredTrending) < 5) {
-              foreach ($posts as $p) {
-                  if (!in_array($p['id'], array_column($featuredTrending, 'id'))) {
-                      $featuredTrending[] = $p;
-                      if (count($featuredTrending) === 5) break;
-                  }
-              }
-          }
-          $rankPosts = array_slice($featuredTrending, 0, 5);
-
-          foreach ($rankPosts as $idx => $rItem): 
+          <?php foreach ($rankPosts as $idx => $rItem): 
             $rSlug = $rItem['slug'] ?: $rItem['id'];
           ?>
           <a href="/blog-post.php?slug=<?= urlencode($rSlug) ?>" class="rank-item">

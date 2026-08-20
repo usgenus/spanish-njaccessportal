@@ -645,10 +645,6 @@ function selectPostCategory(cat) {
     inp.value = cat;
     inp.focus();
   }
-  const dcCheck = document.getElementById('post-doctorcolumn-input');
-  if (dcCheck && (cat.toLowerCase().includes('column') || cat.toLowerCase().includes('columna') || cat.toLowerCase().includes('médic') || cat.toLowerCase().includes('medic'))) {
-    dcCheck.checked = true;
-  }
 }
 
 function updateExposureCheckboxLimits(currentEditingPostId) {
