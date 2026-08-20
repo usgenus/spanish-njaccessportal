@@ -23,6 +23,36 @@ function make_slug($text) {
     return $slug;
 }
 
+function sanitize_summary_points($summaryPoints) {
+    if (empty($summaryPoints)) return [];
+    if (is_string($summaryPoints)) {
+        $trimmed = trim($summaryPoints);
+        if (strpos($trimmed, '[') === 0 || strpos($trimmed, '{') === 0) {
+            $decoded = json_decode($trimmed, true);
+            if (is_array($decoded)) {
+                return sanitize_summary_points($decoded);
+            }
+        }
+        $summaryPoints = explode("\n", $summaryPoints);
+    }
+    if (is_array($summaryPoints)) {
+        $clean = [];
+        foreach ($summaryPoints as $pt) {
+            if (is_array($pt)) {
+                $pt = implode(' ', array_filter($pt, 'is_string'));
+            }
+            if (is_string($pt)) {
+                $t = trim($pt);
+                if ($t !== '' && $t !== '[object Object]' && strpos($t, '[object Object]') === false) {
+                    $clean[] = $t;
+                }
+            }
+        }
+        return array_values($clean);
+    }
+    return [];
+}
+
 // GET: List or Single Post
 if ($method === 'GET') {
     // Single post by slug or id
@@ -34,7 +64,7 @@ if ($method === 'GET') {
                 send_json(['success' => true, 'data' => $item]);
             }
         }
-        send_json(['success' => false, 'error' => 'Artículo no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Article not found.'], 404);
     }
 
     $q = mb_strtolower(trim($_GET['q'] ?? ''));
@@ -46,7 +76,7 @@ if ($method === 'GET') {
         if ($status && ($item['status'] ?? 'published') !== $status) {
             continue;
         }
-        if ($category && $category !== 'Todos' && ($item['category'] ?? '') !== $category) {
+        if ($category && $category !== 'Todos' && $category !== 'All' && $category !== '전체' && ($item['category'] ?? '') !== $category) {
             continue;
         }
         if ($q) {
@@ -67,11 +97,15 @@ if ($method === 'GET') {
         return $t2 <=> $t1;
     });
 
+    $defaultCats = ['Medical Column', 'FDA Recall', 'Health & Wellness', 'Medicare & ACA', 'Health Policy & Reports', 'Hospital News', 'Health News'];
+    $dbCats = $db['categories']['news'] ?? [];
+    $allCats = array_values(array_unique(array_merge($defaultCats, $dbCats)));
+
     send_json([
         'success' => true,
         'data' => $result,
         'total' => count($result),
-        'categories' => $db['categories']['news'] ?? []
+        'categories' => $allCats
     ]);
 }
 
@@ -87,7 +121,7 @@ if (!$input && !empty($_POST)) {
 if ($method === 'POST') {
     $title = trim($input['title'] ?? '');
     if (!$title) {
-        send_json(['success' => false, 'error' => 'Por favor ingrese un título.'], 400);
+        send_json(['success' => false, 'error' => 'Please enter an article title.'], 400);
     }
 
     $newId = 'p_' . time() . '_' . substr(md5(uniqid()), 0, 4);
@@ -111,10 +145,7 @@ if ($method === 'POST') {
         $counter++;
     }
 
-    $summaryPoints = $input['summaryPoints'] ?? [];
-    if (is_string($summaryPoints)) {
-        $summaryPoints = array_filter(array_map('trim', explode("\n", $summaryPoints)));
-    }
+    $summaryPoints = sanitize_summary_points($input['summaryPoints'] ?? []);
 
     // Process multiple images
     $images = $input['images'] ?? [];
@@ -135,16 +166,17 @@ if ($method === 'POST') {
         'id' => $newId,
         'slug' => $slug,
         'title' => $title,
-        'category' => trim($input['category'] ?? 'Noticias de Salud'),
+        'category' => trim($input['category'] ?? 'Medical Column'),
         'date' => trim($input['date'] ?? date('Y-m-d')),
         'isTopStory' => !empty($input['isTopStory']),
         'isLiveUpdate' => !empty($input['isLiveUpdate']),
+        'isDoctorColumn' => !empty($input['isDoctorColumn']),
         'excerpt' => trim($input['excerpt'] ?? ''),
         'coverImage' => $coverImage,
         'images' => $images,
         'videoUrl' => trim($input['videoUrl'] ?? ''),
-        'readTime' => trim($input['readTime'] ?? '3 min de lectura'),
-        'author' => trim($input['author'] ?? 'Redacción Médica'),
+        'readTime' => trim($input['readTime'] ?? '3 min read'),
+        'author' => trim($input['author'] ?? 'Editorial Staff'),
         'content' => trim($input['content'] ?? ''),
         'summaryPoints' => $summaryPoints,
         'status' => trim($input['status'] ?? 'published'),
@@ -172,14 +204,14 @@ if ($method === 'POST') {
     }
 
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Artículo publicado con éxito.', 'data' => $newItem]);
+    send_json(['success' => true, 'message' => 'Article published successfully.', 'data' => $newItem]);
 }
 
 // PUT: Update
 if ($method === 'PUT') {
     $id = $input['id'] ?? ($_GET['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Article ID is required.'], 400);
     }
 
     $found = false;
@@ -201,6 +233,7 @@ if ($method === 'PUT') {
             if (isset($input['date'])) $item['date'] = trim($input['date']);
             if (isset($input['isTopStory'])) $item['isTopStory'] = (bool)$input['isTopStory'];
             if (isset($input['isLiveUpdate'])) $item['isLiveUpdate'] = (bool)$input['isLiveUpdate'];
+            if (isset($input['isDoctorColumn'])) $item['isDoctorColumn'] = (bool)$input['isDoctorColumn'];
             if (isset($input['excerpt'])) $item['excerpt'] = trim($input['excerpt']);
             if (isset($input['coverImage'])) $item['coverImage'] = trim($input['coverImage']);
             if (isset($input['videoUrl'])) $item['videoUrl'] = trim($input['videoUrl']);
@@ -210,11 +243,7 @@ if ($method === 'PUT') {
             if (isset($input['status'])) $item['status'] = trim($input['status']);
 
             if (isset($input['summaryPoints'])) {
-                $sp = $input['summaryPoints'];
-                if (is_string($sp)) {
-                    $sp = array_filter(array_map('trim', explode("\n", $sp)));
-                }
-                $item['summaryPoints'] = is_array($sp) ? $sp : [];
+                $item['summaryPoints'] = sanitize_summary_points($input['summaryPoints']);
             }
 
             if (isset($input['images'])) {
@@ -235,19 +264,19 @@ if ($method === 'PUT') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Artículo no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Article not found.'], 404);
     }
 
     $db['posts'] = $posts;
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Artículo actualizado con éxito.']);
+    send_json(['success' => true, 'message' => 'Article updated successfully.']);
 }
 
 // DELETE: Delete
 if ($method === 'DELETE') {
     $id = $_GET['id'] ?? ($input['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Article ID is required.'], 400);
     }
 
     $newPosts = [];
@@ -261,12 +290,12 @@ if ($method === 'DELETE') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Artículo no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Article not found.'], 404);
     }
 
     $db['posts'] = $newPosts;
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Artículo eliminado con éxito.']);
+    send_json(['success' => true, 'message' => 'Article deleted successfully.']);
 }
 
-send_json(['success' => false, 'error' => 'Método no admitido.'], 405);
+send_json(['success' => false, 'error' => 'Method not allowed.'], 405);

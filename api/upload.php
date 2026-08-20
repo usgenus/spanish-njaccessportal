@@ -1,6 +1,6 @@
 <?php
 /**
- * Healthcare Access Portal (Spanish Edition) - Persistent File Upload & Media Library Handler
+ * Healthcare Access Portal - Persistent File Upload & Media Library Handler
  * Stores all uploads in Hostinger Persistent Storage (outside public_html)
  * and mirrors into public_html for instant CDN delivery.
  */
@@ -64,7 +64,7 @@ if ($method === 'DELETE' || ($method === 'POST' && $action === 'delete')) {
     $input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
     $url = trim($input['url'] ?? ($_GET['url'] ?? ''));
     if (!$url) {
-        send_json(['success' => false, 'error' => 'Se requiere la URL del archivo para eliminar.'], 400);
+        send_json(['success' => false, 'error' => 'File URL is required for deletion.'], 400);
     }
 
     $filename = basename($url);
@@ -85,18 +85,18 @@ if ($method === 'DELETE' || ($method === 'POST' && $action === 'delete')) {
         }
     }
 
-    send_json(['success' => true, 'message' => 'Archivo eliminado correctamente.']);
+    send_json(['success' => true, 'message' => 'File deleted successfully.']);
 }
 
 // POST: Upload File
 if ($method === 'POST') {
     if (empty($_FILES['file'])) {
-        send_json(['success' => false, 'error' => 'No se encontró ningún archivo adjunto.'], 400);
+        send_json(['success' => false, 'error' => 'No file attached for upload.'], 400);
     }
 
     $file = $_FILES['file'];
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        send_json(['success' => false, 'error' => 'Error al cargar archivo (Código ' . $file['error'] . ')'], 400);
+        send_json(['success' => false, 'error' => 'File upload error (Code ' . $file['error'] . ')'], 400);
     }
 
     $filename = $file['name'];
@@ -109,7 +109,7 @@ if ($method === 'POST') {
     $isVideo = in_array($ext, $allowedVideos);
 
     if (!$isImage && !$isVideo) {
-        send_json(['success' => false, 'error' => 'Formato no compatible. (Permitidos: JPG, PNG, WEBP, GIF, SVG, MP4, WEBM, MOV)'], 400);
+        send_json(['success' => false, 'error' => 'Unsupported file format. (Allowed: JPG, PNG, WEBP, GIF, SVG, MP4, WEBM, MOV)'], 400);
     }
 
     $targetSubdir = $isImage ? 'images' : 'videos';
@@ -132,7 +132,7 @@ if ($method === 'POST') {
     if (!move_uploaded_file($file['tmp_name'], $pTargetPath)) {
         // Fallback to local
         if (!copy($file['tmp_name'], $lTargetPath)) {
-            send_json(['success' => false, 'error' => 'Error al guardar el archivo en el servidor.'], 500);
+            send_json(['success' => false, 'error' => 'Failed to save file on server.'], 500);
         }
     }
     @chmod($pTargetPath, 0666);
@@ -176,7 +176,7 @@ if ($method === 'POST') {
 
     send_json([
         'success' => true,
-        'message' => 'Archivo subido con éxito.',
+        'message' => 'File uploaded successfully.',
         'url' => $relativeUrl,
         'dataUrl' => $dataUrl,
         'filename' => $safeName,
@@ -185,4 +185,4 @@ if ($method === 'POST') {
     ]);
 }
 
-send_json(['success' => false, 'error' => 'Solicitud no válida.'], 400);
+send_json(['success' => false, 'error' => 'Invalid request.'], 400);

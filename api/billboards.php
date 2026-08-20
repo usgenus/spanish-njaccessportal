@@ -19,7 +19,7 @@ if ($method === 'GET') {
                 send_json(['success' => true, 'data' => $item]);
             }
         }
-        send_json(['success' => false, 'error' => 'Elemento no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Billboard not found.'], 404);
     }
 
     $activeOnly = isset($_GET['active_only']) && $_GET['active_only'] == '1';
@@ -36,10 +36,14 @@ if ($method === 'GET') {
         return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
     });
 
+    $defaultCats = ['SPECIAL CAMPAIGN', 'MEDICARE UPDATE', 'PATIENT SUPPORT', 'HEALTH WEBINAR'];
+    $dbCats = $db['categories']['billboards'] ?? [];
+    $allCats = array_values(array_unique(array_merge($defaultCats, $dbCats)));
+
     send_json([
         'success' => true,
         'data' => $result,
-        'categories' => $db['categories']['billboards'] ?? []
+        'categories' => $allCats
     ]);
 }
 
@@ -55,7 +59,7 @@ if (!$input && !empty($_POST)) {
 if ($method === 'POST') {
     $title = trim($input['title'] ?? '');
     if (!$title) {
-        send_json(['success' => false, 'error' => 'Por favor ingrese un título.'], 400);
+        send_json(['success' => false, 'error' => 'Please enter a billboard title.'], 400);
     }
 
     $newId = 'b_' . time() . '_' . substr(md5(uniqid()), 0, 4);
@@ -65,12 +69,12 @@ if ($method === 'POST') {
         'id' => $newId,
         'title' => $title,
         'subtitle' => trim($input['subtitle'] ?? ''),
-        'category' => trim($input['category'] ?? 'CAMPAÑA ESPECIAL'),
+        'category' => trim($input['category'] ?? 'SPECIAL CAMPAIGN'),
         'mediaType' => trim($input['mediaType'] ?? 'image'),
         'mediaUrl' => trim($input['mediaUrl'] ?? ''),
         'videoUrl' => trim($input['videoUrl'] ?? ''),
-        'linkUrl' => trim($input['linkUrl'] ?? '/about.html#contacto'),
-        'linkText' => trim($input['linkText'] ?? 'Más Información →'),
+        'linkUrl' => trim($input['linkUrl'] ?? '/about#contact'),
+        'linkText' => trim($input['linkText'] ?? 'Learn More →'),
         'order' => (int)($input['order'] ?? $order),
         'active' => isset($input['active']) ? (bool)$input['active'] : true,
         'createdAt' => date('Y-m-d H:i:s')
@@ -90,14 +94,14 @@ if ($method === 'POST') {
     }
 
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Banner de cartelera agregado con éxito.', 'data' => $newItem]);
+    send_json(['success' => true, 'message' => 'Billboard banner created successfully.', 'data' => $newItem]);
 }
 
 // PUT: Update
 if ($method === 'PUT') {
     $id = $input['id'] ?? ($_GET['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Billboard ID is required.'], 400);
     }
 
     $found = false;
@@ -120,19 +124,19 @@ if ($method === 'PUT') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Elemento no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Billboard not found.'], 404);
     }
 
     $db['billboards'] = $billboards;
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Banner de cartelera actualizado con éxito.']);
+    send_json(['success' => true, 'message' => 'Billboard updated successfully.']);
 }
 
 // DELETE: Delete
 if ($method === 'DELETE') {
     $id = $_GET['id'] ?? ($input['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Billboard ID is required.'], 400);
     }
 
     $newBillboards = [];
@@ -146,12 +150,12 @@ if ($method === 'DELETE') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Elemento no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Billboard not found.'], 404);
     }
 
     $db['billboards'] = $newBillboards;
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Banner eliminado con éxito.']);
+    send_json(['success' => true, 'message' => 'Billboard deleted successfully.']);
 }
 
-send_json(['success' => false, 'error' => 'Método no admitido.'], 405);
+send_json(['success' => false, 'error' => 'Method not allowed.'], 405);

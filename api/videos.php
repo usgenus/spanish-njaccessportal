@@ -15,6 +15,9 @@ function extract_youtube_id($url) {
     if (preg_match('~(?:youtu\.be/|youtube\.com/(?:embed/|v/|watch\?v=|watch\?.+&v=))([\w-]{11})~', $url, $m)) {
         return $m[1];
     }
+    if (preg_match('/^[a-zA-Z0-9_-]{11}$/', trim($url))) {
+        return trim($url);
+    }
     return '';
 }
 
@@ -27,7 +30,7 @@ if ($method === 'GET') {
                 send_json(['success' => true, 'data' => $item]);
             }
         }
-        send_json(['success' => false, 'error' => 'Video no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Video not found.'], 404);
     }
 
     $activeOnly = isset($_GET['active_only']) && $_GET['active_only'] == '1';
@@ -38,7 +41,7 @@ if ($method === 'GET') {
         if ($activeOnly && isset($item['active']) && ($item['active'] === false || $item['active'] === 0 || $item['active'] === '0' || $item['active'] === 'false')) {
             continue;
         }
-        if ($category && $category !== 'Todos' && ($item['category'] ?? '') !== $category) {
+        if ($category && $category !== 'Todos' && $category !== 'All' && $category !== '전체' && ($item['category'] ?? '') !== $category) {
             continue;
         }
         $result[] = $item;
@@ -49,10 +52,14 @@ if ($method === 'GET') {
         return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
     });
 
+    $defaultCats = ['Cardiovascular', 'Neurology', 'Cancer Prevention & Screening', 'Orthopedics & Joints', 'Chronic Disease Care', 'Medicare & Healthcare Access', 'Health News'];
+    $dbCats = $db['categories']['videos'] ?? [];
+    $allCats = array_values(array_unique(array_merge($defaultCats, $dbCats)));
+
     send_json([
         'success' => true,
         'data' => $result,
-        'categories' => $db['categories']['videos'] ?? []
+        'categories' => $allCats
     ]);
 }
 
@@ -68,17 +75,15 @@ if (!$input && !empty($_POST)) {
 if ($method === 'POST') {
     $title = trim($input['title'] ?? '');
     if (!$title) {
-        send_json(['success' => false, 'error' => 'Por favor ingrese un título.'], 400);
+        send_json(['success' => false, 'error' => 'Please enter a video title.'], 400);
     }
 
     $newId = 'v_' . time() . '_' . substr(md5(uniqid()), 0, 4);
     $order = count($videos) + 1;
 
-    $youtubeUrl = trim($input['youtubeUrl'] ?? '');
-    $youtubeId = trim($input['youtubeId'] ?? '');
-    if (!$youtubeId && $youtubeUrl) {
-        $youtubeId = extract_youtube_id($youtubeUrl);
-    }
+    $rawYt = trim($input['youtubeId'] ?? ($input['youtubeUrl'] ?? ''));
+    $youtubeId = extract_youtube_id($rawYt);
+    $youtubeUrl = trim($input['youtubeUrl'] ?? ($youtubeId ? "https://www.youtube.com/watch?v={$youtubeId}" : ''));
 
     $videoUrl = trim($input['videoUrl'] ?? '');
     if (!$videoUrl && $youtubeId) {
@@ -94,10 +99,11 @@ if ($method === 'POST') {
         'id' => $newId,
         'title' => $title,
         'category' => trim($input['category'] ?? 'Cardiovascular'),
-        'doctor' => trim($input['doctor'] ?? ($input['speaker'] ?? 'Especialista Médico')),
-        'speaker' => trim($input['speaker'] ?? ($input['doctor'] ?? 'Especialista Médico')),
-        'duration' => trim($input['duration'] ?? '10:00'),
-        'views' => trim($input['views'] ?? '1.2K vistas'),
+        'doctor' => trim($input['doctor'] ?? ($input['speaker'] ?? 'Medical Specialist')),
+        'speaker' => trim($input['speaker'] ?? ($input['doctor'] ?? 'Medical Specialist')),
+        'hospital' => trim($input['hospital'] ?? 'Healthcare Access Center NJ'),
+        'duration' => trim($input['duration'] ?? '05:20'),
+        'views' => trim($input['views'] ?? '12.5K views'),
         'youtubeId' => $youtubeId,
         'youtubeUrl' => $youtubeUrl,
         'videoUrl' => $videoUrl,
@@ -127,14 +133,14 @@ if ($method === 'POST') {
     }
 
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Video agregado con éxito.', 'data' => $newItem]);
+    send_json(['success' => true, 'message' => 'Video created successfully.', 'data' => $newItem]);
 }
 
 // PUT: Update
 if ($method === 'PUT') {
     $id = $input['id'] ?? ($_GET['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Video ID is required.'], 400);
     }
 
     $found = false;
@@ -144,19 +150,22 @@ if ($method === 'PUT') {
             if (isset($input['category'])) $item['category'] = trim($input['category']);
             if (isset($input['doctor'])) $item['doctor'] = trim($input['doctor']);
             if (isset($input['speaker'])) $item['speaker'] = trim($input['speaker']);
+            if (isset($input['hospital'])) $item['hospital'] = trim($input['hospital']);
             if (isset($input['duration'])) $item['duration'] = trim($input['duration']);
             if (isset($input['views'])) $item['views'] = trim($input['views']);
-            if (isset($input['youtubeUrl'])) {
-                $item['youtubeUrl'] = trim($input['youtubeUrl']);
-                $ytId = extract_youtube_id($item['youtubeUrl']);
+            if (isset($input['youtubeUrl']) || isset($input['youtubeId'])) {
+                $rawYt = trim($input['youtubeId'] ?? ($input['youtubeUrl'] ?? ''));
+                $ytId = extract_youtube_id($rawYt);
                 if ($ytId) {
                     $item['youtubeId'] = $ytId;
-                    if (empty($input['videoUrl'])) {
+                    $item['youtubeUrl'] = "https://www.youtube.com/watch?v={$ytId}";
+                    if (empty($input['videoUrl']) && empty($item['videoUrl'])) {
                         $item['videoUrl'] = 'https://www.youtube.com/embed/' . $ytId . '?autoplay=1';
                     }
+                } else if (isset($input['youtubeId'])) {
+                    $item['youtubeId'] = trim($input['youtubeId']);
                 }
             }
-            if (isset($input['youtubeId'])) $item['youtubeId'] = trim($input['youtubeId']);
             if (isset($input['videoUrl'])) $item['videoUrl'] = trim($input['videoUrl']);
             if (isset($input['thumbnail'])) $item['thumbnail'] = trim($input['thumbnail']);
             if (isset($input['summary'])) $item['summary'] = trim($input['summary']);
@@ -172,7 +181,7 @@ if ($method === 'PUT') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Video no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Video not found.'], 404);
     }
 
     usort($videos, function($a, $b) {
@@ -180,14 +189,14 @@ if ($method === 'PUT') {
     });
     $db['videos'] = array_values($videos);
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Video actualizado con éxito.']);
+    send_json(['success' => true, 'message' => 'Video updated successfully.']);
 }
 
 // DELETE: Delete
 if ($method === 'DELETE') {
     $id = $_GET['id'] ?? ($input['id'] ?? '');
     if (!$id) {
-        send_json(['success' => false, 'error' => 'Se requiere ID.'], 400);
+        send_json(['success' => false, 'error' => 'Video ID is required.'], 400);
     }
 
     $newVideos = [];
@@ -201,12 +210,12 @@ if ($method === 'DELETE') {
     }
 
     if (!$found) {
-        send_json(['success' => false, 'error' => 'Video no encontrado.'], 404);
+        send_json(['success' => false, 'error' => 'Video not found.'], 404);
     }
 
     $db['videos'] = $newVideos;
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Video eliminado con éxito.']);
+    send_json(['success' => true, 'message' => 'Video deleted successfully.']);
 }
 
-send_json(['success' => false, 'error' => 'Método no admitido.'], 405);
+send_json(['success' => false, 'error' => 'Method not allowed.'], 405);
