@@ -12,71 +12,65 @@ $posts = $db['posts'] ?? [];
 
 // Helper to make slug
 function make_slug($text) {
-    $slug = preg_replace('~[^\pL\d]+~u', '-', $text);
-    $slug = iconv('utf-8', 'us-ascii//TRANSLIT//IGNORE', $slug);
-    $slug = preg_replace('~[^-\w]+~', '', $slug);
-    $slug = trim($slug, '-');
-    $slug = strtolower($slug);
-    if (empty($slug)) {
-        return 'noticia-' . time();
-    }
-    return $slug;
+    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    $text = preg_replace('~[^-\w]+~', '', $text);
+    $text = trim($text, '-');
+    $text = preg_replace('~-+~', '-', $text);
+    $text = strtolower($text);
+    return empty($text) ? 'post-' . time() : $text;
 }
 
-function sanitize_summary_points($summaryPoints) {
-    if (empty($summaryPoints)) return [];
-    if (is_string($summaryPoints)) {
-        $trimmed = trim($summaryPoints);
+// Helper to sanitize summary points
+function sanitize_summary_points($points) {
+    if (empty($points)) return [];
+    if (is_string($points)) {
+        $trimmed = trim($points);
         if (strpos($trimmed, '[') === 0 || strpos($trimmed, '{') === 0) {
             $decoded = json_decode($trimmed, true);
-            if (is_array($decoded)) {
-                return sanitize_summary_points($decoded);
+            if (is_array($decoded)) $points = $decoded;
+            else $points = explode("\n", $points);
+        } else {
+            $points = explode("\n", $points);
+        }
+    }
+    if (!is_array($points)) return [];
+
+    $clean = [];
+    foreach ($points as $pt) {
+        if (is_array($pt)) {
+            $pt = implode(' ', array_filter($pt, 'is_string'));
+        }
+        if (is_string($pt)) {
+            $t = trim($pt);
+            if ($t !== '' && $t !== '[object Object]' && strpos($t, '[object Object]') === false) {
+                $clean[] = $t;
             }
         }
-        $summaryPoints = explode("\n", $summaryPoints);
     }
-    if (is_array($summaryPoints)) {
-        $clean = [];
-        foreach ($summaryPoints as $pt) {
-            if (is_array($pt)) {
-                $pt = implode(' ', array_filter($pt, 'is_string'));
-            }
-            if (is_string($pt)) {
-                $t = trim($pt);
-                if ($t !== '' && $t !== '[object Object]' && strpos($t, '[object Object]') === false) {
-                    $clean[] = $t;
-                }
-            }
-        }
-        return array_values($clean);
-    }
-    return [];
+    return array_values($clean);
 }
 
-// GET: List or Single Post
+// GET: List or single post
 if ($method === 'GET') {
-    // Single post by slug or id
-    $slug = $_GET['slug'] ?? '';
     $id = $_GET['id'] ?? '';
-    if ($slug || $id) {
+    $slug = $_GET['slug'] ?? '';
+
+    if ($id || $slug) {
         foreach ($posts as $item) {
-            if (($slug && ($item['slug'] ?? '') === $slug) || ($id && ($item['id'] ?? '') === $id)) {
+            if (($id && ($item['id'] ?? '') === $id) || ($slug && ($item['slug'] ?? '') === $slug)) {
                 send_json(['success' => true, 'data' => $item]);
             }
         }
         send_json(['success' => false, 'error' => 'Article not found.'], 404);
     }
 
-    $q = mb_strtolower(trim($_GET['q'] ?? ''));
     $category = $_GET['category'] ?? '';
-    $status = $_GET['status'] ?? ''; // 'published' default for public
+    $q = trim(mb_strtolower($_GET['q'] ?? ''));
 
     $result = [];
     foreach ($posts as $item) {
-        if ($status && ($item['status'] ?? 'published') !== $status) {
-            continue;
-        }
-        if ($category && $category !== 'Todos' && $category !== 'All' && $category !== '전체' && ($item['category'] ?? '') !== $category) {
+        if ($category && $category !== 'Todos' && $category !== 'All' && ($item['category'] ?? '') !== $category) {
             continue;
         }
         if ($q) {
@@ -90,10 +84,10 @@ if ($method === 'GET') {
         $result[] = $item;
     }
 
-    // Sort by date DESC
+    // Sort by latest edit / activity DESC (latest edit at top)
     usort($result, function($a, $b) {
-        $t1 = strtotime($a['date'] ?? $a['createdAt'] ?? '1970-01-01');
-        $t2 = strtotime($b['date'] ?? $b['createdAt'] ?? '1970-01-01');
+        $t1 = strtotime($a['updatedAt'] ?? $a['createdAt'] ?? $a['date'] ?? '1970-01-01');
+        $t2 = strtotime($b['updatedAt'] ?? $b['createdAt'] ?? $b['date'] ?? '1970-01-01');
         return $t2 <=> $t1;
     });
 
@@ -158,38 +152,42 @@ if ($method === 'POST') {
     $coverImage = trim($input['coverImage'] ?? '');
     if (!empty($images)) {
         $coverImage = $images[0];
-    } elseif ($coverImage) {
-        $images = [$coverImage];
     }
 
-    $newItem = [
-        'id' => $newId,
-        'slug' => $slug,
-        'title' => $title,
-        'category' => trim($input['category'] ?? 'Medical Column'),
-        'date' => trim($input['date'] ?? date('Y-m-d')),
-        'isTopStory' => !empty($input['isTopStory']),
-        'isLiveUpdate' => !empty($input['isLiveUpdate']),
-        'isDoctorColumn' => !empty($input['isDoctorColumn']),
-        'excerpt' => trim($input['excerpt'] ?? ''),
-        'coverImage' => $coverImage,
-        'images' => $images,
-        'videoUrl' => trim($input['videoUrl'] ?? ''),
-        'readTime' => trim($input['readTime'] ?? '3 min read'),
-        'author' => trim($input['author'] ?? 'Editorial Staff'),
-        'content' => trim($input['content'] ?? ''),
-        'summaryPoints' => $summaryPoints,
-        'status' => trim($input['status'] ?? 'published'),
-        'createdAt' => date('Y-m-d H:i:s')
-    ];
+    $isTopStory = !empty($input['isTopStory']);
+    $isLiveUpdate = !empty($input['isLiveUpdate']);
+    $isDoctorColumn = !empty($input['isDoctorColumn']);
 
-    // If marked as isTopStory, unset isTopStory for others
-    if (!empty($newItem['isTopStory'])) {
+    if ($isTopStory) {
         foreach ($posts as &$p) {
             $p['isTopStory'] = false;
         }
     }
 
+    $now = date('Y-m-d H:i:s');
+    $newItem = [
+        'id' => $newId,
+        'title' => $title,
+        'slug' => $slug,
+        'category' => trim($input['category'] ?? 'Medical Column'),
+        'date' => trim($input['date'] ?? date('Y-m-d')),
+        'author' => trim($input['author'] ?? 'Editorial Staff'),
+        'readTime' => trim($input['readTime'] ?? '3 min read'),
+        'coverImage' => $coverImage,
+        'images' => array_values($images),
+        'videoUrl' => trim($input['videoUrl'] ?? ''),
+        'excerpt' => trim($input['excerpt'] ?? ''),
+        'content' => trim($input['content'] ?? ''),
+        'summaryPoints' => $summaryPoints,
+        'isTopStory' => $isTopStory,
+        'isLiveUpdate' => $isLiveUpdate,
+        'isDoctorColumn' => $isDoctorColumn,
+        'status' => trim($input['status'] ?? 'published'),
+        'createdAt' => $now,
+        'updatedAt' => $now
+    ];
+
+    // Put new post at the top of the array
     array_unshift($posts, $newItem);
     $db['posts'] = $posts;
 
@@ -225,7 +223,10 @@ if ($method === 'PUT') {
         }
     }
 
-    foreach ($posts as &$item) {
+    $updatedItem = null;
+    $newPosts = [];
+
+    foreach ($posts as $item) {
         if ($item['id'] === $id) {
             if (isset($input['title'])) $item['title'] = trim($input['title']);
             if (isset($input['slug']) && trim($input['slug'])) $item['slug'] = trim($input['slug']);
@@ -258,18 +259,23 @@ if ($method === 'PUT') {
             }
 
             $item['updatedAt'] = date('Y-m-d H:i:s');
+            $updatedItem = $item;
             $found = true;
-            break;
+        } else {
+            $newPosts[] = $item;
         }
     }
 
-    if (!$found) {
+    if (!$found || !$updatedItem) {
         send_json(['success' => false, 'error' => 'Article not found.'], 404);
     }
 
-    $db['posts'] = $posts;
+    // Move the latest edited post to the very top of the list
+    array_unshift($newPosts, $updatedItem);
+    $db['posts'] = $newPosts;
+
     save_db_data($db);
-    send_json(['success' => true, 'message' => 'Article updated successfully.']);
+    send_json(['success' => true, 'message' => 'Article updated successfully.', 'data' => $updatedItem]);
 }
 
 // DELETE: Delete

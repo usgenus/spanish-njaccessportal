@@ -586,6 +586,7 @@ function renderPosts() {
             <span class="bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">${escapeHtml(p.category || 'News')}</span>
             ${p.isTopStory ? '<span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow animate-pulse">🔥 TOP STORY</span>' : ''}
             ${p.isDoctorColumn ? '<span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">🩺 TOP 10 Column</span>' : ''}
+            ${p.isLiveUpdate ? '<span class="bg-amber-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">⭐ DESTACADOS</span>' : ''}
           </div>
         </div>
 
@@ -672,17 +673,17 @@ function updateExposureCheckboxLimits(currentEditingPostId) {
   const doctorInput = document.getElementById('post-doctorcolumn-input');
   const doctorLabel = document.querySelector('label[for="post-doctorcolumn-input"]');
 
-  // Real-Time Breaking News (Max 6)
+  // REPORTAJES DESTACADOS (Max 4)
   if (liveInput && liveLabel) {
-    if (!liveInput.checked && liveCount >= 6) {
+    if (!liveInput.checked && liveCount >= 4) {
       liveInput.disabled = true;
       liveInput.parentElement.classList.add('opacity-40', 'cursor-not-allowed');
-      liveLabel.innerHTML = 'Feature in Real-Time Breaking News <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 6 featured: Slots Full)</span>';
+      liveLabel.innerHTML = 'Feature in REPORTAJES DESTACADOS <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 4 featured: Slots Full)</span>';
     } else {
       liveInput.disabled = false;
       liveInput.parentElement.classList.remove('opacity-40', 'cursor-not-allowed');
       const currentVal = liveInput.checked ? liveCount + 1 : liveCount;
-      liveLabel.innerHTML = 'Feature in Real-Time Breaking News <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/6)</span>';
+      liveLabel.innerHTML = 'Feature in REPORTAJES DESTACADOS <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/4)</span>';
     }
   }
 

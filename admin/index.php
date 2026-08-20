@@ -763,7 +763,7 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" class="w-4 h-4 rounded text-red-600 bg-slate-800 border-slate-700">
+            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-red-600 bg-slate-800 border-slate-700">
             <label for="post-doctorcolumn-input" class="font-bold text-red-400 text-xs sm:text-sm">🩺 Feature in Top 10 Medical Columns Section</label>
           </div>
           <div class="flex items-center gap-2">
@@ -771,8 +771,8 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
             <label for="post-topstory-input" class="font-bold text-amber-400 text-xs sm:text-sm">🔥 Feature as TOP STORY Headline</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="post-liveupdate-input" name="isLiveUpdate" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
-            <label for="post-liveupdate-input" class="font-semibold text-slate-300 text-xs sm:text-sm">Feature in Real-Time Breaking News</label>
+            <input type="checkbox" id="post-liveupdate-input" name="isLiveUpdate" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
+            <label for="post-liveupdate-input" class="font-semibold text-slate-300 text-xs sm:text-sm">Feature in REPORTAJES DESTACADOS (Featured Reports)</label>
           </div>
         </div>
 

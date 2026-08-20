@@ -177,16 +177,18 @@
       "excerpt": "esrsrse",
       "coverImage": "/uploads/images/images_20260818_234901_8dbe83.png",
       "images": [
-        "/uploads/images/images_20260818_234901_8dbe83.png"
+        "/uploads/images/images_20260818_234901_8dbe83.png",
+        "/uploads/images/images_20260820_194029_ced7ac.jpg"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
       "author": "Redacción Médica y Salud Pública",
-      "content": "serseres",
+      "content": "testing new articles.\n\n\n\n## ++new test header title++\n암젠은 심장 질환 치료제 코란노르(Corlanor) 및 신장 질환 치료제 센시파(Sensipar) 일부 제조단위에 대해 알약 코팅 이상으로 인한 자진 회수를 발표했습니다.\n\n\n++암젠(++Amgen), ==알약 코팅에서 예기치 않은 이물질이 발견됨에 따라 코란노르 및 ==센--시파 특정 제조번호 제품 자진 리콜\n--\n\n\n![](/uploads/images/images_20260820_194029_ced7ac.jpg)",
       "summaryPoints": [],
       "status": "published",
       "createdAt": "2026-08-18 23:39:24",
-      "updatedAt": "2026-08-18 23:49:04"
+      "updatedAt": "2026-08-20 19:43:30",
+      "isDoctorColumn": false
     },
     {
       "id": "eye-drops",
@@ -384,11 +386,17 @@
   ],
   "categories": {
     "news": [
+      "Medical Column",
+      "FDA Recall",
+      "Health & Wellness",
+      "Medicare & ACA",
+      "Health Policy & Reports",
+      "Hospital News",
+      "Health News",
       "Todos",
       "Retiro Voluntario FDA",
       "Salud & Tecnología",
       "Geriatría & Bienestar",
-      "Medicare & ACA",
       "Neurología",
       "Enfermedades Crónicas",
       "Política Sanitaria",
@@ -397,8 +405,14 @@
       "medicare"
     ],
     "videos": [
-      "Todos",
       "Cardiovascular",
+      "Neurology",
+      "Cancer Prevention & Screening",
+      "Orthopedics & Joints",
+      "Chronic Disease Care",
+      "Medicare & Healthcare Access",
+      "Health News",
+      "Todos",
       "Neurología",
       "Prevención de Cáncer",
       "Enfermedades Crónicas",
@@ -407,6 +421,10 @@
       "medical"
     ],
     "billboards": [
+      "SPECIAL CAMPAIGN",
+      "MEDICARE UPDATE",
+      "PATIENT SUPPORT",
+      "HEALTH WEBINAR",
       "CAMPAÑA ESPECIAL",
       "ALERTA SANITARIA",
       "ASISTENCIA AL PACIENTE",

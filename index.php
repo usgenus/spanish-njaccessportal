@@ -10,6 +10,13 @@ $billboards = $db['billboards'] ?? [];
 $videos = $db['videos'] ?? [];
 $posts = $db['posts'] ?? [];
 
+// Sort posts by latest edit / creation / date DESC
+usort($posts, function($a, $b) {
+    $t1 = strtotime($a['updatedAt'] ?? $a['createdAt'] ?? $a['date'] ?? '1970-01-01');
+    $t2 = strtotime($b['updatedAt'] ?? $b['createdAt'] ?? $b['date'] ?? '1970-01-01');
+    return $t2 <=> $t1;
+});
+
 // Filter active billboards
 $activeBillboards = array_values(array_filter($billboards, function($b) {
     return !isset($b['active']) || $b['active'] !== false;
@@ -34,7 +41,23 @@ $otherPosts = array_values(array_filter($posts, function($p) use ($topStory) {
     return !$topStory || ($p['id'] ?? '') !== ($topStory['id'] ?? '');
 }));
 
-$secondaryStories = array_slice($otherPosts, 0, 4);
+// REPORTAJES DESTACADOS: Prioritize up to 4 posts marked with isLiveUpdate (Featured Reports)
+$featuredForSecondary = [];
+foreach ($otherPosts as $p) {
+    if (!empty($p['isLiveUpdate'])) {
+        $featuredForSecondary[] = $p;
+        if (count($featuredForSecondary) === 4) break;
+    }
+}
+if (count($featuredForSecondary) < 4) {
+    foreach ($otherPosts as $p) {
+        if (!in_array($p['id'], array_column($featuredForSecondary, 'id'))) {
+            $featuredForSecondary[] = $p;
+            if (count($featuredForSecondary) === 4) break;
+        }
+    }
+}
+$secondaryStories = array_slice($featuredForSecondary, 0, 4);
 
 // Filter specifically for 4 postings categorized as Medicare & ACA
 $medicareAcaPosts = array_values(array_filter($posts, function($p) {
