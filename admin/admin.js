@@ -709,7 +709,9 @@ function openPostModal() {
   const dcCheck = document.getElementById('post-doctorcolumn-input');
   if (dcCheck) dcCheck.checked = false;
   const liveCheck = document.getElementById('post-liveupdate-input');
-  if (liveCheck) liveCheck.checked = true;
+  if (liveCheck) liveCheck.checked = false;
+  const topCheck = document.getElementById('post-topstory-input');
+  if (topCheck) topCheck.checked = false;
   document.getElementById('modal-post-title').innerHTML = '<i class="fa-solid fa-pen-nib text-emerald-400"></i> <span>Write Health News Article</span>';
   
   updateExposureCheckboxLimits(null);

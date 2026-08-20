@@ -25,39 +25,36 @@ if (empty($activeBillboards) && !empty($billboards)) {
     $activeBillboards = $billboards;
 }
 
-// Find Top Story and other posts
+// Find Top Story (only if explicitly check-marked)
 $topStory = null;
 foreach ($posts as $p) {
-    if (!empty($p['isTopStory'])) {
+    if (!empty($p['isTopStory']) && $p['isTopStory'] !== 'false' && $p['isTopStory'] !== 0) {
         $topStory = $p;
         break;
     }
-}
-if (!$topStory && !empty($posts)) {
-    $topStory = $posts[0];
 }
 
 $otherPosts = array_values(array_filter($posts, function($p) use ($topStory) {
     return !$topStory || ($p['id'] ?? '') !== ($topStory['id'] ?? '');
 }));
 
-// REPORTAJES DESTACADOS: Prioritize up to 4 posts marked with isLiveUpdate (Featured Reports)
-$featuredForSecondary = [];
+// REPORTAJES DESTACADOS: ONLY posts explicitly check-marked with isLiveUpdate (max 4)
+$secondaryStories = [];
 foreach ($otherPosts as $p) {
-    if (!empty($p['isLiveUpdate'])) {
-        $featuredForSecondary[] = $p;
-        if (count($featuredForSecondary) === 4) break;
+    if (!empty($p['isLiveUpdate']) && $p['isLiveUpdate'] !== 'false' && $p['isLiveUpdate'] !== 0) {
+        $secondaryStories[] = $p;
+        if (count($secondaryStories) === 4) break;
     }
 }
-if (count($featuredForSecondary) < 4) {
-    foreach ($otherPosts as $p) {
-        if (!in_array($p['id'], array_column($featuredForSecondary, 'id'))) {
-            $featuredForSecondary[] = $p;
-            if (count($featuredForSecondary) === 4) break;
-        }
+
+// LO MÁS LEÍDO (TOP 5): ONLY posts explicitly check-marked with isDoctorColumn (max 5)
+$rankPosts = [];
+foreach ($posts as $p) {
+    if (!empty($p['isDoctorColumn']) && $p['isDoctorColumn'] !== 'false' && $p['isDoctorColumn'] !== 0) {
+        $rankPosts[] = $p;
+        if (count($rankPosts) === 5) break;
     }
 }
-$secondaryStories = array_slice($featuredForSecondary, 0, 4);
 
 // Filter specifically for 4 postings categorized as Medicare & ACA
 $medicareAcaPosts = array_values(array_filter($posts, function($p) {
