@@ -53,11 +53,240 @@ if (empty($images) && !empty($post['coverImage'])) {
     $images = [$post['coverImage']];
 }
 $coverImage = htmlspecialchars(!empty($images[0]) ? $images[0] : ($post['coverImage'] ?: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format'));
-$articleImages = array_slice($images, 1);
 $content = $post['content'] ?? '';
 $summaryPoints = $post['summaryPoints'] ?? [];
+if (is_string($summaryPoints)) {
+    $trimmed = trim($summaryPoints);
+    if (strpos($trimmed, '[') === 0 || strpos($trimmed, '{') === 0) {
+        $decoded = json_decode($trimmed, true);
+        if (is_array($decoded)) $summaryPoints = $decoded;
+        else $summaryPoints = explode("\n", $summaryPoints);
+    } else {
+        $summaryPoints = explode("\n", $summaryPoints);
+    }
+}
+if (is_array($summaryPoints)) {
+    $cleanPoints = [];
+    foreach ($summaryPoints as $pt) {
+        if (is_array($pt)) {
+            $pt = implode(' ', array_filter($pt, 'is_string'));
+        }
+        if (is_string($pt)) {
+            $t = trim($pt);
+            if ($t !== '' && $t !== '[object Object]' && strpos($t, '[object Object]') === false) {
+                $cleanPoints[] = $t;
+            }
+        }
+    }
+    $summaryPoints = $cleanPoints;
+} else {
+    $summaryPoints = [];
+}
+
 $videoUrl = $post['videoUrl'] ?? '';
 $postSlug = htmlspecialchars($post['slug'] ?? ($post['id'] ?? 'noticia'));
+
+/**
+ * Rich Markdown & Custom Formatting Renderer
+ */
+function render_article_content($content, $allImages = [], &$usedImages = []) {
+    if (empty($content)) return '';
+
+    // Standardize newlines
+    $content = str_replace(["\r\n", "\r"], "\n", $content);
+
+    // If it contains existing full HTML block tags
+    $hasBlockHtml = preg_match('~<(p|div|h1|h2|h3|h4|ul|ol|blockquote|table|figure)[^>]*>~i', $content);
+    if ($hasBlockHtml) {
+        return strip_tags($content, '<h1><h2><h3><h4><h5><h6><p><br><hr><strong><b><em><i><u><strike><del><s><span><mark><big><small><blockquote><ul><ol><li><a><img><div><figure><figcaption><table><thead><tbody><tr><th><td><code><pre>');
+    }
+
+    $formatInline = function($str) {
+        $str = strip_tags($str, '<strong><b><em><i><u><mark><big><small><span><a><code><del><strike>');
+        
+        // Markdown bold **text** or __text__
+        $str = preg_replace('~\*\*(.+?)\*\*~s', '<strong style="font-weight:700;color:#0f172a;">$1</strong>', $str);
+        $str = preg_replace('~__(.+?)__~s', '<strong style="font-weight:700;color:#0f172a;">$1</strong>', $str);
+        
+        // Markdown highlight ==text==
+        $str = preg_replace('~==(.+?)==~s', '<mark style="background-color:#fef08a;color:#0f172a;padding:2px 6px;border-radius:4px;font-weight:700;">$1</mark>', $str);
+        
+        // Markdown large text ++text++
+        $str = preg_replace('~\+\+(.+?)\+\+~s', '<span style="font-size:1.2rem;font-weight:700;color:#0f172a;line-height:1.6;">$1</span>', $str);
+
+        // Markdown small text --text--
+        $str = preg_replace('~--(.+?)--~s', '<span style="font-size:0.875rem;color:#64748b;font-weight:400;line-height:normal;">$1</span>', $str);
+        
+        // Markdown italic (single asterisk)
+        $str = preg_replace('~(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)~s', '<em style="font-style:italic;color:#334155;">$1</em>', $str);
+
+        // Normalize mark, big, and small tags if present
+        $str = preg_replace('~<mark(?:\s+[^>]*)?>~i', '<mark style="background-color:#fef08a;color:#0f172a;padding:2px 6px;border-radius:4px;font-weight:700;">', $str);
+        $str = preg_replace('~<big>~i', '<span style="font-size:1.2rem;font-weight:700;color:#0f172a;">', $str);
+        $str = preg_replace('~</big>~i', '</span>', $str);
+        $str = preg_replace('~<small>~i', '<span style="font-size:0.875rem;color:#64748b;font-weight:400;">', $str);
+        $str = preg_replace('~</small>~i', '</span>', $str);
+
+        return $str;
+    };
+
+    // Pre-process Special Box (:::box ... :::)
+    $content = preg_replace_callback('~:::box\s*(.*?)\s*:::~s', function($matches) use ($formatInline) {
+        $inner = trim($matches[1]);
+        $lines = explode("\n", $inner);
+        $formattedLines = array_map(function($l) use ($formatInline) {
+            return $formatInline(trim($l));
+        }, $lines);
+        $body = implode('<br>', $formattedLines);
+        return "\n\n<DIV_BOX>" . $body . "</DIV_BOX>\n\n";
+    }, $content);
+
+    // Resolve shorthand [foto 1], [photo 1], [사진1], [PHOTO1]
+    $content = preg_replace_callback('~\[(?:foto|photo|사진|PHOTO)\s*([0-9]+)(?:\s*:\s*([^\]]+))?\]~u', function($matches) use ($allImages, &$usedImages) {
+        $idx = intval($matches[1]) - 1;
+        $url = $allImages[$idx] ?? '';
+        $caption = isset($matches[2]) ? trim($matches[2]) : ('Foto #' . ($idx + 1));
+        if (!empty($url)) {
+            $usedImages[] = $url;
+            return '![' . $caption . '](' . $url . ')';
+        }
+        return '';
+    }, $content);
+
+    // Pre-process In-text Centered Images (![caption](url))
+    $content = preg_replace_callback('~!\[(.*?)\]\((.*?)\)~s', function($matches) use (&$usedImages) {
+        $caption = htmlspecialchars(trim($matches[1]));
+        $url = htmlspecialchars(trim($matches[2]));
+        $usedImages[] = $url;
+        $captionHtml = !empty($caption) ? '<figcaption style="font-size:0.8rem;color:#64748b;font-weight:500;margin-top:0.65rem;text-align:center;">▲ ' . $caption . '</figcaption>' : '';
+        $fig = '<figure style="margin:2.5rem auto;max-width:760px;text-align:center;display:flex;flex-direction:column;align-items:center;"><div style="border-radius:8px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.08);border:1px solid #e2e8f0;background:#000;width:100%;"><img src="' . $url . '" alt="' . $caption . '" style="width:100%;height:auto;max-height:480px;object-fit:cover;margin:0 auto;display:block;"></div>' . $captionHtml . '</figure>';
+        return "\n\n<DIV_FIG>" . $fig . "</DIV_FIG>\n\n";
+    }, $content);
+
+    $lines = explode("\n", $content);
+    $html = '';
+    $inList = false;
+    $inQuote = false;
+    $quoteBuffer = [];
+    $paraBuffer = [];
+
+    $flushPara = function() use (&$paraBuffer, &$html, $formatInline) {
+        if (!empty($paraBuffer)) {
+            $joined = implode('<br>', $paraBuffer);
+            $formatted = $formatInline($joined);
+            $html .= '<p style="margin-bottom:1.35rem;line-height:1.85;color:#1f2937;font-size:1.05rem;">' . $formatted . '</p>';
+            $paraBuffer = [];
+        }
+    };
+
+    $flushQuote = function() use (&$quoteBuffer, &$html, $formatInline) {
+        if (!empty($quoteBuffer)) {
+            $joined = implode('<br>', $quoteBuffer);
+            $formatted = $formatInline($joined);
+            $html .= '<blockquote style="border-left:4px solid var(--color-news-red, #c91818);padding:0.85rem 1.25rem;margin:1.75rem 0;background:#f8fafc;border-radius:0 6px 6px 0;font-style:italic;color:#334155;font-weight:500;font-size:1.05rem;">' . $formatted . '</blockquote>';
+            $quoteBuffer = [];
+        }
+    };
+
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed === '') {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            continue;
+        }
+
+        // Check for pre-processed Box
+        if (strpos($trimmed, '<DIV_BOX>') !== false) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            $boxContent = str_replace(['<DIV_BOX>', '</DIV_BOX>'], '', $trimmed);
+            $html .= '<div style="margin:2.25rem 0;padding:1.5rem;border-radius:8px;background:linear-gradient(135deg, #fef2f2 0%, #f8fafc 100%);border:2px solid rgba(201,24,24,0.3);border-left:5px solid #c91818;box-shadow:0 4px 12px rgba(0,0,0,0.03);"><div style="display:flex;align-items:center;gap:0.5rem;color:#c91818;font-weight:800;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.65rem;"><span>📢</span> <span>Aviso Especial / Información Relevante</span></div><div style="font-size:1.05rem;line-height:1.75;color:#1e293b;">' . $boxContent . '</div></div>';
+            continue;
+        }
+
+        // Check for pre-processed Figure
+        if (strpos($trimmed, '<DIV_FIG>') !== false) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            $figContent = str_replace(['<DIV_FIG>', '</DIV_FIG>'], '', $trimmed);
+            $html .= $figContent;
+            continue;
+        }
+
+        // Heading 3 (###)
+        if (preg_match('~^###\s+(.*)$~', $trimmed, $m)) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            $html .= '<h3 style="font-family:var(--font-serif);font-size:1.35rem;font-weight:800;color:#1e3a8a;margin:2.25rem 0 0.85rem;">' . $formatInline($m[1]) . '</h3>';
+            continue;
+        }
+        // Heading 2 (##)
+        if (preg_match('~^##\s+(.*)$~', $trimmed, $m)) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            $html .= '<h2 style="font-family:var(--font-serif);font-size:1.65rem;font-weight:900;color:#111111;margin:2.5rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #e2e8f0;">' . $formatInline($m[1]) . '</h2>';
+            continue;
+        }
+        // Heading 1 (#)
+        if (preg_match('~^#\s+(.*)$~', $trimmed, $m)) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            $html .= '<h2 style="font-family:var(--font-serif);font-size:1.85rem;font-weight:900;color:#111111;margin:2.75rem 0 1rem;padding-bottom:0.5rem;border-bottom:2px solid #e2e8f0;">' . $formatInline($m[1]) . '</h2>';
+            continue;
+        }
+
+        // Quote
+        if (strpos($trimmed, '>') === 0) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            $flushPara();
+            $inQuote = true;
+            $quoteBuffer[] = trim(substr($trimmed, 1));
+            continue;
+        } elseif ($inQuote) {
+            $flushQuote();
+            $inQuote = false;
+        }
+
+        // Bullet List
+        if (preg_match('~^[-*•]\s+(.*)$~', $trimmed, $m)) {
+            if ($inQuote) { $flushQuote(); $inQuote = false; }
+            $flushPara();
+            if (!$inList) {
+                $html .= '<ul style="margin:1.25rem 0 1.5rem 1.25rem;padding:0;list-style:none;">';
+                $inList = true;
+            }
+            $html .= '<li style="display:flex;align-items:flex-start;gap:0.65rem;margin-bottom:0.5rem;color:#1f2937;font-size:1.05rem;"><span style="color:#c91818;font-weight:900;line-height:1;margin-top:0.35rem;">•</span><span>' . $formatInline($m[1]) . '</span></li>';
+            continue;
+        } elseif ($inList) {
+            $html .= '</ul>';
+            $inList = false;
+        }
+
+        $paraBuffer[] = $trimmed;
+    }
+
+    if ($inList) { $html .= '</ul>'; }
+    if ($inQuote) { $flushQuote(); }
+    $flushPara();
+
+    return $html;
+}
+
+$usedImages = [];
+$renderedContent = render_article_content($content, $images, $usedImages);
+
+// Exclude cover image and any in-text embedded images from the bottom gallery
+$excludedFromGallery = array_merge([$coverImage], $usedImages);
+$articleImages = array_values(array_filter($images, function($img) use ($excludedFromGallery) {
+    return !in_array($img, $excludedFromGallery);
+}));
 
 // Find related articles (same category or others)
 foreach ($posts as $p) {
@@ -94,20 +323,6 @@ foreach ($posts as $p) {
       font-size: 1.05rem;
       line-height: 1.85;
       color: #1f2937;
-    }
-    .article-body-text p {
-      margin-bottom: 1.35rem;
-    }
-    .article-body-text h2, .article-body-text h3 {
-      margin: 2rem 0 1rem;
-      color: #111111;
-      font-size: 1.4rem;
-    }
-    .article-body-text ul, .article-body-text ol {
-      margin: 1rem 0 1.5rem 1.5rem;
-    }
-    .article-body-text li {
-      margin-bottom: 0.5rem;
     }
     .post-nav-card {
       background: #ffffff;
@@ -247,12 +462,12 @@ foreach ($posts as $p) {
       </div>
       <?php endif; ?>
 
-      <!-- Article Body Paragraphs -->
+      <!-- Article Body Paragraphs with Rich Markdown Rendering -->
       <div class="article-body-text">
-        <?= $content ?>
+        <?= $renderedContent ?>
       </div>
 
-      <!-- Additional Photos Gallery -->
+      <!-- Additional Photos Gallery (Only photos not already embedded in content) -->
       <?php if (!empty($articleImages)): ?>
       <div style="margin: 3rem 0; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
         <h3 style="font-family:var(--font-sans); font-size:0.85rem; font-weight:800; text-transform:uppercase; color:var(--color-news-black); margin-bottom:1rem;">
@@ -267,7 +482,6 @@ foreach ($posts as $p) {
         </div>
       </div>
       <?php endif; ?>
-
 
       <!-- Next & Previous Post Navigation -->
       <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:3rem; padding-top:1.5rem; border-top:1px solid #e2e8f0;">

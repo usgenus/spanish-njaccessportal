@@ -14,49 +14,41 @@
       "createdAt": "2026-08-01 10:00:00"
     },
     {
-      "id": "b_2",
-      "title": "Alertas Sanitarias y Retiros Voluntarios de la FDA 2026",
-      "subtitle": "Información médica verificada y medidas de precaución inmediata sobre medicamentos retirados del mercado.",
-      "category": "ALERTA SANITARIA",
+      "id": "b_1787233816_9e06",
+      "title": "Healthcare Access Portal",
+      "subtitle": "El Portal De Salud De NJ",
+      "category": "CAMPAÑA ESPECIAL",
       "mediaType": "image",
-      "mediaUrl": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=2000&q=85&auto=format",
-      "linkUrl": "/noticias.html",
-      "linkText": "Consultar Alertas FDA →",
+      "mediaUrl": "/uploads/images/images_20260820_134920_d8082e.jpg",
+      "videoUrl": "",
+      "linkUrl": "/about.html#contacto",
+      "linkText": "Más Información →",
       "order": 2,
       "active": true,
-      "createdAt": "2026-08-02 11:30:00"
-    },
-    {
-      "id": "b_3",
-      "title": "Servicio de Navegación y Asistencia Médica en Español",
-      "subtitle": "Asesoría personalizada para resolver deudas médicas, elegir médicos de cabecera e interpretar análisis clínicos.",
-      "category": "ASISTENCIA AL PACIENTE",
-      "mediaType": "image",
-      "mediaUrl": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=2000&q=85&auto=format",
-      "linkUrl": "/servicio-premium-de-navegacion-y-acceso-a-la-salud.html",
-      "linkText": "Solicitar Asistencia →",
-      "order": 3,
-      "active": true,
-      "createdAt": "2026-08-03 09:15:00"
+      "createdAt": "2026-08-20 13:50:16",
+      "updatedAt": "2026-08-20 13:50:53"
     }
   ],
   "videos": [
     {
-      "id": "v_1",
-      "title": "Conozca los principales cambios y aumentos en Medicare para 2026",
-      "category": "Medicare",
-      "doctor": "Noticias Telemundo & Asesores de Salud",
-      "speaker": "Noticias Telemundo & Asesores de Salud",
+      "id": "v_1787097011_5c99",
+      "title": "Medicare 101: In Spanish",
+      "category": "medicare",
+      "doctor": "",
+      "speaker": "",
       "duration": "10:00",
-      "views": "145K",
-      "youtubeId": "TsdumJbTpTY",
-      "youtubeUrl": "https://www.youtube.com/watch?v=TsdumJbTpTY",
-      "videoUrl": "https://www.youtube.com/embed/TsdumJbTpTY?autoplay=1&rel=0&modestbranding=1",
-      "thumbnail": "https://i.ytimg.com/vi/TsdumJbTpTY/hqdefault.jpg",
-      "summary": "Reportaje informativo sobre los ajustes en los costos de salud, hospitalizaciones, deducibles y cambios de cobertura para los beneficiarios de Medicare en 2026.",
+      "views": "1.2K vistas",
+      "youtubeId": "kCr64-yG4NU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=kCr64-yG4NU",
+      "videoUrl": "https://www.youtube.com/embed/kCr64-yG4NU?autoplay=1",
+      "thumbnail": "https://img.youtube.com/vi/kCr64-yG4NU/hqdefault.jpg",
+      "summary": "Medicare 101: In Spanish",
+      "description": "Medicare 101: In Spanish",
       "order": 1,
       "status": "published",
-      "active": true
+      "active": true,
+      "createdAt": "2026-08-18 23:50:11",
+      "updatedAt": "2026-08-19 00:32:53"
     },
     {
       "id": "v_2",
@@ -65,7 +57,7 @@
       "doctor": "Noticias Telemundo & Especialistas en Neurología",
       "speaker": "Noticias Telemundo & Especialistas en Neurología",
       "duration": "08:40",
-      "views": "112K",
+      "views": "112K vistas",
       "youtubeId": "7J0FeALmzws",
       "youtubeUrl": "https://www.youtube.com/watch?v=7J0FeALmzws",
       "videoUrl": "https://www.youtube.com/embed/7J0FeALmzws?autoplay=1&rel=0&modestbranding=1",
@@ -73,7 +65,8 @@
       "summary": "Aprenda a detectar las señales tempranas de un accidente cerebrovascular (ACV) y cómo actuar durante la ventana crítica de atención médica de urgencia.",
       "order": 2,
       "status": "published",
-      "active": true
+      "active": true,
+      "updatedAt": "2026-08-18 23:47:57"
     },
     {
       "id": "v_3",
@@ -82,7 +75,7 @@
       "doctor": "Mayo Clinic en Español & Dra. Carmen Terzic",
       "speaker": "Mayo Clinic en Español & Dra. Carmen Terzic",
       "duration": "12:15",
-      "views": "128K",
+      "views": "128K vistas",
       "youtubeId": "YidRfID9rvc",
       "youtubeUrl": "https://www.youtube.com/watch?v=YidRfID9rvc",
       "videoUrl": "https://www.youtube.com/embed/YidRfID9rvc?autoplay=1&rel=0&modestbranding=1",
@@ -90,7 +83,8 @@
       "summary": "Explicación médica clara en español sobre los factores de riesgo de la enfermedad cardiovascular, síntomas atípicos y prevención en la comunidad hispana.",
       "order": 3,
       "status": "published",
-      "active": true
+      "active": true,
+      "updatedAt": "2026-08-18 23:47:57"
     },
     {
       "id": "v_4",
@@ -99,7 +93,7 @@
       "doctor": "Mayo Clinic en Español & Especialistas en Oncología",
       "speaker": "Mayo Clinic en Español & Especialistas en Oncología",
       "duration": "09:07",
-      "views": "94K",
+      "views": "94K vistas",
       "youtubeId": "rlpN249ucDI",
       "youtubeUrl": "https://www.youtube.com/watch?v=rlpN249ucDI",
       "videoUrl": "https://www.youtube.com/embed/rlpN249ucDI?autoplay=1&rel=0&modestbranding=1",
@@ -107,7 +101,8 @@
       "summary": "Conversación especializada sobre la importancia de las mamografías periódicas, detección oportuna y tratamientos avanzados para la salud femenina.",
       "order": 4,
       "status": "published",
-      "active": true
+      "active": true,
+      "updatedAt": "2026-08-18 23:47:57"
     },
     {
       "id": "v_5",
@@ -116,7 +111,7 @@
       "doctor": "Noticias Telemundo & Endocrinología",
       "speaker": "Noticias Telemundo & Endocrinología",
       "duration": "07:30",
-      "views": "86K",
+      "views": "86K vistas",
       "youtubeId": "oARWA-ebyhU",
       "youtubeUrl": "https://www.youtube.com/watch?v=oARWA-ebyhU",
       "videoUrl": "https://www.youtube.com/embed/oARWA-ebyhU?autoplay=1&rel=0&modestbranding=1",
@@ -124,17 +119,82 @@
       "summary": "Recomendaciones prácticas sobre horarios óptimos de ejercicio, control de glucosa y hábitos para personas con diabetes tipo 2 e hipertensión.",
       "order": 5,
       "status": "published",
-      "active": true
+      "active": true,
+      "updatedAt": "2026-08-18 23:47:57"
+    },
+    {
+      "id": "v_1787099124_d823",
+      "title": "test",
+      "category": "medical",
+      "doctor": "Mayo Clinic en Español",
+      "speaker": "Mayo Clinic en Español",
+      "duration": "10:00",
+      "views": "1.2K vistas",
+      "youtubeId": "kCr64-yG4NU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=kCr64-yG4NU",
+      "videoUrl": "https://www.youtube.com/embed/kCr64-yG4NU?autoplay=1",
+      "thumbnail": "https://img.youtube.com/vi/kCr64-yG4NU/hqdefault.jpg",
+      "summary": "",
+      "description": "",
+      "order": 7,
+      "status": "published",
+      "active": true,
+      "createdAt": "2026-08-19 00:25:24"
     }
   ],
   "posts": [
+    {
+      "id": "p_1787097342_feac",
+      "slug": "test2",
+      "title": "test2",
+      "category": "medicare",
+      "date": "2026-08-18",
+      "isTopStory": false,
+      "isLiveUpdate": true,
+      "excerpt": "seminar",
+      "coverImage": "/uploads/images/images_20260818_235531_9792c4.jpg",
+      "images": [
+        "/uploads/images/images_20260818_235531_9792c4.jpg"
+      ],
+      "videoUrl": "",
+      "readTime": "3 min de lectura",
+      "author": "Redacción Médica y Salud Pública",
+      "content": "kl",
+      "summaryPoints": [
+        "kl"
+      ],
+      "status": "published",
+      "createdAt": "2026-08-18 23:55:42"
+    },
+    {
+      "id": "p_1787096364_392e",
+      "slug": "test",
+      "title": "test",
+      "category": "Noticias de Salud",
+      "date": "2026-08-18",
+      "isTopStory": false,
+      "isLiveUpdate": true,
+      "excerpt": "esrsrse",
+      "coverImage": "/uploads/images/images_20260818_234901_8dbe83.png",
+      "images": [
+        "/uploads/images/images_20260818_234901_8dbe83.png"
+      ],
+      "videoUrl": "",
+      "readTime": "3 min de lectura",
+      "author": "Redacción Médica y Salud Pública",
+      "content": "serseres",
+      "summaryPoints": [],
+      "status": "published",
+      "createdAt": "2026-08-18 23:39:24",
+      "updatedAt": "2026-08-18 23:49:04"
+    },
     {
       "id": "eye-drops",
       "slug": "eye-drops",
       "title": "Más de 2 millones de frascos de gotas oftálmicas retirados del mercado en EE. UU. por posible contaminación",
       "category": "Retiro Voluntario FDA",
       "date": "2026-08-04",
-      "isTopStory": true,
+      "isTopStory": false,
       "isLiveUpdate": true,
       "excerpt": "La farmacéutica Lupin Pharmaceuticals ha iniciado voluntariamente el retiro del mercado en todo el territorio de Estados Unidos de más de 2.5 millones de frascos de suspensión oftálmica de prednisolona al 1% debido al hallazgo de partículas extrañas insolubles.",
       "coverImage": "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format",
@@ -144,14 +204,13 @@
       "videoUrl": "",
       "readTime": "2 min de lectura",
       "author": "Redacción Médica y Salud Pública",
-      "content": "<p>La farmacéutica Lupin Pharmaceuticals ha iniciado voluntariamente el retiro del mercado en todo el territorio de Estados Unidos de más de 2.5 millones de frascos de suspensión oftálmica de prednisolona al 1%, debido al hallazgo de partículas extrañas insolubles durante los análisis periódicos de estabilidad del producto.</p><h4 style='margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;'>Cómo verificar los productos afectados</h4><p>Si actualmente está utilizando este producto, verifique los siguientes datos en el envase:</p><ul style='padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;'><li><strong>Nombre del producto:</strong> Prednisolone Acetate Ophthalmic Suspension USP, 1%</li><li><strong>Fabricante:</strong> Lupin Pharmaceuticals</li><li><strong>Número de lote:</strong> Verifique en el aviso oficial de retiro de la FDA (fda.gov/safety/recalls)</li><li><strong>Período de distribución:</strong> Lotes fabricados entre enero de 2025 y junio de 2026</li></ul><h4 style='margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;'>Medidas inmediatas recomendadas</h4><p>Suspenda el uso y consulte a su oftalmólogo o farmacéutico de cabecera.</p>",
+      "content": "<p>Lupin Pharmaceuticals ha anunciado el retiro voluntario del mercado de aproximadamente 2.5 millones de frascos de suspensión oftálmica de prednisolona recetada al 1% debido a la posible presencia de partículas extrañas. La Administración de Alimentos y Medicamentos de EE. UU. (FDA) ha clasificado este retiro como Clase II, lo que significa que el uso del producto afectado puede provocar problemas de salud temporales o reversibles.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Cómo verificar los productos afectados por el retiro</h4><p>Si actualmente está utilizando este producto, verifique los siguientes datos:</p><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Nombre del producto:</strong> Prednisolone Acetate Ophthalmic Suspension USP, 1%</li><li><strong>Fabricante:</strong> Lupin Pharmaceuticals</li><li><strong>Número de lote:</strong> Verifique en el aviso oficial de retiro de la FDA (fda.gov/safety/recalls)</li><li><strong>Período de distribución:</strong> Lotes fabricados entre enero de 2025 y junio de 2026</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Medidas inmediatas que debe tomar</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li>Suspenda inmediatamente el uso del producto afectado.</li><li>Comuníquese con su médico de cabecera o oftalmólogo para consultar sobre su receta actual.</li><li>Devuelva los productos sin abrir al lugar de compra para recibir un reembolso.</li><li>Si experimenta alguna reacción adversa, infórmelo a FDA MedWatch (1-800-FDA-1088).</li><li>⚠️ <strong>ADVERTENCIA:</strong> Suspender abruptamente las gotas oftálmicas de esteroides puede empeorar los síntomas. Asegúrese de consultar a su médico antes de solicitar una receta de reemplazo.</li></ul><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> FDA.gov — Lupin Pharmaceuticals Voluntarily Recalls Eye Drops</p>",
       "summaryPoints": [
-        "Retiro voluntario nacional clasificado por la FDA.",
-        "Afecta a lotes distribuidos entre 2025 y 2026.",
-        "Consulte con su médico antes de suspender abruptamente esteroides."
+        "Retiro voluntario Clase II de 2.5M de frascos de suspensión oftálmica de prednisolona 1%",
+        "Verifique número de lote y fecha de fabricación antes de continuar su aplicación",
+        "Línea de orientación gratuita en español para pacientes de Nueva Jersey al 1-800-999-7200"
       ],
-      "status": "published",
-      "createdAt": "2026-08-04 08:30:00"
+      "status": "published"
     },
     {
       "id": "ai-health-assistant",
@@ -160,23 +219,22 @@
       "category": "Salud & Tecnología",
       "date": "2026-08-02",
       "isTopStory": false,
-      "isLiveUpdate": false,
-      "excerpt": "Nuevas aplicaciones de asistencia digital e inteligencia artificial reducen errores de dosificación en personas mayores de 65 años con múltiples recetas médicas.",
+      "isLiveUpdate": true,
+      "excerpt": "Nuevos sistemas basados en IA reducen errores de dosificación en adultos mayores con múltiples recetas simultáneas, ofreciendo interfaz e instrucciones en español.",
       "coverImage": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>Se han publicado los resultados de una investigación que demuestra cómo las aplicaciones de gestión de la salud basadas en Inteligencia Artificial están brindando una ayuda práctica a los pacientes de edad avanzada que deben administrar horarios complejos de medicamentos.</p>",
+      "author": "Dr. Carlos Rodríguez",
+      "content": "<p>Se han publicado los resultados de una investigación que demuestra cómo las aplicaciones de gestión de la salud basadas en Inteligencia Artificial (IA) y los asistentes digitales están brindando una ayuda práctica a los pacientes de edad avanzada que deben administrar horarios complejos de medicamentos. Esta tecnología resulta especialmente beneficiosa para pacientes que padecen múltiples enfermedades crónicas simultáneas y deben tomar diversos fármacos.</p><p>Más del 40% de los adultos mayores de 65 años toman 5 o más medicamentos recetados, y se estima que los errores en la administración de medicamentos están relacionados con más de 7,000 muertes al año en los Estados Unidos.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Funciones principales del Asistente de Salud AI</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Recordatorios de medicamentos:</strong> Notificaciones precisas según un calendario personalizado.</li><li><strong>Verificación de interacción de medicamentos:</strong> Advertencias sobre interacciones peligrosas entre los fármacos ingeridos.</li><li><strong>Seguimiento de recargas:</strong> Recordatorios automáticos para renovar recetas médicas en la farmacia.</li><li><strong>Gestión de registros de salud:</strong> Registro automático y seguimiento de indicadores de salud como presión arterial y glucemia.</li><li><strong>Comunicación con el equipo médico:</strong> Facilidad para compartir información de salud con su médico tratante.</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Recomendaciones para la comunidad hispana</h4><p>Existe un número creciente de aplicaciones que ofrecen interfaz totalmente en español para superar las barreras del idioma. Si le resulta difícil usar un teléfono inteligente, consulte con nuestro centro o centro comunitario local para recibir programas de orientación.</p><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> Journal of Medical Internet Research — AI-Powered Medication Management for Older Adults</p>",
       "summaryPoints": [
-        "Recordatorios inteligentes de dosificación diaria.",
-        "Verificación cruzada de interacciones medicamentosas.",
-        "Mayor adherencia al tratamiento en pacientes crónicos."
+        "Reducción de más del 50% en olvidos de dosificación en adultos mayores",
+        "Verificación automática de interacciones farmacológicas peligrosas",
+        "Disponibilidad con traducción completa y asistencia en español"
       ],
-      "status": "published",
-      "createdAt": "2026-08-02 14:20:00"
+      "status": "published"
     },
     {
       "id": "living-longer",
@@ -184,178 +242,175 @@
       "title": "De 'Vivir Más' a 'Vivir Mejor': El Enfoque de la Longevidad Cambia en EE. UU.",
       "category": "Geriatría & Bienestar",
       "date": "2026-08-02",
-      "isTopStory": false,
+      "isTopStory": true,
       "isLiveUpdate": false,
-      "excerpt": "Expertos en geriatría destacan que mantener la masa muscular y la salud cardiovascular son los pilares fundamentales para una vejez independiente y lúcida.",
+      "excerpt": "Especialistas destacan que la nutrición mediterránea, el ejercicio de resistencia y el descanso reparador son los pilares fundamentales para mantener la agilidad mental y la autonomía.",
       "coverImage": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>En los últimos años, el debate en torno al envejecimiento en los Estados Unidos ha evolucionado de la simple extensión de la esperanza de vida al concepto de 'Healthspan' o esperanza de vida saludable.</p>",
+      "author": "Dra. Sofía Martínez",
+      "content": "<p>Aunque los dispositivos antienvejecimiento y los costosos suplementos para la longevidad ocupan con frecuencia los titulares de los medios, los principales expertos en geriatría advierten que extender la esperanza de vida tiene poco sentido si los años adicionales transcurren únicamente en el manejo de enfermedades graves. Según las estadísticas, mientras que el 60% de los jóvenes padece al menos una enfermedad crónica, entre los adultos mayores este porcentaje aumenta drásticamente al 90%. Las enfermedades cardíacas, la diabetes tipo 2, los accidentes cerebrovasculares y la degeneración articular siguen siendo las causas principales de discapacidad física en la madurez.</p><p>Destacados biogerontólogos explican que, aunque el envejecimiento en sí no es una enfermedad, es un proceso que vuelve al organismo mucho más vulnerable a las afecciones crónicas. Aunque tecnologías futuristas como la edición genética CRISPR muestran potencial en laboratorio, los médicos enfatizan que adoptar hábitos de vida sencillos y comprobados sigue siendo la estrategia más eficaz para mantener una vida independiente y activa.</p><p>Adoptar una dieta mediterránea, combinar ejercicio aeróbico con entrenamiento de fuerza, dormir entre 7 y 8 horas por noche y mantener interacción social regular son métodos científicamente probados para aumentar el 'Healthspan' (esperanza de vida con buena salud). Prevenir enfermedades crónicas entre los 40 y 50 años es mucho más sencillo y económico que tratarlas a los 70 años.</p>",
       "summaryPoints": [
-        "Enfoque en vitalidad y autonomía funcional.",
-        "Alimentación mediterránea y ejercicio de fuerza.",
-        "Prevención temprana del deterioro cognitivo."
+        "Prioridad del 'Healthspan' (años de vida activos sin discapacidad) sobre la longevidad cronológica",
+        "El entrenamiento de fuerza y masa muscular previene el 50% de caídas graves",
+        "La interacción comunitaria y el chequeo preventivo anual son determinantes"
       ],
       "status": "published",
-      "createdAt": "2026-08-02 10:10:00"
+      "updatedAt": "2026-08-19 01:14:39"
     },
     {
       "id": "fda-corazon",
       "slug": "fda-corazon",
-      "title": "Retiro de la FDA: 1 Millón de frascos de medicamentos cardíacos retirados del mercado",
+      "title": "Retiro de la FDA: Cerca de 1 Millón de Frascos de Medicamentos Cardíacos y Renales",
       "category": "Retiro Voluntario FDA",
       "date": "2026-07-30",
       "isTopStory": false,
       "isLiveUpdate": false,
-      "excerpt": "Alerta oficial sobre tabletas para el control de la presión arterial y protección renal por discrepancias en las pruebas de disolución del principio activo.",
+      "excerpt": "Alerta preventiva oficial sobre lotes específicos de Corlanor (ivabradina) y Sensipar (cinacalcet) por discrepancias de partículas en el recubrimiento de tabletas.",
       "coverImage": "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "2 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>La FDA ha emitido un comunicado conjunto alertando sobre la retirada voluntaria de lotes específicos de medicamentos para la hipertensión arterial debido a irregularidades en los estándares de disolución farmacológica.</p>",
+      "author": "Redacción Médica",
+      "content": "<p>La compañía farmacéutica global Amgen ha anunciado el retiro voluntario de lotes específicos de dos medicamentos, Corlanor (ivabradina) y Sensipar (cinacalcet), debido a la detección de partículas extrañas imprevistas durante el proceso de recubrimiento de las tabletas.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Medicamentos afectados por el retiro</h4><p><strong>Corlanor (Ivabradine)</strong></p><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.3rem;\"><li><strong>Uso:</strong> Tratamiento de la insuficiencia cardíaca crónica.</li><li><strong>Motivo del retiro:</strong> Presencia de partículas extrañas en el polvo de recubrimiento.</li><li><strong>Lotes afectados:</strong> Consulte el aviso oficial de la FDA.</li></ul><p><strong>Sensipar (Cinacalcet)</strong></p><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.3rem;\"><li><strong>Uso:</strong> Tratamiento del hiperparatiroidismo secundario en pacientes con enfermedad renal crónica.</li><li><strong>Motivo del retiro:</strong> Mismo problema de recubrimiento por partículas.</li><li><strong>Lotes afectados:</strong> Consulte el aviso oficial de la FDA.</li></ul>",
       "summaryPoints": [
-        "Fármacos para la presión arterial y función renal.",
-        "Lotes específicos identificados con números de control.",
-        "Orientación al paciente para cambio de receta médica."
+        "Retiro voluntario preventivo de lotes de Corlanor y Sensipar",
+        "No suspenda el tratamiento sin consultar antes con su médico de cabecera",
+        "Consulte con su farmacia habitual para verificar su código de lote"
       ],
-      "status": "published",
-      "createdAt": "2026-07-30 16:45:00"
+      "status": "published"
     },
     {
       "id": "glp1-medicare",
       "slug": "glp1-medicare",
-      "title": "Medicare aprueba proyecto piloto para la cobertura de tratamientos GLP-1",
+      "title": "Medicare Inicia Proyecto Piloto para la Cobertura de Tratamientos GLP-1",
       "category": "Medicare & ACA",
       "date": "2026-07-30",
       "isTopStory": false,
       "isLiveUpdate": false,
-      "excerpt": "Centros de Medicare & Medicaid Services (CMS) dan luz verde a programas piloto para cubrir terapias inyectables en pacientes con riesgo cardiovascular elevado.",
+      "excerpt": "Se aprueba cobertura ampliada para beneficiarios con alto riesgo cardiovascular y condiciones metabólicas crónicas.",
       "coverImage": "https://images.unsplash.com/photo-1607874963930-2edecc67a25a?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1607874963930-2edecc67a25a?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>Los Centros de Servicios de Medicare y Medicaid han anunciado una resolución preliminar que permite la cobertura de medicamentos de la clase GLP-1 bajo ciertas condiciones clínicas estrictas.</p>",
+      "author": "Equipo de Políticas de Salud",
+      "content": "<p>Medicare ha anunciado el lanzamiento oficial de un proyecto piloto de cobertura para medicamentos agonistas de GLP-1 destinados a la reducción de peso y la mejora de la salud cardíaca. Se espera que esta política mejore drásticamente el acceso de millones de beneficiarios de Medicare a medicamentos de alto costo como Ozempic y Wegovy.</p><p>Anteriormente, la Parte D de Medicare prohibía expresamente la cobertura de fármacos prescritos únicamente para el control de peso. Sin embargo, este programa piloto adopta un nuevo enfoque al expandir la cobertura de estos medicamentos basándose en la evidencia clínica que demuestra la reducción del riesgo cardiovascular.</p>",
       "summaryPoints": [
-        "Cobertura para pacientes con comorbilidades cardíacas.",
-        "Aprobación a través de planes Medicare Advantage selectos.",
-        "Requisitos de pre-autorización médica detallados."
+        "Inclusión de fármacos GLP-1 bajo la Parte D de Medicare por indicación cardiovascular",
+        "Reducción significativa de los costos de bolsillo y copagos de farmacia",
+        "Válido para residentes de Nueva Jersey calificados"
       ],
-      "status": "published",
-      "createdAt": "2026-07-30 09:30:00"
+      "status": "published"
     },
     {
       "id": "sueno-demencia",
       "slug": "sueno-demencia",
-      "title": "Sueño profundo y eliminación de residuos cerebrales contra el Alzheimer",
+      "title": "Sueño Profundo y Depuración Cerebral: Clave en la Prevención del Alzheimer",
       "category": "Neurología",
       "date": "2026-07-29",
       "isTopStory": false,
       "isLiveUpdate": false,
-      "excerpt": "El sistema glinfático cerebral drena proteínas tóxicas durante las etapas de sueño no-REM continuo, reduciendo el riesgo neurodegenerativo a largo plazo.",
+      "excerpt": "Nuevas investigaciones confirman que la fase de sueño profundo activa el sistema glinfático para eliminar toxinas amiloides acumuladas en el cerebro.",
       "coverImage": "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>Investigaciones neurológicas recientes destacan la función esencial del sistema glinfático, el cual se activa intensamente durante el sueño profundo para limpiar acumulaciones de proteína beta-amiloide en el cerebro.</p>",
+      "author": "Dra. Sofía Martínez",
+      "content": "<p>Una nueva investigación revela que el sueño profundo y de alta calidad desempeña un papel crucial en la activación del sistema glinfático, el mecanismo natural de depuración del cerebro que elimina las proteínas tóxicas asociadas con la enfermedad de Alzheimer y otras formas de demencia.</p><p>Los científicos han descubierto que durante el sueño, especialmente en la fase de onda lenta (sueño profundo), el líquido cefalorraquídeo fluye activamente a través del tejido cerebral para limpiar residuos acumulados como las proteínas beta-amiloide y tau, identificadas como causas principales del Alzheimer.</p>",
       "summaryPoints": [
-        "Activación del sistema de limpieza cerebral nocturno.",
-        "Importancia de mantener horarios regulares de descanso.",
-        "Factores protectores frente al deterioro cognitivo."
+        "Activación del sistema glinfático durante el sueño profundo de onda lenta",
+        "Dormir menos de 6 horas diarias eleva hasta un 30% el riesgo cognitivo",
+        "Recomendaciones prácticas de higiene del sueño para adultos mayores"
       ],
-      "status": "published",
-      "createdAt": "2026-07-29 11:20:00"
+      "status": "published"
     },
     {
       "id": "ejercicio-fuerza",
       "slug": "ejercicio-fuerza",
-      "title": "Fuerza muscular a los 60+: Prevención efectiva de caídas en adultos mayores",
+      "title": "Entrenamiento de Fuerza Después de los 60: Vital para Prevenir Caídas",
       "category": "Geriatría & Bienestar",
       "date": "2026-07-29",
       "isTopStory": false,
       "isLiveUpdate": false,
-      "excerpt": "Rutinas sencillas de entrenamiento de resistencia dos veces por semana reducen significativamente el riesgo de fracturas y mejoran el equilibrio.",
+      "excerpt": "El Colegio Americano de Medicina del Deporte recomienda dos sesiones semanales de fortalecimiento muscular para mantener el equilibrio y la movilidad independiente.",
       "coverImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
-      "readTime": "2 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>Especialistas en medicina física y geriatría recomiendan ejercicios de resistencia progresiva para combatir la sarcopenia y preservar la densidad ósea en adultos mayores.</p>",
+      "readTime": "3 min de lectura",
+      "author": "Dr. Carlos Rodríguez",
+      "content": "<p>Investigaciones recientes reafirman que el entrenamiento de fuerza después de los 60 años desempeña un papel vital en la prevención de caídas y en el mantenimiento de una vida independiente. El Colegio Estadounidense de Medicina del Deporte (ACSM) recomienda que los adultos mayores de 65 años realicen al menos dos sesiones semanales de ejercicios de fortalecimiento muscular.</p><p>La sarcopenia (pérdida progresiva de masa muscular) comienza a partir de los 40 años, reduciendo la masa muscular entre un 3% y un 8% cada década. Sin embargo, está científicamente demostrado que el ejercicio de resistencia adecuado puede ralentizar o revertir este proceso.</p>",
       "summaryPoints": [
-        "Preservación de la masa muscular esquelética.",
-        "Mejora notable del equilibrio y la postura.",
-        "Reducción del 40% en hospitalizaciones por caídas."
+        "Ejercicios sencillos con peso corporal, sillas y bandas elásticas",
+        "Reducción del 50% en el riesgo de fracturas y caídas accidentales",
+        "Mejora de la sensibilidad a la insulina y control de glucosa"
       ],
-      "status": "published",
-      "createdAt": "2026-07-29 08:00:00"
+      "status": "published"
     },
     {
       "id": "tecnologia-homecare",
       "slug": "tecnologia-homecare",
-      "title": "Medicare expande la cobertura de tecnología de monitoreo en el hogar",
+      "title": "Medicare Expande Cobertura de Monitoreo Remoto de Pacientes en el Hogar",
       "category": "Medicare & ACA",
       "date": "2026-07-26",
       "isTopStory": false,
       "isLiveUpdate": false,
-      "excerpt": "Glucómetros continuos, tensiómetros digitales conectados y equipos de telemetría son aprobados como equipo médico duradero para cuidados domiciliarios.",
+      "excerpt": "Dispositivos digitales como glucómetros continuos, tensiómetros remotos y estetoscopios virtuales ahora cubiertos bajo la Parte B para pacientes con enfermedades crónicas.",
       "coverImage": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80&auto=format",
       "images": [
         "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80&auto=format"
       ],
       "videoUrl": "",
       "readTime": "3 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>La ampliación de los beneficios de Medicare para dispositivos médicos duraderos en el hogar permite un control remoto más cercano de pacientes con diabetes e hipertensión arterial.</p>",
+      "author": "Equipo de Políticas de Salud",
+      "content": "<p>Medicare ha implementado una nueva política que amplía de manera sustancial la cobertura de tecnologías médicas domiciliarias para beneficiarios con enfermedades crónicas. Esta actualización permite a los pacientes con diabetes, insuficiencia cardíaca o enfermedad pulmonar obstructiva crónica (EPOC) recibir un seguimiento de salud más preciso desde la comodidad de su hogar.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Lista de tecnologías aprobadas para cobertura</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Monitores Continuos de Glucosa (MCG):</strong> Dispositivos de seguimiento de glucemia en tiempo real para pacientes con diabetes.</li><li><strong>Monitoreo Remoto de Pacientes (RPM):</strong> Transmisión remota de presión arterial, saturación de oxígeno y frecuencia cardíaca.</li><li><strong>Estetoscopios Digitales:</strong> Permiten a los médicos auscultar ruidos cardíacos y pulmonares a distancia.</li><li><strong>Dispensadores Inteligentes de Medicamentos:</strong> Dosificación y verificación automática de ingesta de fármacos.</li></ul>",
       "summaryPoints": [
-        "Transmisión de datos médicos directamente al doctor.",
-        "Reducción de visitas innecesarias a salas de emergencia.",
-        "Cobertura ampliada bajo la Parte B de Medicare."
+        "Cobertura total de monitoreo remoto de presión arterial y glucosa para pacientes de NJ",
+        "Consultas de telemedicina por video sin necesidad de traslados a la clínica",
+        "Asistencia de registro paso a paso en español por el centro de NJ"
       ],
-      "status": "published",
-      "createdAt": "2026-07-26 15:30:00"
+      "status": "published"
     }
   ],
   "categories": {
     "news": [
-      "Noticias de Salud",
+      "Todos",
       "Retiro Voluntario FDA",
       "Salud & Tecnología",
       "Geriatría & Bienestar",
       "Medicare & ACA",
       "Neurología",
-      "Cardiovascular",
       "Enfermedades Crónicas",
-      "Política Sanitaria"
+      "Política Sanitaria",
+      "한인 건강 특강",
+      "Noticias de Salud",
+      "medicare"
     ],
     "videos": [
-      "Medicare",
+      "Todos",
       "Cardiovascular",
       "Neurología",
       "Prevención de Cáncer",
       "Enfermedades Crónicas",
       "Geriatría",
-      "Nutrición & Bienestar"
+      "medicare",
+      "medical"
     ],
     "billboards": [
       "CAMPAÑA ESPECIAL",
       "ALERTA SANITARIA",
       "ASISTENCIA AL PACIENTE",
-      "MEDICARE 2026",
-      "PREVENCIÓN"
+      "ACTUALIZACIÓN MEDICARE"
     ]
   }
 }
