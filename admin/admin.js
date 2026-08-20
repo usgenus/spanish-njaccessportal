@@ -587,6 +587,7 @@ function renderPosts() {
             ${p.isTopStory ? '<span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow animate-pulse">🔥 TOP STORY</span>' : ''}
             ${p.isDoctorColumn ? '<span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">📈 LO MÁS LEÍDO</span>' : ''}
             ${p.isLiveUpdate ? '<span class="bg-amber-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">⭐ DESTACADOS</span>' : ''}
+            ${p.isPolicyReport ? '<span class="bg-indigo-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">🏛 POLÍTICA & MEDICARE</span>' : ''}
           </div>
         </div>
 
@@ -652,6 +653,7 @@ function updateExposureCheckboxLimits(currentEditingPostId) {
   
   let liveCount = 0;
   let doctorCount = 0;
+  let policyCount = 0;
 
   posts.forEach(p => {
     if (currentEditingPostId && (p.id === currentEditingPostId || (p.slug && p.slug === currentEditingPostId))) return;
@@ -662,24 +664,29 @@ function updateExposureCheckboxLimits(currentEditingPostId) {
     if (p.isDoctorColumn === true || p.isDoctorColumn === 'true' || p.isDoctorColumn === 1 || p.isDoctorColumn === '1') {
       doctorCount++;
     }
+    if (p.isPolicyReport === true || p.isPolicyReport === 'true' || p.isPolicyReport === 1 || p.isPolicyReport === '1') {
+      policyCount++;
+    }
   });
 
   const liveInput = document.getElementById('post-liveupdate-input');
   const liveLabel = document.querySelector('label[for="post-liveupdate-input"]');
   const doctorInput = document.getElementById('post-doctorcolumn-input');
   const doctorLabel = document.querySelector('label[for="post-doctorcolumn-input"]');
+  const policyInput = document.getElementById('post-policyreport-input');
+  const policyLabel = document.querySelector('label[for="post-policyreport-input"]');
 
   // REPORTAJES DESTACADOS (Max 4)
   if (liveInput && liveLabel) {
     if (!liveInput.checked && liveCount >= 4) {
       liveInput.disabled = true;
       liveInput.parentElement.classList.add('opacity-40', 'cursor-not-allowed');
-      liveLabel.innerHTML = 'Feature in REPORTAJES DESTACADOS <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 4 featured: Slots Full)</span>';
+      liveLabel.innerHTML = '⭐ Feature in REPORTAJES DESTACADOS <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 4 featured: Slots Full)</span>';
     } else {
       liveInput.disabled = false;
       liveInput.parentElement.classList.remove('opacity-40', 'cursor-not-allowed');
       const currentVal = liveInput.checked ? liveCount + 1 : liveCount;
-      liveLabel.innerHTML = 'Feature in REPORTAJES DESTACADOS <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/4)</span>';
+      liveLabel.innerHTML = '⭐ Feature in REPORTAJES DESTACADOS <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/4)</span>';
     }
   }
 
@@ -696,6 +703,20 @@ function updateExposureCheckboxLimits(currentEditingPostId) {
       doctorLabel.innerHTML = '📈 Feature in LO MÁS LEÍDO <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/5)</span>';
     }
   }
+
+  // POLÍTICA SANITARIA Y MEDICARE (Max 4)
+  if (policyInput && policyLabel) {
+    if (!policyInput.checked && policyCount >= 4) {
+      policyInput.disabled = true;
+      policyInput.parentElement.classList.add('opacity-40', 'cursor-not-allowed');
+      policyLabel.innerHTML = '🏛 Feature in POLÍTICA SANITARIA Y MEDICARE <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 4 featured: Slots Full)</span>';
+    } else {
+      policyInput.disabled = false;
+      policyInput.parentElement.classList.remove('opacity-40', 'cursor-not-allowed');
+      const currentVal = policyInput.checked ? policyCount + 1 : policyCount;
+      policyLabel.innerHTML = '🏛 Feature in POLÍTICA SANITARIA Y MEDICARE <span class="text-xs text-indigo-400 font-bold">(' + currentVal + '/4)</span>';
+    }
+  }
 }
 
 function openPostModal() {
@@ -708,6 +729,8 @@ function openPostModal() {
   if (liveCheck) liveCheck.checked = false;
   const topCheck = document.getElementById('post-topstory-input');
   if (topCheck) topCheck.checked = false;
+  const policyCheck = document.getElementById('post-policyreport-input');
+  if (policyCheck) policyCheck.checked = false;
   document.getElementById('modal-post-title').innerHTML = '<i class="fa-solid fa-pen-nib text-emerald-400"></i> <span>Write Health News Article</span>';
   
   updateExposureCheckboxLimits(null);
@@ -965,6 +988,10 @@ function editPost(id) {
   if (dcCheck) {
     dcCheck.checked = Boolean(p.isDoctorColumn === true || p.isDoctorColumn === 'true' || p.isDoctorColumn === 1 || p.isDoctorColumn === '1');
   }
+  const polCheck = document.getElementById('post-policyreport-input');
+  if (polCheck) {
+    polCheck.checked = Boolean(p.isPolicyReport === true || p.isPolicyReport === 'true' || p.isPolicyReport === 1 || p.isPolicyReport === '1');
+  }
 
   updateExposureCheckboxLimits(p.id);
 
@@ -1201,7 +1228,8 @@ async function handleSavePost(e) {
     content: document.getElementById('post-content-input').value,
     isDoctorColumn: document.getElementById('post-doctorcolumn-input') ? document.getElementById('post-doctorcolumn-input').checked : false,
     isTopStory: document.getElementById('post-topstory-input').checked,
-    isLiveUpdate: document.getElementById('post-liveupdate-input').checked
+    isLiveUpdate: document.getElementById('post-liveupdate-input').checked,
+    isPolicyReport: document.getElementById('post-policyreport-input') ? document.getElementById('post-policyreport-input').checked : false
   };
 
   try {

@@ -56,21 +56,14 @@ foreach ($posts as $p) {
     }
 }
 
-// Filter specifically for 4 postings categorized as Medicare & ACA
-$medicareAcaPosts = array_values(array_filter($posts, function($p) {
-    $cat = mb_strtolower(trim($p['category'] ?? ''));
-    return str_contains($cat, 'medicare') || str_contains($cat, 'aca') || str_contains($cat, 'política') || str_contains($cat, 'politica') || str_contains($cat, 'cobertura');
-}));
-
-if (count($medicareAcaPosts) < 4) {
-    foreach ($posts as $p) {
-        if (!in_array($p['id'], array_column($medicareAcaPosts, 'id'))) {
-            $medicareAcaPosts[] = $p;
-            if (count($medicareAcaPosts) === 4) break;
-        }
+// INFORMES DE POLÍTICA SANITARIA Y MEDICARE: ONLY posts explicitly check-marked with isPolicyReport (max 4)
+$medicareAcaPosts = [];
+foreach ($posts as $p) {
+    if (!empty($p['isPolicyReport']) && $p['isPolicyReport'] !== 'false' && $p['isPolicyReport'] !== 0) {
+        $medicareAcaPosts[] = $p;
+        if (count($medicareAcaPosts) === 4) break;
     }
 }
-$medicareAcaPosts = array_slice($medicareAcaPosts, 0, 4);
 
 // Live update headline
 $liveHeadline = !empty($posts[0]['title']) ? $posts[0]['title'] : 'Guía de elegibilidad para Medicare y ACA Obamacare 2026 en Nueva Jersey disponible para residentes hispanos';

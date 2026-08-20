@@ -761,18 +761,22 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div class="flex items-center gap-2">
-            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
-            <label for="post-doctorcolumn-input" class="font-bold text-blue-400 text-xs sm:text-sm">📈 Feature in LO MÁS LEÍDO (Trending Top 5)</label>
-          </div>
-          <div class="flex items-center gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60">
             <input type="checkbox" id="post-topstory-input" name="isTopStory" class="w-4 h-4 rounded text-amber-500 bg-slate-800 border-slate-700">
-            <label for="post-topstory-input" class="font-bold text-amber-400 text-xs sm:text-sm">🔥 Feature as TOP STORY Headline</label>
+            <label for="post-topstory-input" class="font-bold text-amber-400 text-xs cursor-pointer">🔥 Feature as TOP STORY Headline</label>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60">
             <input type="checkbox" id="post-liveupdate-input" name="isLiveUpdate" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
-            <label for="post-liveupdate-input" class="font-semibold text-slate-300 text-xs sm:text-sm">Feature in REPORTAJES DESTACADOS (Featured Reports)</label>
+            <label for="post-liveupdate-input" class="font-semibold text-slate-300 text-xs cursor-pointer">⭐ Feature in REPORTAJES DESTACADOS</label>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60">
+            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
+            <label for="post-doctorcolumn-input" class="font-bold text-blue-400 text-xs cursor-pointer">📈 Feature in LO MÁS LEÍDO</label>
+          </div>
+          <div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60">
+            <input type="checkbox" id="post-policyreport-input" name="isPolicyReport" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-indigo-500 bg-slate-800 border-slate-700">
+            <label for="post-policyreport-input" class="font-bold text-indigo-400 text-xs cursor-pointer">🏛 Feature in POLÍTICA SANITARIA Y MEDICARE</label>
           </div>
         </div>
 

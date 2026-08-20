@@ -144,6 +144,58 @@
   ],
   "posts": [
     {
+      "id": "eye-drops",
+      "slug": "eye-drops",
+      "title": "Más de 2 millones de frascos de gotas oftálmicas retirados del mercado en EE. UU. por posible contaminación",
+      "category": "Retiro Voluntario FDA",
+      "date": "2026-08-04",
+      "isTopStory": false,
+      "isLiveUpdate": false,
+      "excerpt": "La farmacéutica Lupin Pharmaceuticals ha iniciado voluntariamente el retiro del mercado en todo el territorio de Estados Unidos de más de 2.5 millones de frascos de suspensión oftálmica de prednisolona al 1% debido al hallazgo de partículas extrañas insolubles.",
+      "coverImage": "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format",
+      "images": [
+        "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format"
+      ],
+      "videoUrl": "",
+      "readTime": "2 min de lectura",
+      "author": "Redacción Médica y Salud Pública",
+      "content": "<p>Lupin Pharmaceuticals ha anunciado el retiro voluntario del mercado de aproximadamente 2.5 millones de frascos de suspensión oftálmica de prednisolona recetada al 1% debido a la posible presencia de partículas extrañas. La Administración de Alimentos y Medicamentos de EE. UU. (FDA) ha clasificado este retiro como Clase II, lo que significa que el uso del producto afectado puede provocar problemas de salud temporales o reversibles.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Cómo verificar los productos afectados por el retiro</h4><p>Si actualmente está utilizando este producto, verifique los siguientes datos:</p><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Nombre del producto:</strong> Prednisolone Acetate Ophthalmic Suspension USP, 1%</li><li><strong>Fabricante:</strong> Lupin Pharmaceuticals</li><li><strong>Número de lote:</strong> Verifique en el aviso oficial de retiro de la FDA (fda.gov/safety/recalls)</li><li><strong>Período de distribución:</strong> Lotes fabricados entre enero de 2025 y junio de 2026</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Medidas inmediatas que debe tomar</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li>Suspenda inmediatamente el uso del producto afectado.</li><li>Comuníquese con su médico de cabecera o oftalmólogo para consultar sobre su receta actual.</li><li>Devuelva los productos sin abrir al lugar de compra para recibir un reembolso.</li><li>Si experimenta alguna reacción adversa, infórmelo a FDA MedWatch (1-800-FDA-1088).</li><li>⚠️ <strong>ADVERTENCIA:</strong> Suspender abruptamente las gotas oftálmicas de esteroides puede empeorar los síntomas. Asegúrese de consultar a su médico antes de solicitar una receta de reemplazo.</li></ul><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> FDA.gov — Lupin Pharmaceuticals Voluntarily Recalls Eye Drops</p>",
+      "summaryPoints": [
+        "Retiro voluntario Clase II de 2.5M de frascos de suspensión oftálmica de prednisolona 1%",
+        "Verifique número de lote y fecha de fabricación antes de continuar su aplicación",
+        "Línea de orientación gratuita en español para pacientes de Nueva Jersey al 1-800-999-7200"
+      ],
+      "status": "published",
+      "isDoctorColumn": false,
+      "updatedAt": "2026-08-20 20:00:42"
+    },
+    {
+      "id": "ai-health-assistant",
+      "slug": "ai-health-assistant",
+      "title": "El Asistente de Salud AI apoya el control de medicamentos complejos en adultos mayores",
+      "category": "Salud & Tecnología",
+      "date": "2026-08-02",
+      "isTopStory": false,
+      "isLiveUpdate": false,
+      "excerpt": "Nuevos sistemas basados en IA reducen errores de dosificación en adultos mayores con múltiples recetas simultáneas, ofreciendo interfaz e instrucciones en español.",
+      "coverImage": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format",
+      "images": [
+        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format"
+      ],
+      "videoUrl": "",
+      "readTime": "3 min de lectura",
+      "author": "Dr. Carlos Rodríguez",
+      "content": "<p>Se han publicado los resultados de una investigación que demuestra cómo las aplicaciones de gestión de la salud basadas en Inteligencia Artificial (IA) y los asistentes digitales están brindando una ayuda práctica a los pacientes de edad avanzada que deben administrar horarios complejos de medicamentos. Esta tecnología resulta especialmente beneficiosa para pacientes que padecen múltiples enfermedades crónicas simultáneas y deben tomar diversos fármacos.</p><p>Más del 40% de los adultos mayores de 65 años toman 5 o más medicamentos recetados, y se estima que los errores en la administración de medicamentos están relacionados con más de 7,000 muertes al año en los Estados Unidos.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Funciones principales del Asistente de Salud AI</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Recordatorios de medicamentos:</strong> Notificaciones precisas según un calendario personalizado.</li><li><strong>Verificación de interacción de medicamentos:</strong> Advertencias sobre interacciones peligrosas entre los fármacos ingeridos.</li><li><strong>Seguimiento de recargas:</strong> Recordatorios automáticos para renovar recetas médicas en la farmacia.</li><li><strong>Gestión de registros de salud:</strong> Registro automático y seguimiento de indicadores de salud como presión arterial y glucemia.</li><li><strong>Comunicación con el equipo médico:</strong> Facilidad para compartir información de salud con su médico tratante.</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Recomendaciones para la comunidad hispana</h4><p>Existe un número creciente de aplicaciones que ofrecen interfaz totalmente en español para superar las barreras del idioma. Si le resulta difícil usar un teléfono inteligente, consulte con nuestro centro o centro comunitario local para recibir programas de orientación.</p><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> Journal of Medical Internet Research — AI-Powered Medication Management for Older Adults</p>",
+      "summaryPoints": [
+        "Reducción de más del 50% en olvidos de dosificación en adultos mayores",
+        "Verificación automática de interacciones farmacológicas peligrosas",
+        "Disponibilidad con traducción completa y asistencia en español"
+      ],
+      "status": "published",
+      "isDoctorColumn": false,
+      "updatedAt": "2026-08-20 20:00:08"
+    },
+    {
       "id": "p_1787097342_feac",
       "slug": "test2",
       "title": "test2",
@@ -216,54 +268,6 @@
       ],
       "status": "published",
       "updatedAt": "2026-08-19 01:14:39"
-    },
-    {
-      "id": "eye-drops",
-      "slug": "eye-drops",
-      "title": "Más de 2 millones de frascos de gotas oftálmicas retirados del mercado en EE. UU. por posible contaminación",
-      "category": "Retiro Voluntario FDA",
-      "date": "2026-08-04",
-      "isTopStory": false,
-      "isLiveUpdate": true,
-      "excerpt": "La farmacéutica Lupin Pharmaceuticals ha iniciado voluntariamente el retiro del mercado en todo el territorio de Estados Unidos de más de 2.5 millones de frascos de suspensión oftálmica de prednisolona al 1% debido al hallazgo de partículas extrañas insolubles.",
-      "coverImage": "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format",
-      "images": [
-        "https://images.unsplash.com/photo-1628771065117-74ccb5690668?w=1200&q=80&auto=format"
-      ],
-      "videoUrl": "",
-      "readTime": "2 min de lectura",
-      "author": "Redacción Médica y Salud Pública",
-      "content": "<p>Lupin Pharmaceuticals ha anunciado el retiro voluntario del mercado de aproximadamente 2.5 millones de frascos de suspensión oftálmica de prednisolona recetada al 1% debido a la posible presencia de partículas extrañas. La Administración de Alimentos y Medicamentos de EE. UU. (FDA) ha clasificado este retiro como Clase II, lo que significa que el uso del producto afectado puede provocar problemas de salud temporales o reversibles.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Cómo verificar los productos afectados por el retiro</h4><p>Si actualmente está utilizando este producto, verifique los siguientes datos:</p><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Nombre del producto:</strong> Prednisolone Acetate Ophthalmic Suspension USP, 1%</li><li><strong>Fabricante:</strong> Lupin Pharmaceuticals</li><li><strong>Número de lote:</strong> Verifique en el aviso oficial de retiro de la FDA (fda.gov/safety/recalls)</li><li><strong>Período de distribución:</strong> Lotes fabricados entre enero de 2025 y junio de 2026</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Medidas inmediatas que debe tomar</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li>Suspenda inmediatamente el uso del producto afectado.</li><li>Comuníquese con su médico de cabecera o oftalmólogo para consultar sobre su receta actual.</li><li>Devuelva los productos sin abrir al lugar de compra para recibir un reembolso.</li><li>Si experimenta alguna reacción adversa, infórmelo a FDA MedWatch (1-800-FDA-1088).</li><li>⚠️ <strong>ADVERTENCIA:</strong> Suspender abruptamente las gotas oftálmicas de esteroides puede empeorar los síntomas. Asegúrese de consultar a su médico antes de solicitar una receta de reemplazo.</li></ul><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> FDA.gov — Lupin Pharmaceuticals Voluntarily Recalls Eye Drops</p>",
-      "summaryPoints": [
-        "Retiro voluntario Clase II de 2.5M de frascos de suspensión oftálmica de prednisolona 1%",
-        "Verifique número de lote y fecha de fabricación antes de continuar su aplicación",
-        "Línea de orientación gratuita en español para pacientes de Nueva Jersey al 1-800-999-7200"
-      ],
-      "status": "published"
-    },
-    {
-      "id": "ai-health-assistant",
-      "slug": "ai-health-assistant",
-      "title": "El Asistente de Salud AI apoya el control de medicamentos complejos en adultos mayores",
-      "category": "Salud & Tecnología",
-      "date": "2026-08-02",
-      "isTopStory": false,
-      "isLiveUpdate": true,
-      "excerpt": "Nuevos sistemas basados en IA reducen errores de dosificación en adultos mayores con múltiples recetas simultáneas, ofreciendo interfaz e instrucciones en español.",
-      "coverImage": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format",
-      "images": [
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format"
-      ],
-      "videoUrl": "",
-      "readTime": "3 min de lectura",
-      "author": "Dr. Carlos Rodríguez",
-      "content": "<p>Se han publicado los resultados de una investigación que demuestra cómo las aplicaciones de gestión de la salud basadas en Inteligencia Artificial (IA) y los asistentes digitales están brindando una ayuda práctica a los pacientes de edad avanzada que deben administrar horarios complejos de medicamentos. Esta tecnología resulta especialmente beneficiosa para pacientes que padecen múltiples enfermedades crónicas simultáneas y deben tomar diversos fármacos.</p><p>Más del 40% de los adultos mayores de 65 años toman 5 o más medicamentos recetados, y se estima que los errores en la administración de medicamentos están relacionados con más de 7,000 muertes al año en los Estados Unidos.</p><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Funciones principales del Asistente de Salud AI</h4><ul style=\"padding-left:1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.4rem;\"><li><strong>Recordatorios de medicamentos:</strong> Notificaciones precisas según un calendario personalizado.</li><li><strong>Verificación de interacción de medicamentos:</strong> Advertencias sobre interacciones peligrosas entre los fármacos ingeridos.</li><li><strong>Seguimiento de recargas:</strong> Recordatorios automáticos para renovar recetas médicas en la farmacia.</li><li><strong>Gestión de registros de salud:</strong> Registro automático y seguimiento de indicadores de salud como presión arterial y glucemia.</li><li><strong>Comunicación con el equipo médico:</strong> Facilidad para compartir información de salud con su médico tratante.</li></ul><h4 style=\"margin:1.5rem 0 0.5rem; color:#111111; font-family:var(--font-serif); font-size:1.15rem; font-weight:700;\">Recomendaciones para la comunidad hispana</h4><p>Existe un número creciente de aplicaciones que ofrecen interfaz totalmente en español para superar las barreras del idioma. Si le resulta difícil usar un teléfono inteligente, consulte con nuestro centro o centro comunitario local para recibir programas de orientación.</p><p style=\"font-size:0.8rem; color:#6b7280; margin-top:1.5rem; border-top:1px solid #e5e7eb; padding-top:0.75rem;\"><strong>Fuente original:</strong> Journal of Medical Internet Research — AI-Powered Medication Management for Older Adults</p>",
-      "summaryPoints": [
-        "Reducción de más del 50% en olvidos de dosificación en adultos mayores",
-        "Verificación automática de interacciones farmacológicas peligrosas",
-        "Disponibilidad con traducción completa y asistencia en español"
-      ],
-      "status": "published"
     },
     {
       "id": "fda-corazon",

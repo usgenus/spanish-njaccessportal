@@ -157,6 +157,7 @@ if ($method === 'POST') {
     $isTopStory = !empty($input['isTopStory']);
     $isLiveUpdate = !empty($input['isLiveUpdate']);
     $isDoctorColumn = !empty($input['isDoctorColumn']);
+    $isPolicyReport = !empty($input['isPolicyReport']);
 
     if ($isTopStory) {
         foreach ($posts as &$p) {
@@ -182,6 +183,7 @@ if ($method === 'POST') {
         'isTopStory' => $isTopStory,
         'isLiveUpdate' => $isLiveUpdate,
         'isDoctorColumn' => $isDoctorColumn,
+        'isPolicyReport' => $isPolicyReport,
         'status' => trim($input['status'] ?? 'published'),
         'createdAt' => $now,
         'updatedAt' => $now
@@ -235,6 +237,7 @@ if ($method === 'PUT') {
             if (isset($input['isTopStory'])) $item['isTopStory'] = (bool)$input['isTopStory'];
             if (isset($input['isLiveUpdate'])) $item['isLiveUpdate'] = (bool)$input['isLiveUpdate'];
             if (isset($input['isDoctorColumn'])) $item['isDoctorColumn'] = (bool)$input['isDoctorColumn'];
+            if (isset($input['isPolicyReport'])) $item['isPolicyReport'] = (bool)$input['isPolicyReport'];
             if (isset($input['excerpt'])) $item['excerpt'] = trim($input['excerpt']);
             if (isset($input['coverImage'])) $item['coverImage'] = trim($input['coverImage']);
             if (isset($input['videoUrl'])) $item['videoUrl'] = trim($input['videoUrl']);
