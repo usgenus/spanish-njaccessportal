@@ -763,8 +763,8 @@ if (empty($_SESSION['cms_logged_in']) || $_SESSION['cms_logged_in'] !== true) {
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
           <div class="flex items-center gap-2">
-            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-red-600 bg-slate-800 border-slate-700">
-            <label for="post-doctorcolumn-input" class="font-bold text-red-400 text-xs sm:text-sm">🩺 Feature in Top 10 Medical Columns Section</label>
+            <input type="checkbox" id="post-doctorcolumn-input" name="isDoctorColumn" onchange="updateExposureCheckboxLimits(document.getElementById('post-id').value)" class="w-4 h-4 rounded text-blue-500 bg-slate-800 border-slate-700">
+            <label for="post-doctorcolumn-input" class="font-bold text-blue-400 text-xs sm:text-sm">📈 Feature in LO MÁS LEÍDO (Trending Top 5)</label>
           </div>
           <div class="flex items-center gap-2">
             <input type="checkbox" id="post-topstory-input" name="isTopStory" class="w-4 h-4 rounded text-amber-500 bg-slate-800 border-slate-700">

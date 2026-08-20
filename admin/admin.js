@@ -585,7 +585,7 @@ function renderPosts() {
           <div class="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
             <span class="bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">${escapeHtml(p.category || 'News')}</span>
             ${p.isTopStory ? '<span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow animate-pulse">🔥 TOP STORY</span>' : ''}
-            ${p.isDoctorColumn ? '<span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">🩺 TOP 10 Column</span>' : ''}
+            ${p.isDoctorColumn ? '<span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">📈 LO MÁS LEÍDO</span>' : ''}
             ${p.isLiveUpdate ? '<span class="bg-amber-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow">⭐ DESTACADOS</span>' : ''}
           </div>
         </div>
@@ -687,17 +687,17 @@ function updateExposureCheckboxLimits(currentEditingPostId) {
     }
   }
 
-  // TOP 10 Medical Columns (Max 10)
+  // LO MÁS LEÍDO (Max 5)
   if (doctorInput && doctorLabel) {
-    if (!doctorInput.checked && doctorCount >= 10) {
+    if (!doctorInput.checked && doctorCount >= 5) {
       doctorInput.disabled = true;
       doctorInput.parentElement.classList.add('opacity-40', 'cursor-not-allowed');
-      doctorLabel.innerHTML = '🩺 Feature in Top 10 Medical Columns Section <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 10 featured: Slots Full)</span>';
+      doctorLabel.innerHTML = '📈 Feature in LO MÁS LEÍDO <span class="text-xs text-amber-400 font-bold block sm:inline">(Max 5 featured: Slots Full)</span>';
     } else {
       doctorInput.disabled = false;
       doctorInput.parentElement.classList.remove('opacity-40', 'cursor-not-allowed');
       const currentVal = doctorInput.checked ? doctorCount + 1 : doctorCount;
-      doctorLabel.innerHTML = '🩺 Feature in Top 10 Medical Columns Section <span class="text-xs text-red-400 font-bold">(' + currentVal + '/10)</span>';
+      doctorLabel.innerHTML = '📈 Feature in LO MÁS LEÍDO <span class="text-xs text-blue-400 font-bold">(' + currentVal + '/5)</span>';
     }
   }
 }

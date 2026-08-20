@@ -327,7 +327,24 @@ $mainVideo = $activeVideos[0] ?? null;
 
         <div class="rank-list">
           <?php 
-          $rankPosts = array_slice($posts, 0, 5);
+          // Prioritize up to 5 posts marked for LO MÁS LEÍDO (isDoctorColumn)
+          $featuredTrending = [];
+          foreach ($posts as $p) {
+              if (!empty($p['isDoctorColumn'])) {
+                  $featuredTrending[] = $p;
+                  if (count($featuredTrending) === 5) break;
+              }
+          }
+          if (count($featuredTrending) < 5) {
+              foreach ($posts as $p) {
+                  if (!in_array($p['id'], array_column($featuredTrending, 'id'))) {
+                      $featuredTrending[] = $p;
+                      if (count($featuredTrending) === 5) break;
+                  }
+              }
+          }
+          $rankPosts = array_slice($featuredTrending, 0, 5);
+
           foreach ($rankPosts as $idx => $rItem): 
             $rSlug = $rItem['slug'] ?: $rItem['id'];
           ?>
@@ -343,16 +360,6 @@ $mainVideo = $activeVideos[0] ?? null;
       </aside>
 
     </section>
-
-    <!-- Commercial Public Announcement Sponsorship Banner -->
-    <div class="commercial-ad-banner">
-      <div>
-        <div class="ad-label">ANUNCIO DE SERVICIO PÚBLICO DE SALUD DE NJ</div>
-        <div class="ad-title">¿Tiene dudas sobre si califica para Medicare o NJ FamilyCare Gratuito?</div>
-        <div class="ad-desc">Obtenga asesoría oficial en su idioma sin costo alguno llamando al 1-800-999-7200.</div>
-      </div>
-      <a href="tel:+18009997200" class="btn-news-red">Llamar Ahora</a>
-    </div>
 
     <!-- Health Policy & Medicare Section (4 Postings) -->
     <section style="margin-bottom: 2.5rem;">

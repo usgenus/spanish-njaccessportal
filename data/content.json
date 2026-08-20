@@ -172,7 +172,7 @@
       "title": "test",
       "category": "Noticias de Salud",
       "date": "2026-08-18",
-      "isTopStory": false,
+      "isTopStory": true,
       "isLiveUpdate": true,
       "excerpt": "esrsrse",
       "coverImage": "/uploads/images/images_20260818_234901_8dbe83.png",
@@ -183,12 +183,12 @@
       "videoUrl": "",
       "readTime": "3 min de lectura",
       "author": "Redacción Médica y Salud Pública",
-      "content": "testing new articles.\n\n\n\n## ++new test header title++\n암젠은 심장 질환 치료제 코란노르(Corlanor) 및 신장 질환 치료제 센시파(Sensipar) 일부 제조단위에 대해 알약 코팅 이상으로 인한 자진 회수를 발표했습니다.\n\n\n++암젠(++Amgen), ==알약 코팅에서 예기치 않은 이물질이 발견됨에 따라 코란노르 및 ==센--시파 특정 제조번호 제품 자진 리콜\n--\n\n\n![](/uploads/images/images_20260820_194029_ced7ac.jpg)",
+      "content": "testing new articles.\n\n\n\n## ++new test header title++\n암젠은 심장 질환 치료제 코란노르(Corlanor) 및 신장 질환 치료제 센시파(Sensipar) 일부 제조단위에 대해 알약 코팅 이상으로 인한 자진 회수를 발표했습니다.\n\n\n![](/uploads/images/images_20260820_194029_ced7ac.jpg)\n\n\n\n++암젠(++Amgen), ==알약 코팅에서 예기치 않은 이물질이 발견됨에 따라 코란노르 및 ==센--시파 특정 제조번호 제품 자진 리콜\n--",
       "summaryPoints": [],
       "status": "published",
       "createdAt": "2026-08-18 23:39:24",
-      "updatedAt": "2026-08-20 19:43:30",
-      "isDoctorColumn": false
+      "updatedAt": "2026-08-20 19:48:41",
+      "isDoctorColumn": true
     },
     {
       "id": "eye-drops",
@@ -244,7 +244,7 @@
       "title": "De 'Vivir Más' a 'Vivir Mejor': El Enfoque de la Longevidad Cambia en EE. UU.",
       "category": "Geriatría & Bienestar",
       "date": "2026-08-02",
-      "isTopStory": true,
+      "isTopStory": false,
       "isLiveUpdate": false,
       "excerpt": "Especialistas destacan que la nutrición mediterránea, el ejercicio de resistencia y el descanso reparador son los pilares fundamentales para mantener la agilidad mental y la autonomía.",
       "coverImage": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80&auto=format",
